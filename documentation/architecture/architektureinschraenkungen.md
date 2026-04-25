@@ -28,7 +28,7 @@ Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegelei
 ## Betrieb und Qualität
 
 - **Fehlerbehandlung:** Externe Abhängigkeiten (Datenbank, E-Mail) erfordern definierte Fehler- und Wiederholungsstrategien; bis diese festgelegt sind, sind defensive Timeouts, klare Fehlerantworten und keine stillen Teilzustände zu bevorzugen.
-- **Beobachtbarkeit:** Für den produktiven Betrieb sind grundlegende Protokollierung und nachziehbare Betriebskonventionen vorgesehen; konkrete Monitoring- und Audit-Anforderungen sind noch offen und können zusätzliche Einschränkungen nach sich ziehen.
+- **Beobachtbarkeit:** Für den produktiven Betrieb sind grundlegende Protokollierung und nachvollziehbare Betriebskonventionen vorgesehen; konkrete Monitoring- und Audit-Anforderungen sind noch offen und können zusätzliche Einschränkungen nach sich ziehen.
 
 ## Bewusst offen
 

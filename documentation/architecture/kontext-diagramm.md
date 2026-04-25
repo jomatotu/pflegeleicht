@@ -29,6 +29,6 @@ flowchart LR
 - `pflegeleicht.online` ist das zentrale Softwaresystem.
 - Nutzer:innen interagieren direkt mit dem System.
 - Das System nutzt einen externen E-Mail-Dienst und eine Datenbank.
-- Der `CustomerService` bearbeitet Nutzendenanfragen ueber `pflegeleicht.online`.
+- Der `CustomerService` bearbeitet Nutzendenanfragen über `pflegeleicht.online`.
 - Dienstleistungsagenturen erhalten bei relevanten Ereignissen eine Benachrichtigung durch `pflegeleicht.online`.
 

@@ -1,6 +1,6 @@
 # Lösungsstrategie (arc42 Abschnitt 4)
 
-Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipien fachliche Komplexität reduzieren, wie die Technik diese Ziele stützt und welche **Kompromisse** im MVP bewusst eingegangen werden. Detailierte Randbedingungen stehen in [architektureinschraenkungen.md](architektureinschraenkungen.md), konkrete Entscheidungen in [architekturentscheidungen.md](architekturentscheidungen.md); Ziele und MVP-Ausrichtung sind im [README](README.md#zielbild-mvp) beschrieben.
+Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipien fachliche Komplexität reduzieren, wie die Technik diese Ziele stützt und welche **Kompromisse** im MVP bewusst eingegangen werden. Detaillierte Randbedingungen stehen in [architektureinschraenkungen.md](architektureinschraenkungen.md), konkrete Entscheidungen in [architekturentscheidungen.md](architekturentscheidungen.md); Ziele und MVP-Ausrichtung sind im [README](README.md#zielbild-mvp) beschrieben.
 
 ## Fachliche Strategie
 
