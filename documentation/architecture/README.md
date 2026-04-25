@@ -20,5 +20,5 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 - **8 Querschnittliche Konzepte** — [querschnittliche-konzepte.md](querschnittliche-konzepte.md)
 - **9 Architekturentscheidungen** — [architekturentscheidungen.md](architekturentscheidungen.md)
 - **10 Qualitätsanforderungen** — [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md)
-- **11 Risiken und technische Schulden** — [risiken-und-technische-schulden.md](risiken-und-technische-schulden.md) *(Stub)*
+- **11 Risiken und technische Schulden** — [risiken-und-technische-schulden.md](risiken-und-technische-schulden.md)
 - **12 Glossar** — [glossar.md](glossar.md) *(Stub)*
