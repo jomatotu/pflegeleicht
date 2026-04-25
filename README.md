@@ -1,7 +1,9 @@
 # pflegeleicht
 Hackathon Projekt Kassel 
 
+Hinweis: Bitte beachte die projektweiten Regeln in [RULES.md](RULES.md).
+
 ## Architektur-Dokumentation
 
-- [Architecture README](documentation/architecture/README.md)
+- [Architecture](documentation/architecture/README.md)
 
