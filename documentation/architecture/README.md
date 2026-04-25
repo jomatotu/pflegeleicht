@@ -1,3 +1,4 @@
 # Architecture
 
-- Kontext-Diagramm: [documentation/architecture/README.md](../documentation/architecture/README.md)
+- Kontext-Diagramm: [kontext-diagramm.md](kontext-diagramm.md)
+- Bausteinsicht: [bausteinsicht.md](bausteinsicht.md)
