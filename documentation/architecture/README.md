@@ -17,7 +17,7 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 - **5 Bausteinsicht** — [bausteinsicht.md](bausteinsicht.md)
 - **6 Laufzeitsicht** — [laufzeitsicht.md](laufzeitsicht.md)
 - **7 Verteilungssicht** — [verteilungssicht.md](verteilungssicht.md)
-- **8 Querschnittliche Konzepte** — [querschnittliche-konzepte.md](querschnittliche-konzepte.md) *(Stub)*
+- **8 Querschnittliche Konzepte** — [querschnittliche-konzepte.md](querschnittliche-konzepte.md)
 - **9 Architekturentscheidungen** — [architekturentscheidungen.md](architekturentscheidungen.md)
 - **10 Qualitätsanforderungen** — [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md)
 - **11 Risiken und technische Schulden** — [risiken-und-technische-schulden.md](risiken-und-technische-schulden.md) *(Stub)*
