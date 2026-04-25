@@ -10,25 +10,32 @@ Diese Laufzeitsicht beschreibt, wie `pflegeleicht.online` den Entlastungsbetrag 
 
 ## Vereinfachtes BPMN Diagramm für die erst Beantragung (MVP End-to-End)
 
+
 ```mermaid
 flowchart TB
 
-    subgraph lane_system_template["Lane: Beantragung"]
+    subgraph lane["Beantragung"]
         direction TB
-        subgraph sublane_user["Nutzer:in"]
+        subgraph sublane_one["Nutzer:in"]
             direction LR
-            S_T_STEP_01[Nutzer:innen Schritt 1 (Platzhalter)]
-            S_T_STEP_02[Nutzer:innen Schritt 2 (Platzhalter)]
-            S_T_STEP_01 --> S_T_STEP_02
+            step_u0[User: Beantragung starten]
+            step_u2[User: Upload Pflegegutachten]
+            step_u4[Daten überprüfen und Abtretung erklären]
+            step_u6[Daten absenden]
+            step_u0 --> step_u2 --> step_u4 --> step_u6
         end
-        subgraph sublane_system["pflegeleicht.online"]
+        subgraph sublane_two["System"]
             direction LR
-            S_T_STEP_03[Plattform Schritt 3 (Platzhalter)]
-            S_T_STEP_04[Plattform Schritt 4 (Platzhalter)]
-            S_T_STEP_03 --> S_T_STEP_04
+            step_s1[Antrag ablegen]
+            step_s2[Agentur per (Email) kontaktieren]
+            step_s3[Email archivieren]
+            step_s4[Prozess Ende]
+            step_s1 --> step_s2 --> step_s3 --> step_s4
         end
+        step_u6 --> step_s1
     end
 ```
+
 
 ## Zentrale Laufzeit-Zustaende
 
