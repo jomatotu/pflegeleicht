@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Button } from "../components/ui/button";
 import { Upload } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -34,22 +33,18 @@ export function UploadPage() {
       <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-3xl w-full space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl text-teal-900">
-              Willkommen bei PflegeLeicht
-            </h1>
-            <p className="text-xl text-gray-600">
-              Laden Sie Ihr Pflegegutachten hoch, um zu beginnen
-            </p>
+            <h1 className="text-4xl md:text-5xl text-teal-900">Willkommen bei PflegeLeicht</h1>
+            <p className="text-xl text-gray-600">Jetzt zählt nur: Ihre Angehörigen sind versorgt. Alles andere regeln wir gemeinsam.</p>
           </div>
 
-          <div className="bg-white rounded-2xl border-2 border-teal-200 p-8 shadow-lg space-y-6">
-            <h2 className="text-2xl text-center text-teal-900">
+          <div className="bg-white rounded-2xl border-2 border-teal-200 p-6 shadow-lg space-y-4">
+            <h2 className="text-xl text-center text-teal-900">
               Laden Sie Ihren Pflegegutachten hoch.
             </h2>
 
-            <label className="flex flex-col items-center justify-center w-full h-64 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
-              <Upload className="w-20 h-20 text-teal-500 mb-4" />
-              <span className="text-lg text-teal-700 mb-2">
+            <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
+              <Upload className="w-16 h-16 text-teal-500 mb-3" />
+              <span className="text-base text-teal-700 mb-2">
                 {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
               </span>
               <span className="text-sm text-gray-500">

@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
-import { Check, ChevronRight, MessageCircle, ShoppingCart, Sparkles, ChefHat, Stethoscope, Home } from "lucide-react";
-import logo from "../../imports/image.png";
+import { Check, ChevronRight } from "lucide-react";
 import { Footer } from "./Footer";
+import { SERVICES } from "../data/services";
 
 interface Service {
   id: string;
@@ -9,7 +9,8 @@ interface Service {
   description: string;
   cost: number;
   monthlyPrice: number;
-  icon: React.ReactNode;
+  pricePerHour: number;
+  hours: number;
 }
 
 interface ServiceSelectionSimpleProps {
@@ -21,57 +22,6 @@ interface ServiceSelectionSimpleProps {
   onFinish: () => void;
 }
 
-const SERVICES: Service[] = [
-  {
-    id: "cleaning",
-    title: "Ich brauche Hilfe beim Putzen.",
-    description: "Haushaltshilfe - Reinigung und Ordnung",
-    cost: 125,
-    monthlyPrice: 125,
-    icon: <Sparkles className="w-8 h-8" />,
-  },
-  {
-    id: "shopping",
-    title: "Ich brauche Hilfe beim Einkaufen.",
-    description: "Einkaufsservice - Begleitung oder Lieferung",
-    cost: 60,
-    monthlyPrice: 60,
-    icon: <ShoppingCart className="w-8 h-8" />,
-  },
-  {
-    id: "doctor",
-    title: "Ich brauche Begleitung zum Arzt.",
-    description: "Alltagsbegleitung - Arztbesuche und Termine",
-    cost: 50,
-    monthlyPrice: 50,
-    icon: <Stethoscope className="w-8 h-8" />,
-  },
-  {
-    id: "cooking",
-    title: "Ich brauche Hilfe beim Kochen.",
-    description: "Haushaltshilfe - Mahlzeiten Zubereitung",
-    cost: 70,
-    monthlyPrice: 70,
-    icon: <ChefHat className="w-8 h-8" />,
-  },
-  {
-    id: "talk",
-    title: "Ich brauche jemanden, der mit mir redet.",
-    description: "Alltagsbegleitung - Gesellschaft und Gespräche",
-    cost: 80,
-    monthlyPrice: 80,
-    icon: <MessageCircle className="w-8 h-8" />,
-  },
-  {
-    id: "allround",
-    title: "Ich brauche Einzelbetreuung zuhause.",
-    description: "Persönliche Betreuung - Individuelle Unterstützung nach Ihren Bedürfnissen",
-    cost: 131,
-    monthlyPrice: 131,
-    icon: <Home className="w-8 h-8" />,
-  },
-];
-
 export function ServiceSelectionSimple({
   totalBudget,
   remainingBudget,
@@ -80,11 +30,27 @@ export function ServiceSelectionSimple({
   onRemoveService,
   onFinish,
 }: ServiceSelectionSimpleProps) {
+  const HOURS_PER_MONTH = 2; // 1 Stunde alle 2 Wochen = 2 Stunden pro Monat
+
   const isServiceSelected = (serviceId: string) =>
     selectedServices.some((s) => s.id === serviceId);
-
-  const usedBudget = totalBudget - remainingBudget;
   const isOverBudget = remainingBudget < 0;
+
+  const handleSelectService = (serviceData: typeof SERVICES[0]) => {
+    const monthlyPrice = serviceData.pricePerHour * HOURS_PER_MONTH;
+
+    const service: Service = {
+      id: serviceData.id,
+      title: serviceData.title,
+      description: serviceData.description,
+      cost: monthlyPrice,
+      monthlyPrice: monthlyPrice,
+      pricePerHour: serviceData.pricePerHour,
+      hours: HOURS_PER_MONTH,
+    };
+
+    onSelectService(service);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -92,60 +58,58 @@ export function ServiceSelectionSimple({
       <div className="bg-white border-b shadow-sm sticky top-[80px] z-10">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl text-teal-900">Was brauchst du?</h2>
-          <div className={`text-right rounded-lg px-6 py-3 border ${
-            isOverBudget
-              ? "bg-orange-50 border-orange-200"
-              : "bg-teal-50 border-teal-200"
-          }`}>
+          <div className="text-right rounded-lg px-6 py-3 border bg-teal-50 border-teal-200">
             <div className="text-xs text-gray-600 uppercase mb-1">Dein Budget pro monat</div>
-            <div className={`text-3xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
+            <div className="text-3xl text-teal-700">
               {remainingBudget.toFixed(2)} €
             </div>
             <div className="text-xs text-gray-500">von {totalBudget.toFixed(2)} €</div>
-            {isOverBudget && (
-              <div className="mt-2 pt-2 border-t border-orange-300">
-                <div className="text-xs text-orange-700 font-medium">Eigenbeteiligung:</div>
-                <div className="text-lg text-orange-700">{Math.abs(remainingBudget).toFixed(2)} € / Monat</div>
-              </div>
-            )}
           </div>
         </div>
       </div>
 
       {/* Services List */}
       <div className="flex-1 max-w-4xl mx-auto px-6 py-8 space-y-4">
-        {SERVICES.map((service) => {
-          const selected = isServiceSelected(service.id);
+        {SERVICES.map((serviceData) => {
+          const selected = isServiceSelected(serviceData.id);
+          const monthlyPrice = serviceData.pricePerHour * HOURS_PER_MONTH;
+          const Icon = serviceData.icon;
 
           return (
             <div
-              key={service.id}
+              key={serviceData.id}
               className={`bg-white rounded-lg border-2 p-6 transition-all ${
                 selected
                   ? "border-green-500 shadow-lg"
                   : "border-gray-200 hover:border-blue-300"
               }`}
             >
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-4 flex-1">
                   <div className={`p-3 rounded-lg flex-shrink-0 ${
                     selected ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
                   }`}>
-                    {service.icon}
+                    <Icon className="w-8 h-8" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xl md:text-2xl text-gray-900 mb-2">{service.title}</p>
-                    <p className="text-sm text-gray-600">{service.description}</p>
+                    <p className="text-xl md:text-2xl text-gray-900 mb-2">{serviceData.title}</p>
+                    <p className="text-sm text-gray-600 mb-3">{serviceData.description}</p>
+
+                    <div className="bg-teal-50 rounded-lg px-4 py-2 inline-block">
+                      <p className="text-sm text-teal-800">
+                        1 Stunde alle zwei Wochen · {serviceData.pricePerHour} € / Stunde
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-end gap-4">
                   <div className="text-right">
-                    <div className="text-2xl text-teal-700">{service.monthlyPrice.toFixed(2)} €</div>
+                    <div className="text-2xl text-teal-700">{monthlyPrice.toFixed(2)} €</div>
                     <div className="text-xs text-gray-500">/ Monat</div>
                   </div>
                   {selected ? (
                     <Button
-                      onClick={() => onRemoveService(service.id)}
+                      onClick={() => onRemoveService(serviceData.id)}
                       variant="outline"
                       className="border-green-600 text-green-700 hover:bg-green-50 gap-2"
                     >
@@ -154,7 +118,7 @@ export function ServiceSelectionSimple({
                     </Button>
                   ) : (
                     <Button
-                      onClick={() => onSelectService(service)}
+                      onClick={() => handleSelectService(serviceData)}
                       className="bg-teal-600 hover:bg-teal-700"
                     >
                       Auswählen

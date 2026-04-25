@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
+import { ConfirmationScreen } from "../components/ConfirmationScreen";
 import { Header } from "../components/Header";
 
 interface Service {
@@ -9,6 +10,8 @@ interface Service {
   description: string;
   cost: number;
   monthlyPrice: number;
+  pricePerHour: number;
+  hours: number;
 }
 
 export function ServicesPage() {
@@ -19,6 +22,8 @@ export function ServicesPage() {
   const [totalBudget] = useState(131);
   const [remainingBudget, setRemainingBudget] = useState(131);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   useEffect(() => {
     if (!grade) {
@@ -40,7 +45,16 @@ export function ServicesPage() {
   };
 
   const handleFinish = () => {
-    navigate(`/summary?grade=${grade}`);
+    setShowConfirmation(true);
+  };
+
+  const handleBackToServices = () => {
+    setShowConfirmation(false);
+  };
+
+  const handleConfirm = () => {
+    console.log("Confirmed:", { grade, selectedServices });
+    setIsConfirmed(true);
   };
 
   if (!grade) {
@@ -53,19 +67,31 @@ export function ServicesPage() {
         onHomeClick={() => navigate("/")}
         showHomeButton={true}
         showLoginButton={false}
-        currentStep={2}
+        currentStep={showConfirmation ? 3 : 2}
         showStepper={true}
         onLoginClick={() => {}}
       />
 
-      <ServiceSelectionSimple
-        totalBudget={totalBudget}
-        remainingBudget={remainingBudget}
-        selectedServices={selectedServices}
-        onSelectService={handleServiceSelect}
-        onRemoveService={handleServiceRemove}
-        onFinish={handleFinish}
-      />
+      {!showConfirmation ? (
+        <ServiceSelectionSimple
+          totalBudget={totalBudget}
+          remainingBudget={remainingBudget}
+          selectedServices={selectedServices}
+          onSelectService={handleServiceSelect}
+          onRemoveService={handleServiceRemove}
+          onFinish={handleFinish}
+        />
+      ) : (
+        <ConfirmationScreen
+          pflegegrad={parseInt(grade)}
+          selectedServices={selectedServices}
+          totalBudget={totalBudget}
+          remainingBudget={remainingBudget}
+          onConfirm={handleConfirm}
+          onBack={handleBackToServices}
+          isConfirmed={isConfirmed}
+        />
+      )}
     </div>
   );
 }
