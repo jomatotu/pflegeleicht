@@ -1,19 +1,21 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
-const PLATFORM_EMAIL = Deno.env.get("PLATFORM_EMAIL") ?? "platform@pflegeleicht.de";
-const PARTNER_EMAIL = Deno.env.get("PARTNER_EMAIL") ?? "test-partner@pflegeleicht.de";
+const PLATFORM_EMAIL = Deno.env.get("PLATFORM_EMAIL") ?? "platform@pflegeleicht.online";
+const PARTNER_EMAIL = Deno.env.get("PARTNER_EMAIL") ?? "test-partner@pflegeleicht.online";
 const STORAGE_BUCKET = "bescheide";
 
 interface AntragPayload {
   firstname: string;
   lastname: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  date_of_birth: string;
   pflegegrad: number;
-  leistung_id: number;
-  // todo: array von leistungen!
-  // todo: add more fields:
-  //  phone, address, Krankenkassenversicherungsnummer, Aufragsnummer MD (optional), pflegegrad_since
-  submitter_email: string;
+  contact_person_phone: string;
+  contact_person_email: string;
+  services: number[];
 }
 
 Deno.serve(async (req: Request) => {
@@ -66,14 +68,36 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const { firstname, lastname, pflegegrad, leistung_id, submitter_email } = payload;
+  const {
+    firstname,
+    lastname,
+    street,
+    city,
+    postalCode,
+    date_of_birth,
+    pflegegrad,
+    contact_person_phone,
+    contact_person_email,
+    services,
+  } = payload;
 
-  log(`Antrag für ${firstname} ${lastname}, pflegegrad=${pflegegrad}, leistung_id=${leistung_id}`);
+  log(`Antrag für ${firstname} ${lastname}, pflegegrad=${pflegegrad}`);
 
-  if (!firstname || !lastname || pflegegrad == null || !leistung_id || !submitter_email) {
+  if (
+    !firstname ||
+    !lastname ||
+    !street ||
+    !city ||
+    !postalCode ||
+    !date_of_birth ||
+    pflegegrad == null ||
+    !contact_person_phone ||
+    !contact_person_email
+  ) {
     return new Response(
       JSON.stringify({
-        error: "Missing required fields: firstname, lastname, pflegegrad, leistung_id, submitter_email",
+        error:
+          "Missing required fields: firstname, lastname, street, city, postalCode, date_of_birth, pflegegrad, contact_person_phone, contact_person_email",
       }),
       { status: 400, headers: { "Content-Type": "application/json" } },
     );
@@ -93,32 +117,7 @@ Deno.serve(async (req: Request) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
   );
 
-  // 1. Budget-Berechtigungsprüfung: Leistung muss existieren und pflegegrad muss passen
-  const { data: leistung, error: leistungError } = await supabase
-    .from("Leistung")
-    .select("id, name, budget")
-    .eq("id", leistung_id)
-    .single();
-
-  if (leistungError || !leistung) {
-    log(`Budgetprüfung fehlgeschlagen: leistung_id=${leistung_id} nicht gefunden`);
-    return new Response(
-      JSON.stringify({ error: "Budgetberechtigung nicht gefunden: Leistung existiert nicht" }),
-      { status: 422, headers: { "Content-Type": "application/json" } },
-    );
-  }
-
-  if (!leistung.budget || leistung.budget <= 0) {
-    log(`Budgetprüfung fehlgeschlagen: "${leistung.name}" hat kein gültiges Budget`);
-    return new Response(
-      JSON.stringify({ error: "Budgetberechtigung abgelehnt: Leistung hat kein gültiges Budget" }),
-      { status: 422, headers: { "Content-Type": "application/json" } },
-    );
-  }
-
-  log(`Budgetprüfung OK: "${leistung.name}" budget=${leistung.budget}`);
-
-  // 2. PDF in Storage speichern
+  // 1. PDF in Storage speichern
   const pdfBytes = await pdfFile.arrayBuffer();
   const fileName = `${Date.now()}_${lastname}_${firstname}.pdf`;
 
@@ -139,14 +138,19 @@ Deno.serve(async (req: Request) => {
 
   log(`PDF gespeichert: ${fileName}`);
 
-  // 3. Leistungsberechtigter in Datenbank speichern
+  // 2. Leistungsberechtigter in Datenbank speichern
   const { data: inserted, error: insertError } = await supabase
     .from("Leistungsberechtigter")
     .insert({
       firstname,
       lastname,
+      street,
+      city,
+      postal_code: postalCode,
+      date_of_birth,
       pflegegrad,
-      leistung_id,
+      contact_person_phone,
+      contact_person_email,
     })
     .select("id")
     .single();
@@ -163,22 +167,63 @@ Deno.serve(async (req: Request) => {
 
   log(`Leistungsberechtigter angelegt: id=${inserted.id}`);
 
+  // 3. Leistungselemente verknüpfen
+  if (services && services.length > 0) {
+    const serviceRows = services.map((leistungselement_id) => ({
+      leistungsberechtigter_id: inserted.id,
+      leistungselement_id,
+    }));
+
+    const { error: servicesError } = await supabase
+      .from("Leistungsberechtiger_Leistungselemente")
+      .insert(serviceRows);
+
+    if (servicesError) {
+      log(`Leistungselemente-Insert fehlgeschlagen: ${servicesError.message}`);
+    } else {
+      log(`${services.length} Leistungselement(e) verknüpft`);
+    }
+  }
+
   // 4. 3 E-Mails versenden
   const emailResults = await Promise.allSettled([
     sendEmail({
-      to: submitter_email,
+      to: contact_person_email,
       subject: "Ihr Antrag wurde erfolgreich eingereicht",
-      html: buildSubmitterEmail(firstname, lastname, leistung.name, pflegegrad),
+      html: buildSubmitterEmail(firstname, lastname, pflegegrad, street, city, postalCode),
     }),
     sendEmail({
       to: PLATFORM_EMAIL,
       subject: `Neuer Antrag eingegangen: ${firstname} ${lastname}`,
-      html: buildPlatformEmail(firstname, lastname, pflegegrad, leistung.name, inserted.id),
+      html: buildPlatformEmail(
+        firstname,
+        lastname,
+        pflegegrad,
+        street,
+        city,
+        postalCode,
+        date_of_birth,
+        contact_person_phone,
+        contact_person_email,
+        inserted.id,
+        services,
+      ),
     }),
     sendEmail({
       to: PARTNER_EMAIL,
       subject: `Neuer Leistungsberechtigter: ${firstname} ${lastname}`,
-      html: buildPartnerEmail(firstname, lastname, pflegegrad, leistung.name, inserted.id),
+      html: buildPartnerEmail(
+        firstname,
+        lastname,
+        pflegegrad,
+        street,
+        city,
+        postalCode,
+        date_of_birth,
+        contact_person_phone,
+        inserted.id,
+        services,
+      ),
     }),
   ]);
 
@@ -221,7 +266,7 @@ async function sendEmail({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "noreply@pflegeleicht.de",
+      from: "noreply@pflegeleicht.online",
       to,
       subject,
       html,
@@ -237,16 +282,18 @@ async function sendEmail({
 function buildSubmitterEmail(
   firstname: string,
   lastname: string,
-  leistungName: string,
   pflegegrad: number,
+  street: string,
+  city: string,
+  postalCode: string,
 ): string {
   return `
     <h2>Ihr Antrag wurde erfolgreich eingereicht</h2>
     <p>Sehr geehrte/r ${firstname} ${lastname},</p>
-    <p>Ihr Antrag wurde erfolgreich bei pflegeleicht.de eingereicht und wird nun bearbeitet.</p>
+    <p>Ihr Antrag wurde erfolgreich bei pflegeleicht.online eingereicht und wird nun bearbeitet.</p>
     <ul>
       <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Beantragte Leistung:</strong> ${leistungName}</li>
+      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
     </ul>
     <p>Wir melden uns in Kürze bei Ihnen.</p>
     <p>Mit freundlichen Grüßen,<br>Ihr pflegeleicht-Team</p>
@@ -257,8 +304,14 @@ function buildPlatformEmail(
   firstname: string,
   lastname: string,
   pflegegrad: number,
-  leistungName: string,
+  street: string,
+  city: string,
+  postalCode: string,
+  date_of_birth: string,
+  contact_person_phone: string,
+  contact_person_email: string,
   id: number,
+  services: number[],
 ): string {
   return `
     <h2>Neuer Antrag eingegangen</h2>
@@ -266,8 +319,12 @@ function buildPlatformEmail(
     <ul>
       <li><strong>ID:</strong> ${id}</li>
       <li><strong>Name:</strong> ${firstname} ${lastname}</li>
+      <li><strong>Geburtsdatum:</strong> ${date_of_birth}</li>
+      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
       <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Leistung:</strong> ${leistungName}</li>
+      <li><strong>Telefon:</strong> ${contact_person_phone}</li>
+      <li><strong>E-Mail:</strong> ${contact_person_email}</li>
+      <li><strong>Leistungselemente:</strong> ${services?.length > 0 ? services.join(", ") : "keine"}</li>
     </ul>
   `;
 }
@@ -276,8 +333,13 @@ function buildPartnerEmail(
   firstname: string,
   lastname: string,
   pflegegrad: number,
-  leistungName: string,
+  street: string,
+  city: string,
+  postalCode: string,
+  date_of_birth: string,
+  contact_person_phone: string,
   id: number,
+  services: number[],
 ): string {
   return `
     <h2>Neuer Leistungsberechtigter</h2>
@@ -285,8 +347,11 @@ function buildPartnerEmail(
     <ul>
       <li><strong>Interne ID:</strong> ${id}</li>
       <li><strong>Name:</strong> ${firstname} ${lastname}</li>
+      <li><strong>Geburtsdatum:</strong> ${date_of_birth}</li>
+      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
       <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Leistung:</strong> ${leistungName}</li>
+      <li><strong>Telefon:</strong> ${contact_person_phone}</li>
+      <li><strong>Leistungselemente:</strong> ${services?.length > 0 ? services.join(", ") : "keine"}</li>
     </ul>
     <p>Bitte nehmen Sie Kontakt auf.</p>
   `;
