@@ -2,7 +2,7 @@
 
 Dieses Diagramm zeigt den Systemkontext von **pflegeleicht.online** auf hoher Ebene.
 
-Hinweis: Eine genauere, in Bausteine zerlegte Beschreibung des Systems findet sich in [bausteinsicht.md](bausteinsicht.md).
+Hinweis: Eine genauere, in Bausteine zerlegte Beschreibung des Systems findet sich in [Bausteinsicht](bausteinsicht.md).
 
 ```mermaid
 flowchart LR

@@ -1,12 +1,12 @@
 # Lösungsstrategie (arc42 Abschnitt 4)
 
-Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipien fachliche Komplexität reduzieren, wie die Technik diese Ziele stützt und welche **Kompromisse** im MVP bewusst eingegangen werden. Detaillierte Randbedingungen stehen in [architektureinschraenkungen.md](architektureinschraenkungen.md), konkrete Entscheidungen in [architekturentscheidungen.md](architekturentscheidungen.md); Ziele und MVP-Ausrichtung sind im [README](README.md#zielbild-mvp) beschrieben.
+Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipien fachliche Komplexität reduzieren, wie die Technik diese Ziele stützt und welche **Kompromisse** im MVP bewusst eingegangen werden. Detaillierte Randbedingungen stehen in [Architektureinschränkungen](architektureinschraenkungen.md), konkrete Entscheidungen in [Architekturentscheidungen](architekturentscheidungen.md); Ziele und MVP-Ausrichtung sind im [README](README.md#zielbild-mvp) beschrieben.
 
 ## Fachliche Strategie
 
-- **Komplexität nach außen abbauen:** Nutzer:innen sollen den Entlastungsbetrag und zugehörige Schritte ohne tiefes Verständnis von Kasse, Dienstleistungsagentur oder Abrechnungslogik beantragen können. Der Leitgedanke entspricht den fachlichen Leitplanken in [laufzeitsicht.md](laufzeitsicht.md): wenige, verständliche Interaktionen, klare Rollen des Systems (Antrag anlegen, Dienstleistungsagentur informieren, Prozess abschließen).
+- **Komplexität nach außen abbauen:** Nutzer:innen sollen den Entlastungsbetrag und zugehörige Schritte ohne tiefes Verständnis von Kasse, Dienstleistungsagentur oder Abrechnungslogik beantragen können. Der Leitgedanke entspricht den fachlichen Leitplanken in [Laufzeitsicht](laufzeitsicht.md): wenige, verständliche Interaktionen, klare Rollen des Systems (Antrag anlegen, Dienstleistungsagentur informieren, Prozess abschließen).
 - **Ein klarer MVP-Umfang:** Zuerst eine **standardisierbare Leistung** (Entlastungsbetrag) end-to-end abbilden. Erweiterungen (weitere Leistungen, zusätzliche Prozesse) sollen die bestehende Architektur nicht verkomplizieren, sondern später über denselben fachlichen Kern und getrennte Schnittstellen angebunden werden.
-- **Verlässliche Nachvollziehbarkeit:** Fachliche Abläufe sollen für interne Rollen und Audits nachvollziehbar bleiben (Status, Speicherung von Nachweisen, Benachrichtigungen). Das schließt an die Qualitätsziele in [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md) an.
+- **Verlässliche Nachvollziehbarkeit:** Fachliche Abläufe sollen für interne Rollen und Audits nachvollziehbar bleiben (Status, Speicherung von Nachweisen, Benachrichtigungen). Das schließt an die Qualitätsziele in [Qualitätskriterien und Merkmale](qualitaetskriterien-und-merkmale.md) an.
 
 ## Technische Kernprinzipien
 
@@ -32,7 +32,7 @@ Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipie
 
 ## Sicherheit und Daten als Querschnitt (Kurz)
 
-Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern** vor breiter Datenexposition. Technische Umsetzung (Autorisierung, Row-Level Security, Speicherorte, Verschlüsselung) wird in der Umsetzung und in [architektureinschraenkungen.md](architektureinschraenkungen.md) verankert; Details können in [querschnittliche-konzepte.md](querschnittliche-konzepte.md) ausgebaut werden, sobald das Kapitel gefüllt ist.
+Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern** vor breiter Datenexposition. Technische Umsetzung (Autorisierung, Row-Level Security, Speicherorte, Verschlüsselung) wird in der Umsetzung und in [Architektureinschränkungen](architektureinschraenkungen.md) verankert; Details können in [Querschnittliche Konzepte](querschnittliche-konzepte.md) ausgebaut werden, sobald das Kapitel gefüllt ist.
 
 ## Bewusste Kompromisse und Grenzen des MVP
 
@@ -41,7 +41,7 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 | Produktivität | Der MVP ist **nicht** als vollständig compliance- und betriebsreifer Produktionsbetrieb ausgelegt; es dürfen **keine** echten Gesundheitsdaten verarbeitet werden (Randbedingungen). |
 | Plattform | **Starke Nutzung von Supabase-Features** beschleunigt die Entwicklung; Portabilität ist zweitrangig. |
 | APIs | **Zwei API-Pfade** erhöhen Wartung und Dokumentationspflicht; der Nutzen (Sicherheit, klare Verträge) wird höher bewertet. |
-| Betrieb | Themen wie **Migration/Rollback**, **Retry/Circuit-Breaker** für externe Aufrufe und **Monitoring/Audit** sind bewusst **noch offen** und in [architekturentscheidungen.md](architekturentscheidungen.md) dokumentiert — die Strategie ist „erst klare fachliche Endpunkte, dann harte Betriebsregeln“, ohne den MVP unnötig zu blockieren. |
+| Betrieb | Themen wie **Migration/Rollback**, **Retry/Circuit-Breaker** für externe Aufrufe und **Monitoring/Audit** sind bewusst **noch offen** und in [Architekturentscheidungen](architekturentscheidungen.md) dokumentiert — die Strategie ist „erst klare fachliche Endpunkte, dann harte Betriebsregeln“, ohne den MVP unnötig zu blockieren. |
 
 ## Zusammenspiel mit anderen arc42-Abschnitten
 
@@ -55,8 +55,8 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 
 ## Verweise
 
-- [architekturentscheidungen.md](architekturentscheidungen.md) — ADR-001 bis ADR-005
-- [architektureinschraenkungen.md](architektureinschraenkungen.md)
-- [bausteinsicht.md](bausteinsicht.md)
-- [verteilungssicht.md](verteilungssicht.md)
-- [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md)
+- [Architekturentscheidungen](architekturentscheidungen.md) — ADR-001 bis ADR-005
+- [Architektureinschränkungen](architektureinschraenkungen.md)
+- [Bausteinsicht](bausteinsicht.md)
+- [Verteilungssicht](verteilungssicht.md)
+- [Qualitätskriterien und Merkmale](qualitaetskriterien-und-merkmale.md)

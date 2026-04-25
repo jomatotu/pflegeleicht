@@ -6,19 +6,19 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 
 - Fokus auf einer standardisierbaren Leistung: `Entlastungsbetrag` (131 EUR pro Monat).
 - Nutzer:innen laden einmalig den Pflegegrad-Nachweis hoch, wählen eine Leistung und müssen den restlichen Prozess nicht selbst verstehen oder steuern.
-- Die Plattform übernimmt im Hintergrund Vermittlung, Terminierung, Abrechnung und Erstattungsprozess.
+- Die Plattform übernimmt im Hintergrund Vermittlung, Abrechnung und Erstattungsprozess.
 
 ## Dokumente (Reihenfolge nach arc42)
 
 - **1 Einleitung und Ziele** — siehe [Zielbild MVP](#zielbild-mvp) oben (in dieser Datei)
-- **2 Randbedingungen** — [architektureinschraenkungen.md](architektureinschraenkungen.md)
-- **3 Kontext und Abgrenzung** — [kontext-diagramm.md](kontext-diagramm.md)
-- **4 Lösungsstrategie** — [loesungsstrategie.md](loesungsstrategie.md)
-- **5 Bausteinsicht** — [bausteinsicht.md](bausteinsicht.md)
-- **6 Laufzeitsicht** — [laufzeitsicht.md](laufzeitsicht.md)
-- **7 Verteilungssicht** — [verteilungssicht.md](verteilungssicht.md)
-- **8 Querschnittliche Konzepte** — [querschnittliche-konzepte.md](querschnittliche-konzepte.md)
-- **9 Architekturentscheidungen** — [architekturentscheidungen.md](architekturentscheidungen.md)
-- **10 Qualitätsanforderungen** — [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md)
+- **2 Randbedingungen** — [Architektureinschränkungen](architektureinschraenkungen.md)
+- **3 Kontext und Abgrenzung** — [Kontextdiagramm](kontext-diagramm.md)
+- **4 Lösungsstrategie** — [Lösungsstrategie](loesungsstrategie.md)
+- **5 Bausteinsicht** — [Bausteinsicht](bausteinsicht.md)
+- **6 Laufzeitsicht** — [Laufzeitsicht](laufzeitsicht.md)
+- **7 Verteilungssicht** — [Verteilungssicht](verteilungssicht.md)
+- **8 Querschnittliche Konzepte** — [Querschnittliche Konzepte](querschnittliche-konzepte.md)
+- **9 Architekturentscheidungen** — [Architekturentscheidungen](architekturentscheidungen.md)
+- **10 Qualitätsanforderungen** — [Qualitätskriterien und Merkmale](qualitaetskriterien-und-merkmale.md)
 - **11 Risiken und technische Schulden** — [risiken-und-technische-schulden.md](risiken-und-technische-schulden.md)
 - **12 Glossar** — [glossar.md](glossar.md)

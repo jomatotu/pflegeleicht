@@ -1,6 +1,6 @@
 # Architektureinschränkungen
 
-Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegeleicht.online` zusammen. Sie ergeben sich aus dem MVP-Zielbild, aus getroffenen Architekturentscheidungen und aus typischen Anforderungen an ein System mit personenbezogenen und gesundheitsnahen Daten. Abweichungen bedürfen einer bewussten Entscheidung und sollten in [architekturentscheidungen.md](architekturentscheidungen.md) nachvollziehbar festgehalten werden.
+Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegeleicht.online` zusammen. Sie ergeben sich aus dem MVP-Zielbild, aus getroffenen Architekturentscheidungen und aus typischen Anforderungen an ein System mit personenbezogenen und gesundheitsnahen Daten. Abweichungen bedürfen einer bewussten Entscheidung und sollten in [Architekturentscheidungen](architekturentscheidungen.md) nachvollziehbar festgehalten werden.
 
 ## Fachlicher und produktiver Rahmen (MVP)
 
@@ -32,7 +32,7 @@ Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegelei
 
 ## Bewusst offen
 
-Die folgenden Punkte sind in [architekturentscheidungen.md](architekturentscheidungen.md) als offen geführt und werden hier nicht vorweggenommen, können aber künftig verbindliche Einschränkungen ergänzen:
+Die folgenden Punkte sind in [Architekturentscheidungen](architekturentscheidungen.md) als offen geführt und werden hier nicht vorweggenommen, können aber künftig verbindliche Einschränkungen ergänzen:
 
 - Migrations- und Deployment-Strategie für das relationale Schema.
 - Detaillierte Retry- und Circuit-Breaker-Regeln für externe Aufrufe.

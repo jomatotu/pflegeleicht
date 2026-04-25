@@ -1,6 +1,6 @@
 # Verteilungssicht (arc42 Abschnitt 7)
 
-Diese Verteilungssicht beschreibt, **wo** die Bausteine von `pflegeleicht.online` zur Laufzeit liegen und wie sie in den Umgebungen **lokal** (Entwicklung) und **gehostet** (Supabase-Cloud, MVP) miteinander verbunden sind. Sie ergänzt [bausteinsicht.md](bausteinsicht.md) und [kontext-diagramm.md](kontext-diagramm.md).
+Diese Verteilungssicht beschreibt, **wo** die Bausteine von `pflegeleicht.online` zur Laufzeit liegen und wie sie in den Umgebungen **lokal** (Entwicklung) und **gehostet** (Supabase-Cloud, MVP) miteinander verbunden sind. Sie ergänzt [Bausteinsicht](bausteinsicht.md) und [Kontextdiagramm](kontext-diagramm.md).
 
 ## Zielumgebungen
 
@@ -88,5 +88,5 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 ## Verweise
 
 - Entwicklung und Deploy-Schritte: [README.md](../../README.md)
-- Bausteine und Schichten: [bausteinsicht.md](bausteinsicht.md)
-- Randbedingungen (u. a. Datenregion, MVP): [architektureinschraenkungen.md](architektureinschraenkungen.md)
+- Bausteine und Schichten: [Bausteinsicht](bausteinsicht.md)
+- Randbedingungen (u. a. Datenregion, MVP): [Architektureinschränkungen](architektureinschraenkungen.md)
