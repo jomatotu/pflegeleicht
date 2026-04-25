@@ -32,7 +32,7 @@ flowchart TB
     end
 
     subgraph external["Externe Dienste"]
-        resend["E-Mail-Versand\n(z. B. Resend)"]
+        resend["Resend\n(E-Mail-API)"]
     end
 
     browser -->|"HTTPS\nREST, Storage, Functions"| api
@@ -42,7 +42,7 @@ flowchart TB
     api --> pg
     fn --> pg
     fn --> storage
-    fn -->|"SMTP/API"| resend
+    fn -->|"HTTPS\nREST"| resend
     auth -.->|"falls im Flow"| browser
 ```
 
@@ -55,7 +55,7 @@ In der **lokalen** Variante entspricht der Block „Supabase-Projekt“ dem per 
 - **Edge Function `process-antrag`:** läuft in der Supabase-Functions-Laufzeit; Endpunkt `POST .../functions/v1/process-antrag`; Zugriff auf Datenbank, privaten Storage-Bucket und E-Mail-Versand.
 - **PostgreSQL:** verwaltete Instanz im Supabase-Projekt; Schema über Migrationen unter `supabase/migrations/`.
 - **Storage:** Bucket `bescheide` für PDF-Uploads (siehe README / Migrationen).
-- **E-Mail:** ausgehender Versand über konfigurierten Anbieter (Secrets im Dashboard, z. B. `RESEND_API_KEY`).
+- **E-Mail:** ausgehender Versand über **Resend** (HTTPS-API; Secret im Dashboard: `RESEND_API_KEY`).
 
 Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie werden lokal (`.env` / CLI) bzw. im Supabase-Dashboard gepflegt.
 
@@ -78,7 +78,7 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 
 - **Browser → Supabase:** TLS (HTTPS); Authentifizierung gegenüber der API typischerweise mit dem öffentlichen `anon`-Key des Projekts (nur im Client konfigurieren, was öffentlich sein darf).
 - **Edge Function → Datenbank / Storage:** innerhalb der Supabase-Plattform; keine direkte Exposition der Datenbank ans öffentliche Internet für Client-Zugriffe außerhalb des Supabase-Gateways.
-- **Edge Function → E-Mail-Anbieter:** ausgehende HTTPS-/SMTP-Verbindung zum konfigurierten Dienst; Empfänger und Absender laut Umgebungsvariablen/Secrets.
+- **Edge Function → Resend:** ausgehende HTTPS-Verbindung zur Resend-API (`https://api.resend.com`); Empfänger und Absender laut Umgebungsvariablen/Secrets.
 
 ## Abgrenzung und Annahmen
 
