@@ -13,7 +13,7 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 - **1 Einleitung und Ziele** — siehe [Zielbild MVP](#zielbild-mvp) oben (in dieser Datei)
 - **2 Randbedingungen** — [architektureinschraenkungen.md](architektureinschraenkungen.md)
 - **3 Kontext und Abgrenzung** — [kontext-diagramm.md](kontext-diagramm.md)
-- **4 Lösungsstrategie** — [loesungsstrategie.md](loesungsstrategie.md) *(Stub)*
+- **4 Lösungsstrategie** — [loesungsstrategie.md](loesungsstrategie.md)
 - **5 Bausteinsicht** — [bausteinsicht.md](bausteinsicht.md)
 - **6 Laufzeitsicht** — [laufzeitsicht.md](laufzeitsicht.md)
 - **7 Verteilungssicht** — [verteilungssicht.md](verteilungssicht.md)
