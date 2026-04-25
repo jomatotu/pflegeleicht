@@ -14,7 +14,7 @@ Diese Laufzeitsicht beschreibt, wie `pflegeleicht.online` den Entlastungsbetrag 
 flowchart TB
 
     subgraph lane_system_template["Lane: Beantragung"]
-        direction LR
+        direction TB
         subgraph sublane_user["Nutzer:in"]
             direction LR
             S_T_STEP_01[Nutzer:innen Schritt 1 (Platzhalter)]
@@ -30,8 +30,6 @@ flowchart TB
         S_T_STEP_02 --> S_T_STEP_03
     end
 ```
-
-
 
 ## Zentrale Laufzeit-Zustaende
 
