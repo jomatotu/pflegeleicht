@@ -65,7 +65,9 @@ export function ServiceSelectionShop({
   const isServiceSelected = (serviceId: string) =>
     selectedServices.some((s) => s.id === serviceId);
 
-  const canAfford = (cost: number) => remainingBudget >= cost;
+  const usedBudget = totalBudget - remainingBudget;
+  const selfPayAmount = usedBudget > totalBudget ? usedBudget - totalBudget : 0;
+  const isOverBudget = remainingBudget < 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -78,10 +80,22 @@ export function ServiceSelectionShop({
               Basierend auf Ihrem Pflegegrad stehen Ihnen die folgenden gesetzlichen Leistungen zu.
             </p>
           </div>
-          <div className="text-right bg-blue-50 rounded-lg px-6 py-3 border border-blue-200">
+          <div className={`text-right rounded-lg px-6 py-3 border ${
+            isOverBudget
+              ? "bg-orange-50 border-orange-200"
+              : "bg-blue-50 border-blue-200"
+          }`}>
             <div className="text-xs text-gray-600 uppercase mb-1">Ihr monatliches Budget</div>
-            <div className="text-3xl text-blue-700">{remainingBudget.toFixed(2)} €</div>
+            <div className={`text-3xl ${isOverBudget ? "text-orange-700" : "text-blue-700"}`}>
+              {remainingBudget.toFixed(2)} €
+            </div>
             <div className="text-xs text-gray-500">von {totalBudget.toFixed(2)} € Gesamtanspruch</div>
+            {isOverBudget && (
+              <div className="mt-2 pt-2 border-t border-orange-300">
+                <div className="text-xs text-orange-700 font-medium">Eigenbeteiligung:</div>
+                <div className="text-lg text-orange-700">{Math.abs(remainingBudget).toFixed(2)} € / Monat</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -91,7 +105,6 @@ export function ServiceSelectionShop({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {SERVICES.map((service) => {
             const selected = isServiceSelected(service.id);
-            const affordable = canAfford(service.cost);
 
             return (
               <div
@@ -99,9 +112,7 @@ export function ServiceSelectionShop({
                 className={`bg-white rounded-lg border-2 p-6 transition-all ${
                   selected
                     ? "border-green-500 shadow-lg"
-                    : affordable
-                    ? "border-gray-200 hover:border-blue-300"
-                    : "border-gray-200 opacity-60"
+                    : "border-gray-200 hover:border-blue-300"
                 }`}
               >
                 <div className="flex items-start gap-4 mb-4">
@@ -154,10 +165,9 @@ export function ServiceSelectionShop({
                 ) : (
                   <Button
                     onClick={() => onSelectService(service)}
-                    disabled={!affordable}
-                    className="w-full h-12 mt-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                    className="w-full h-12 mt-4 bg-blue-600 hover:bg-blue-700"
                   >
-                    {affordable ? "Auswählen" : "Budget nicht ausreichend"}
+                    Auswählen
                   </Button>
                 )}
               </div>
@@ -167,7 +177,21 @@ export function ServiceSelectionShop({
 
         {/* Finish Button */}
         {selectedServices.length > 0 && (
-          <div className="mt-8 bg-white rounded-lg border-2 border-blue-200 p-6">
+          <div className={`mt-8 rounded-lg border-2 p-6 ${
+            isOverBudget ? "bg-orange-50 border-orange-200" : "bg-white border-blue-200"
+          }`}>
+            {isOverBudget && (
+              <div className="mb-4 p-4 bg-orange-100 rounded-lg border border-orange-300">
+                <p className="text-sm text-orange-900 font-medium mb-1">
+                  ⚠️ Budget überschritten
+                </p>
+                <p className="text-sm text-orange-800">
+                  Die gewählten Leistungen übersteigen Ihr Pflegebudget um{" "}
+                  <span className="font-bold">{Math.abs(remainingBudget).toFixed(2)} €</span> pro Monat.
+                  Diesen Betrag müssen Sie selbst bezahlen.
+                </p>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl text-gray-900 mb-1">
