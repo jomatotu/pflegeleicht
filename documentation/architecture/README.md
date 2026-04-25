@@ -1,6 +1,6 @@
 # Architektur
 
-Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mit dem System interagiert, aus welchen Bausteinen es besteht, wie Anfragen zur Laufzeit ablaufen, welche Entscheidungen dabei getroffen wurden und welche verbindlichen Einschränkungen gelten. Die Sichten ergänzen sich von außen nach innen und sind für Entwicklung, Onboarding und Reviews gedacht.
+Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mit dem System interagiert, aus welchen Bausteinen es besteht, wie Anfragen zur Laufzeit ablaufen, welche Entscheidungen dabei getroffen wurden und welche verbindlichen Einschränkungen gelten. Die folgenden Dokumente sind nach **arc42** geordnet (Abschnitte, für die es hier eigene Dateien gibt). Das **Zielbild MVP** weiter unten entspricht grob Abschnitt 1 (Einleitung und Ziele).
 
 ## Zielbild MVP
 
@@ -8,10 +8,11 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 - Nutzer:innen laden einmalig den Pflegegrad-Nachweis hoch, wählen eine Leistung und müssen den restlichen Prozess nicht selbst verstehen oder steuern.
 - Die Plattform übernimmt im Hintergrund Vermittlung, Terminierung, Abrechnung und Erstattungsprozess.
 
-## Dokumente
+## Dokumente (Reihenfolge nach arc42)
 
-- Kontext-Diagramm: [kontext-diagramm.md](kontext-diagramm.md)
-- Bausteinsicht: [bausteinsicht.md](bausteinsicht.md)
-- Laufzeitsicht: [laufzeitsicht.md](laufzeitsicht.md)
-- Architekturentscheidungen: [architekturentscheidungen.md](architekturentscheidungen.md)
-- Architektureinschränkungen: [architektureinschraenkungen.md](architektureinschraenkungen.md)
+- **2 Randbedingungen** — [architektureinschraenkungen.md](architektureinschraenkungen.md)
+- **3 Kontext und Abgrenzung** — [kontext-diagramm.md](kontext-diagramm.md)
+- **5 Bausteinsicht** — [bausteinsicht.md](bausteinsicht.md)
+- **6 Laufzeitsicht** — [laufzeitsicht.md](laufzeitsicht.md)
+- **9 Architekturentscheidungen** — [architekturentscheidungen.md](architekturentscheidungen.md)
+- **10 Qualitätsanforderungen** — [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md)
