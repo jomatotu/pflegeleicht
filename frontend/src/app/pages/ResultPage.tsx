@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useSearchParams, useLocation } from "react-router";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { CheckCircle } from "lucide-react";
@@ -8,29 +8,25 @@ import { Footer } from "../components/Footer";
 
 export function ResultPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const location = useLocation();
   const [consentGiven, setConsentGiven] = useState(false);
-  const grade = (location.state as { grade?: number | string } | null)?.grade;
-  const parsedGrade =
-    typeof grade === "number"
-      ? grade
-      : typeof grade === "string"
-        ? parseInt(grade, 10)
-        : NaN;
+  const grade = searchParams.get("grade");
+  const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
 
   useEffect(() => {
-    if (Number.isNaN(parsedGrade)) {
+    if (!grade) {
       navigate("/");
     }
-  }, [parsedGrade, navigate]);
+  }, [grade, navigate]);
 
   const handleContinue = () => {
-    if (!Number.isNaN(parsedGrade)) {
-      navigate("/services", { state: { grade: parsedGrade } });
+    if (grade) {
+      navigate(`/services?grade=${grade}`, { state: { pdfFile } });
     }
   };
 
-  if (Number.isNaN(parsedGrade)) {
+  if (!grade) {
     return null;
   }
 
@@ -52,7 +48,7 @@ export function ResultPage() {
               <p className="text-xl text-gray-700 px-[0px] py-[5px]">Pflegegrad erkannt:</p>
               <div className="flex items-center justify-center gap-4">
                 <CheckCircle className="w-16 h-16 text-green-500" />
-                <p className="text-6xl text-green-700 font-bold">Pflegegrad {parsedGrade}</p>
+                <p className="text-6xl text-green-700 font-bold">Pflegegrad {grade}</p>
               </div>
               <p className="text-lg text-gray-600 mt-4">
                 Willkommen zurück! Wir haben deinen Bescheid erfolgreich ausgewertet.

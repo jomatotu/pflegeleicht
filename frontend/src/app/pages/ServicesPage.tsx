@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useSearchParams, useLocation, useNavigate } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
 import { Header } from "../components/Header";
 import { ServiceData, fetchServices, fetchTotalBudget } from "../data/services";
@@ -17,14 +17,10 @@ interface Service {
 export function ServicesPage() {
   const currentStep = 2;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const location = useLocation();
-  const gradeValue = (location.state as { grade?: number | string } | null)?.grade;
-  const grade =
-    typeof gradeValue === "number"
-      ? gradeValue
-      : typeof gradeValue === "string"
-        ? parseInt(gradeValue, 10)
-        : NaN;
+  const grade = searchParams.get("grade");
+  const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
 
   const [totalBudget, setTotalBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
@@ -34,7 +30,7 @@ export function ServicesPage() {
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
 
   useEffect(() => {
-    if (Number.isNaN(grade)) {
+    if (!grade) {
       navigate("/");
     }
   }, [grade, navigate]);
@@ -46,9 +42,10 @@ export function ServicesPage() {
       setIsLoadingServices(true);
 
       try {
+        const parsedGrade = grade ? parseInt(grade, 10) : undefined;
         const [servicesData, totalBudgetData] = await Promise.all([
           fetchServices(),
-          fetchTotalBudget(grade),
+          fetchTotalBudget(parsedGrade),
         ]);
 
         if (!isMounted) {
@@ -97,7 +94,7 @@ export function ServicesPage() {
     navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget} });
   };
 
-  if (Number.isNaN(grade)) {
+  if (!grade) {
     return null;
   }
 

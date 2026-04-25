@@ -21,9 +21,10 @@ interface ConfirmationScreenProps {
   selectedServices: Service[];
   totalBudget: number;
   remainingBudget: number;
-  onConfirm: () => void;
+  onConfirm: (submitted: boolean) => void;
   onBack: () => void;
   isConfirmed?: boolean;
+  pdfFile?: File;
 }
 
 export function ConfirmationScreen({
@@ -34,6 +35,7 @@ export function ConfirmationScreen({
   onConfirm,
   onBack,
   isConfirmed = false,
+  pdfFile,
 }: ConfirmationScreenProps) {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -45,10 +47,75 @@ export function ConfirmationScreen({
   const [versichertennummer, setVersichertennummer] = useState("");
   const [auftragsnummer, setAuftragsnummer] = useState("");
   const [geburtsdatum, setGeburtsdatum] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const usedBudget = totalBudget - remainingBudget;
   const isOverBudget = remainingBudget < 0;
   const selfPayAmount = isOverBudget ? Math.abs(remainingBudget) : 0;
+
+  const handleSubmit = async () => {
+    setSubmitError(null);
+
+    const missingFields: string[] = [];
+    if (!firstname.trim()) missingFields.push("Vorname");
+    if (!lastname.trim()) missingFields.push("Nachname");
+    if (!street.trim()) missingFields.push("Straße");
+    if (!postalCode.trim()) missingFields.push("PLZ");
+    if (!city.trim()) missingFields.push("Ort");
+    if (!geburtsdatum.trim()) missingFields.push("Geburtsdatum");
+    if (!email.trim()) missingFields.push("E-Mail");
+    if (!phone.trim()) missingFields.push("Telefon");
+
+    if (missingFields.length > 0) {
+      setSubmitError(`Bitte füllen Sie alle Pflichtfelder aus: ${missingFields.join(", ")}`);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        firstname,
+        lastname,
+        street,
+        city,
+        postalCode,
+        date_of_birth: geburtsdatum,
+        pflegegrad,
+        contact_person_phone: phone,
+        contact_person_email: email,
+        services: selectedServices.map((s) => parseInt(s.id)),
+      };
+
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(payload));
+
+      if (pdfFile) {
+        formData.append("file", pdfFile);
+      } else {
+        const emptyFile = new File([""], "placeholder.pdf", { type: "application/pdf" });
+        formData.append("file", emptyFile);
+      }
+
+      const functionUrl = import.meta.env.VITE_SUPABASE_URL + "/functions/v1/process-antrag";
+      const res = await fetch(functionUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorBody = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(errorBody.error ?? `HTTP ${res.status}`);
+      }
+
+      onConfirm(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Unbekannter Fehler");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (isConfirmed) {
     return (
@@ -282,16 +349,22 @@ export function ConfirmationScreen({
         </div>
 
         {/* Action Buttons */}
+        {submitError && (
+          <div className="p-4 bg-red-50 rounded-lg border border-red-300">
+            <p className="text-sm text-red-800"><span className="font-medium">Fehler:</span> {submitError}</p>
+          </div>
+        )}
         <div className="flex gap-4">
-          <Button onClick={onBack} variant="outline" size="lg" className="flex-1 h-14">
+          <Button onClick={onBack} variant="outline" size="lg" className="flex-1 h-14" disabled={isSubmitting}>
             Zurück zur Auswahl
           </Button>
           <Button
-            onClick={onConfirm}
+            onClick={handleSubmit}
             size="lg"
             className="flex-1 h-14 bg-teal-600 hover:bg-teal-700 text-lg"
+            disabled={isSubmitting}
           >
-            Jetzt verbindlich bestätigen
+            {isSubmitting ? "Wird gesendet..." : "Jetzt verbindlich bestätigen"}
           </Button>
         </div>
       </div>

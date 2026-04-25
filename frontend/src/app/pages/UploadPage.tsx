@@ -10,11 +10,12 @@ export function UploadPage() {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
       setUploading(true);
 
       setTimeout(() => {
         const mockGrade = 3;
-        navigate(`/result`, { state: { grade: mockGrade } });
+        navigate(`/result`, { state: { grade: mockGrade, pdfFile: file } });
         setUploading(false);
       }, 1500);
     }

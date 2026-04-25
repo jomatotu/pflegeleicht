@@ -5,6 +5,21 @@ const PLATFORM_EMAIL = Deno.env.get("PLATFORM_EMAIL") ?? "platform@pflegeleicht.
 const PARTNER_EMAIL = Deno.env.get("PARTNER_EMAIL") ?? "test-partner@pflegeleicht.online";
 const STORAGE_BUCKET = "bescheide";
 
+const ALLOWED_ORIGINS = [
+  "https://pflegeleicht.online",
+  "https://www.pflegeleicht.online",
+  "http://localhost:5173",
+];
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  const allowed = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    "Access-Control-Allow-Origin": allowed,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+}
+
 interface AntragPayload {
   firstname: string;
   lastname: string;
@@ -24,10 +39,17 @@ Deno.serve(async (req: Request) => {
 
   log(`${req.method} ${req.url}`);
 
+  const origin = req.headers.get("origin");
+  const cors = corsHeaders(origin);
+
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 
@@ -35,7 +57,7 @@ Deno.serve(async (req: Request) => {
   if (!contentType.includes("multipart/form-data")) {
     return new Response(
       JSON.stringify({ error: "Content-Type must be multipart/form-data" }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
+      { status: 400, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
@@ -45,7 +67,7 @@ Deno.serve(async (req: Request) => {
   } catch {
     return new Response(JSON.stringify({ error: "Invalid form data" }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 
@@ -54,7 +76,7 @@ Deno.serve(async (req: Request) => {
   if (!jsonRaw || typeof jsonRaw !== "string") {
     return new Response(
       JSON.stringify({ error: "Missing 'data' field with JSON payload" }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
+      { status: 400, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
@@ -64,7 +86,7 @@ Deno.serve(async (req: Request) => {
   } catch {
     return new Response(JSON.stringify({ error: "Invalid JSON in 'data' field" }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 
@@ -99,16 +121,16 @@ Deno.serve(async (req: Request) => {
         error:
           "Missing required fields: firstname, lastname, street, city, postalCode, date_of_birth, pflegegrad, contact_person_phone, contact_person_email",
       }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
+      { status: 400, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
-  // Parse PDF file
-  const pdfFile = formData.get("pdf");
-  if (!pdfFile || !(pdfFile instanceof File)) {
-    return new Response(JSON.stringify({ error: "Missing 'pdf' file" }), {
+  // Parse uploaded file
+  const uploadedFile = formData.get("file");
+  if (!uploadedFile || !(uploadedFile instanceof File)) {
+    return new Response(JSON.stringify({ error: "Missing 'file' field" }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 
@@ -117,26 +139,29 @@ Deno.serve(async (req: Request) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
   );
 
-  // 1. PDF in Storage speichern
-  const pdfBytes = await pdfFile.arrayBuffer();
-  const fileName = `${Date.now()}_${lastname}_${firstname}.pdf`;
+  // 1. Datei in Storage speichern (Dateityp beibehalten)
+  const fileBytes = await uploadedFile.arrayBuffer();
+  const mimeType = uploadedFile.type || "application/octet-stream";
+  const originalName = uploadedFile.name ?? "";
+  const ext = originalName.includes(".") ? originalName.split(".").pop() : mimeType.split("/")[1];
+  const fileName = `${Date.now()}_${lastname}_${firstname}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from(STORAGE_BUCKET)
-    .upload(fileName, pdfBytes, {
-      contentType: "application/pdf",
+    .upload(fileName, fileBytes, {
+      contentType: mimeType,
       upsert: false,
     });
 
   if (uploadError) {
-    log(`PDF-Upload fehlgeschlagen: ${uploadError.message}`);
+    log(`Datei-Upload fehlgeschlagen: ${uploadError.message}`);
     return new Response(
-      JSON.stringify({ error: `PDF-Upload fehlgeschlagen: ${uploadError.message}` }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
+      JSON.stringify({ error: `Datei-Upload fehlgeschlagen: ${uploadError.message}` }),
+      { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
-  log(`PDF gespeichert: ${fileName}`);
+  log(`Datei gespeichert: ${fileName}`);
 
   // 2. Leistungsberechtigter in Datenbank speichern
   const { data: inserted, error: insertError } = await supabase
@@ -161,7 +186,7 @@ Deno.serve(async (req: Request) => {
 
     return new Response(
       JSON.stringify({ error: `Datenbankfehler: ${insertError?.message}` }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
+      { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
     );
   }
 
@@ -243,10 +268,10 @@ Deno.serve(async (req: Request) => {
     JSON.stringify({
       success: true,
       leistungsberechtigter_id: inserted.id,
-      pdf_file: fileName,
+      file: fileName,
       email_errors: emailErrors.length > 0 ? emailErrors : undefined,
     }),
-    { status: 201, headers: { "Content-Type": "application/json" } },
+    { status: 201, headers: { ...cors, "Content-Type": "application/json" } },
   );
 });
 
