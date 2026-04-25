@@ -21,7 +21,7 @@ flowchart TB
         subgraph sublane_two["System"]
             direction LR
             step_s1[Antrag ablegen]
-            step_s2[Agentur per Email kontaktieren]
+            step_s2[Dienstleistungsagentur per E-Mail kontaktieren]
             step_s4[Prozess Ende]
             step_s1 --> step_s2 --> step_s4
         end

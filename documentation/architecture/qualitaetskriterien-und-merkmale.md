@@ -31,7 +31,7 @@ Qualitaetsziele konkretisieren die Merkmale in **pruefbare** Anforderungen.
 | Stakeholder-Gruppe | Primaere Qualitaetsmerkmale | Kurzbegruendung |
 | --- | --- | --- |
 | Nutzer:innen | Benutzbarkeit, funktionale Eignung, Sicherheit | Vertrauen und einfacher Abschluss ohne Buero-Kenntnis. |
-| Dienstleister / Agentur | Funktionale Eignung, Sicherheit | Nachvollziehbare Anbindung ueber Benachrichtigungen und klarer Informationsfluss. |
+| Dienstleistungsagentur | Funktionale Eignung, Sicherheit | Nachvollziehbare Anbindung ueber Benachrichtigungen und klarer Informationsfluss. |
 | CustomerCare / Admin | Sicherheit, funktionale Eignung | Effiziente Bearbeitung mit minimiertem Datenrisiko. |
 | Betrieb / Entwicklung | Funktionale Eignung, Sicherheit | Nachvollziehbare Fehler und belastbare Ablaeufe. |
 

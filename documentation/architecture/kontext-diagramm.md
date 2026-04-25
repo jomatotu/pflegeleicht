@@ -8,7 +8,7 @@ Hinweis: Eine genauere, in Bausteine zerlegte Beschreibung des Systems findet si
 flowchart LR
     user["Nutzer:in"]
     pflegeleicht["CustomerService"]
-    agentur["Dienstleister"]
+    dienstleistungsagentur["Dienstleistungsagentur"]
     admin["Administrator:in"]
     system["pflegeleicht.online"]
     mail["E-Mail-Dienst"]
@@ -16,7 +16,7 @@ flowchart LR
     
     user -->|"bestellt Leistungen"| system
     pflegeleicht -->|"kümmert sich um Nutzendenanfragen"| system
-    agentur -->| "erhält Benachrichtigungen" | system
+    dienstleistungsagentur -->| "erhält Benachrichtigungen" | system
     admin -->|"administriert"| system
     system -->|"versendet Benachrichtigungen"| mail
     system -->|"liest/schreibt Daten"| db
@@ -30,5 +30,5 @@ flowchart LR
 - Nutzer:innen interagieren direkt mit dem System.
 - Das System nutzt einen externen E-Mail-Dienst und eine Datenbank.
 - Der `CustomerService` bearbeitet Nutzendenanfragen ueber `pflegeleicht.online`.
-- Dienstleister erhalten bei relevanten Ereignissen eine Benachrichtigung durch `pflegeleicht.online`.
+- Dienstleistungsagenturen erhalten bei relevanten Ereignissen eine Benachrichtigung durch `pflegeleicht.online`.
 

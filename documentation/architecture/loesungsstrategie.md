@@ -4,7 +4,7 @@ Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipie
 
 ## Fachliche Strategie
 
-- **Komplexität nach außen abbauen:** Nutzer:innen sollen den Entlastungsbetrag und zugehörige Schritte ohne tiefes Verständnis von Kasse, Agentur oder Abrechnungslogik beantragen können. Der Leitgedanke entspricht den fachlichen Leitplanken in [laufzeitsicht.md](laufzeitsicht.md): wenige, verständliche Interaktionen, klare Rollen des Systems (Antrag anlegen, Dienstleister informieren, Prozess abschließen).
+- **Komplexität nach außen abbauen:** Nutzer:innen sollen den Entlastungsbetrag und zugehörige Schritte ohne tiefes Verständnis von Kasse, Dienstleistungsagentur oder Abrechnungslogik beantragen können. Der Leitgedanke entspricht den fachlichen Leitplanken in [laufzeitsicht.md](laufzeitsicht.md): wenige, verständliche Interaktionen, klare Rollen des Systems (Antrag anlegen, Dienstleistungsagentur informieren, Prozess abschließen).
 - **Ein klarer MVP-Umfang:** Zuerst eine **standardisierbare Leistung** (Entlastungsbetrag) end-to-end abbilden. Erweiterungen (weitere Leistungen, zusätzliche Prozesse) sollen die bestehende Architektur nicht verkomplizieren, sondern später über denselben fachlichen Kern und getrennte Schnittstellen angebunden werden.
 - **Verlässliche Nachvollziehbarkeit:** Fachliche Abläufe sollen für interne Rollen und Audits nachvollziehbar bleiben (Status, Speicherung von Nachweisen, Benachrichtigungen). Das schließt an die Qualitätsziele in [qualitaetskriterien-und-merkmale.md](qualitaetskriterien-und-merkmale.md) an.
 
