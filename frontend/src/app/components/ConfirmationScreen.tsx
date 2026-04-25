@@ -92,10 +92,10 @@ export function ConfirmationScreen({
       formData.append("data", JSON.stringify(payload));
 
       if (pdfFile) {
-        formData.append("pdf", pdfFile);
+        formData.append("file", pdfFile);
       } else {
-        const emptyPdf = new File([""], "placeholder.pdf", { type: "application/pdf" });
-        formData.append("pdf", emptyPdf);
+        const emptyFile = new File([""], "placeholder.pdf", { type: "application/pdf" });
+        formData.append("file", emptyFile);
       }
 
       const functionUrl = import.meta.env.VITE_SUPABASE_URL + "/functions/v1/process-antrag";
