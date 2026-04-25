@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { Check, ChevronRight } from "lucide-react";
 import { Footer } from "./Footer";
-import { SERVICES } from "../data/services";
+import { ServiceData } from "../data/services";
 
 interface Service {
   id: string;
@@ -16,6 +16,9 @@ interface Service {
 interface ServiceSelectionSimpleProps {
   totalBudget: number;
   remainingBudget: number;
+  services: ServiceData[];
+  isLoadingServices: boolean;
+  servicesError: string | null;
   selectedServices: Service[];
   onSelectService: (service: Service) => void;
   onRemoveService: (serviceId: string) => void;
@@ -25,6 +28,9 @@ interface ServiceSelectionSimpleProps {
 export function ServiceSelectionSimple({
   totalBudget,
   remainingBudget,
+  services,
+  isLoadingServices,
+  servicesError,
   selectedServices,
   onSelectService,
   onRemoveService,
@@ -36,7 +42,7 @@ export function ServiceSelectionSimple({
     selectedServices.some((s) => s.id === serviceId);
   const isOverBudget = remainingBudget < 0;
 
-  const handleSelectService = (serviceData: typeof SERVICES[0]) => {
+  const handleSelectService = (serviceData: ServiceData) => {
     const monthlyPrice = serviceData.pricePerHour * HOURS_PER_MONTH;
 
     const service: Service = {
@@ -70,7 +76,19 @@ export function ServiceSelectionSimple({
 
       {/* Services List */}
       <div className="flex-1 max-w-4xl mx-auto px-6 py-8 space-y-4">
-        {SERVICES.map((serviceData) => {
+        {isLoadingServices && (
+          <div className="bg-white rounded-lg border border-gray-200 p-6 text-gray-600">
+            Lade Leistungen...
+          </div>
+        )}
+
+        {!isLoadingServices && servicesError && (
+          <div className="bg-orange-50 rounded-lg border border-orange-300 p-6 text-orange-900">
+            {servicesError}
+          </div>
+        )}
+
+        {!isLoadingServices && !servicesError && services.map((serviceData) => {
           const selected = isServiceSelected(serviceData.id);
           const monthlyPrice = serviceData.pricePerHour * HOURS_PER_MONTH;
           const Icon = serviceData.icon;

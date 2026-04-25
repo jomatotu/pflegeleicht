@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
 import { ConfirmationScreen } from "../components/ConfirmationScreen";
 import { Header } from "../components/Header";
+import { ServiceData, fetchServices, fetchTotalBudget } from "../data/services";
 
 interface Service {
   id: string;
@@ -19,8 +20,11 @@ export function ServicesPage() {
   const [searchParams] = useSearchParams();
   const grade = searchParams.get("grade");
 
-  const [totalBudget] = useState(131);
-  const [remainingBudget, setRemainingBudget] = useState(131);
+  const [totalBudget, setTotalBudget] = useState(0);
+  const [remainingBudget, setRemainingBudget] = useState(0);
+  const [services, setServices] = useState<ServiceData[]>([]);
+  const [isLoadingServices, setIsLoadingServices] = useState(true);
+  const [servicesError, setServicesError] = useState<string | null>(null);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -31,16 +35,58 @@ export function ServicesPage() {
     }
   }, [grade, navigate]);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadServices = async () => {
+      setIsLoadingServices(true);
+
+      try {
+        const parsedGrade = grade ? parseInt(grade, 10) : undefined;
+        const [servicesData, totalBudgetData] = await Promise.all([
+          fetchServices(),
+          fetchTotalBudget(parsedGrade),
+        ]);
+
+        if (!isMounted) {
+          return;
+        }
+
+        setServices(servicesData);
+        setTotalBudget(totalBudgetData);
+        setRemainingBudget(totalBudgetData);
+        setServicesError(null);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        console.error("Error loading services:", error);
+        setServicesError("Leistungen konnten nicht geladen werden. Bitte versuche es erneut.");
+      } finally {
+        if (isMounted) {
+          setIsLoadingServices(false);
+        }
+      }
+    };
+
+    loadServices();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [grade]);
+
   const handleServiceSelect = (service: Service) => {
-    setSelectedServices([...selectedServices, service]);
-    setRemainingBudget(remainingBudget - service.cost);
+    setSelectedServices((prev) => [...prev, service]);
+    setRemainingBudget((prev) => prev - service.cost);
   };
 
   const handleServiceRemove = (serviceId: string) => {
     const service = selectedServices.find((s) => s.id === serviceId);
     if (service) {
-      setSelectedServices(selectedServices.filter((s) => s.id !== serviceId));
-      setRemainingBudget(remainingBudget + service.cost);
+      setSelectedServices((prev) => prev.filter((s) => s.id !== serviceId));
+      setRemainingBudget((prev) => prev + service.cost);
     }
   };
 
@@ -76,6 +122,9 @@ export function ServicesPage() {
         <ServiceSelectionSimple
           totalBudget={totalBudget}
           remainingBudget={remainingBudget}
+          services={services}
+          isLoadingServices={isLoadingServices}
+          servicesError={servicesError}
           selectedServices={selectedServices}
           onSelectService={handleServiceSelect}
           onRemoveService={handleServiceRemove}
