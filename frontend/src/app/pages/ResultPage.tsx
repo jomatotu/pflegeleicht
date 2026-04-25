@@ -41,25 +41,20 @@ export function ResultPage() {
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-3xl w-full">
-          <div className="bg-white rounded-2xl border-2 border-teal-200 p-8 shadow-lg">
-            <div className="text-center space-y-6 py-8">
-              <CheckCircle className="w-24 h-24 text-green-500 mx-auto" />
-              <div className="space-y-2">
-                <p className="text-xl text-gray-700">Pflegegrad erkannt:</p>
+          <div className="bg-white rounded-2xl border-2 border-teal-200 shadow-lg px-[32px] py-[5px]">
+            <div className="text-center space-y-6 p-[0px]">
+              <p className="text-xl text-gray-700 px-[0px] py-[5px]">Pflegegrad erkannt:</p>
+              <div className="flex items-center justify-center gap-4">
+                <CheckCircle className="w-16 h-16 text-green-500" />
                 <p className="text-6xl text-green-700 font-bold">Pflegegrad {grade}</p>
-                <p className="text-lg text-gray-600 mt-4">
-                  Willkommen zurück! Wir haben deinen Bescheid erfolgreich ausgewertet.
-                </p>
               </div>
+              <p className="text-lg text-gray-600 mt-4">
+                Willkommen zurück! Wir haben deinen Bescheid erfolgreich ausgewertet.
+              </p>
 
               <div className="bg-teal-50 border-2 border-teal-200 rounded-lg p-6 text-left space-y-4 max-w-2xl mx-auto mt-6">
                 <h3 className="text-lg text-teal-900 font-medium">Abtretungserklärung</h3>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  Damit wir in deinem Namen mit deiner Pflegekasse abrechnen können, benötigen wir
-                  deine Zustimmung. Du erteilst uns hiermit die Erlaubnis, die Leistungen des
-                  Entlastungsbetrags nach § 45b SGB XI in deinem Namen bei deiner Pflegekasse
-                  geltend zu machen und direkt abzurechnen.
-                </p>
+                <p className="text-sm text-gray-700 leading-relaxed">Damit wir in deinem Namen mit deiner Pflegekasse abrechnen können, benötigen wir deine Zustimmung.                </p>
                 <div className="flex items-start gap-3 pt-2">
                   <Checkbox
                     id="consent"
@@ -82,7 +77,7 @@ export function ResultPage() {
                 onClick={handleContinue}
                 disabled={!consentGiven}
                 size="lg"
-                className="w-full max-w-md h-14 text-lg bg-teal-600 hover:bg-teal-700 mt-8 disabled:opacity-50"
+                className="w-full max-w-md h-14 text-lg bg-teal-600 hover:bg-teal-700 disabled:opacity-50 mx-[0px] my-[10px]"
               >
                 Weiter zu den Leistungen
               </Button>

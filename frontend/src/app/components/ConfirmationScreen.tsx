@@ -12,6 +12,8 @@ interface Service {
   description: string;
   cost: number;
   monthlyPrice: number;
+  pricePerHour: number;
+  hours: number;
 }
 
 interface ConfirmationScreenProps {
@@ -37,6 +39,9 @@ export function ConfirmationScreen({
   const [address, setAddress] = useState("Musterstraße 123, 12345 Berlin");
   const [email, setEmail] = useState("max.mustermann@email.de");
   const [phone, setPhone] = useState("+49 30 123 456 789");
+  const [versichertennummer, setVersichertennummer] = useState("");
+  const [auftragsnummer, setAuftragsnummer] = useState("");
+  const [geburtsdatum, setGeburtsdatum] = useState("");
 
   const usedBudget = totalBudget - remainingBudget;
   const isOverBudget = remainingBudget < 0;
@@ -66,7 +71,9 @@ export function ConfirmationScreen({
                 {selectedServices.map((service) => (
                   <div key={service.id} className="mt-2 border-b pb-2">
                     <p className="text-lg text-gray-900">{service.title}</p>
-                    <p className="text-sm text-gray-600">{service.monthlyPrice.toFixed(2)} € / Monat</p>
+                    <p className="text-sm text-gray-600">
+                      {service.hours} Stunden × {service.pricePerHour} € = {service.monthlyPrice.toFixed(2)} € / Monat
+                    </p>
                   </div>
                 ))}
               </div>
@@ -88,11 +95,11 @@ export function ConfirmationScreen({
                 030 123 456 789
               </a>
               <a
-                href="mailto:hilfe@pflegeleicht.de"
+                href="mailto:hilfe@pflegeleicht.online"
                 className="flex items-center gap-2 text-lg text-teal-600 hover:text-teal-700"
               >
                 <Mail className="w-5 h-5" />
-                hilfe@pflegeleicht.de
+                hilfe@pflegeleicht.online
               </a>
             </div>
           </div>
@@ -156,6 +163,34 @@ export function ConfirmationScreen({
                 className="h-12"
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="versichertennummer">Versichertennummer</Label>
+              <Input
+                id="versichertennummer"
+                value={versichertennummer}
+                onChange={(e) => setVersichertennummer(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="auftragsnummer">Auftragsnummer medizinischer Dienst</Label>
+              <Input
+                id="auftragsnummer"
+                value={auftragsnummer}
+                onChange={(e) => setAuftragsnummer(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="geburtsdatum">Geburtsdatum</Label>
+              <Input
+                id="geburtsdatum"
+                type="date"
+                value={geburtsdatum}
+                onChange={(e) => setGeburtsdatum(e.target.value)}
+                className="h-12"
+              />
+            </div>
           </div>
           <div className="bg-teal-50 rounded-lg p-4">
             <p className="text-sm text-gray-700">
@@ -173,30 +208,30 @@ export function ConfirmationScreen({
                 key={service.id}
                 className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200"
               >
-                <div>
+                <div className="flex-1">
                   <p className="text-lg text-gray-900">{service.title}</p>
-                  <p className="text-sm text-gray-600">{service.description}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl text-green-700">{service.monthlyPrice.toFixed(2)} €</p>
-                  <p className="text-xs text-gray-500">/ Monat</p>
+                  <p className="text-xl text-green-700">{service.monthlyPrice.toFixed(2)} € / Monat</p>
                 </div>
               </div>
             ))}
           </div>
           <div className="border-t pt-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Gesamtkosten pro Monat:</p>
-                <p className="text-2xl text-gray-900">{usedBudget.toFixed(2)} €</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-600">
-                  {isOverBudget ? "Überschreitung:" : "Verbleibendes Budget:"}
-                </p>
-                <p className={`text-2xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
-                  {Math.abs(remainingBudget).toFixed(2)} €
-                </p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Gesamtkosten pro Monat:</p>
+                  <p className="text-2xl text-gray-900">{usedBudget.toFixed(2)} €</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-gray-600">
+                    {isOverBudget ? "Überschreitung:" : "Verbleibendes Budget:"}
+                  </p>
+                  <p className={`text-2xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
+                    {Math.abs(remainingBudget).toFixed(2)} €
+                  </p>
+                </div>
               </div>
             </div>
             {isOverBudget && (

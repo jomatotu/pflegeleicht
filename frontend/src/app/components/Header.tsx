@@ -105,10 +105,7 @@ export function Header({
               <Button
                 onClick={onLoginClick}
                 className="gap-2 bg-teal-600 hover:bg-teal-700"
-              >
-                <LogIn className="w-4 h-4" />
-                Wieder da - Hier zu deinem Login
-              </Button>
+              >Wieder da? - Hier zu deinem Login<LogIn className="w-4 h-4" /></Button>
             )}
           </div>
         </div>

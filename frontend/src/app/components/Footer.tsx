@@ -1,18 +1,18 @@
 export function Footer() {
   return (
-    <footer className="bg-teal-900 text-white py-8 mt-auto">
+    <footer className="bg-teal-900 text-white py-4 mt-auto">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
           <div>
-            <h3 className="text-lg font-medium mb-3">PflegeLeicht</h3>
-            <p className="text-sm text-teal-100">
+            <h3 className="text-sm font-medium mb-2">PflegeLeicht</h3>
+            <p className="text-xs text-teal-100">
               Automatisierte Pflegeleistungen – ein Klick, alles erledigt.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium mb-3">Rechtliches</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="text-sm font-medium mb-2">Rechtliches</h3>
+            <ul className="space-y-1 text-xs">
               <li>
                 <a href="#" className="text-teal-100 hover:text-white transition-colors">
                   Impressum
@@ -37,16 +37,16 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium mb-3">Kontakt</h3>
-            <ul className="space-y-2 text-sm text-teal-100">
+            <h3 className="text-sm font-medium mb-2">Kontakt</h3>
+            <ul className="space-y-1 text-xs text-teal-100">
               <li>Telefon: 030 123 456 789</li>
-              <li>E-Mail: hilfe@pflegeleicht.de</li>
+              <li>E-Mail: hilfe@pflegeleicht.online</li>
               <li>Mo-Fr: 8:00 - 18:00 Uhr</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-teal-700 pt-6 text-center text-sm text-teal-100">
+        <div className="border-t border-teal-700 pt-3 text-center text-xs text-teal-100">
           <p>&copy; {new Date().getFullYear()} PflegeLeicht. Alle Rechte vorbehalten.</p>
         </div>
       </div>
