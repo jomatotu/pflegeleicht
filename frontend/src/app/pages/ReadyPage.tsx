@@ -8,16 +8,9 @@ import {Header} from "../components/Header";
 export function ReadyPage() {
     const location = useLocation();
     const navigate = useNavigate();
-    const gradeValue = (location.state as { grade?: number | string } | null)?.grade;
+    const grade = (location.state as { grade?: number | string } | null)?.grade;
     const selectedServices = (location.state as { selectedServices?: any[] } | null)?.selectedServices || [];
     const remainingBudget = (location.state as { remainingBudget?: number } | null)?.remainingBudget || 0;
-    const grade =
-        typeof gradeValue === "number"
-            ? gradeValue
-            : typeof gradeValue === "string"
-                ? parseInt(gradeValue, 10)
-                : NaN;
-
 
     useEffect(() => {
         if (Number.isNaN(grade)) {

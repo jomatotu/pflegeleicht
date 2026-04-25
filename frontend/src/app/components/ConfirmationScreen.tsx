@@ -17,7 +17,7 @@ interface Service {
 }
 
 interface ConfirmationScreenProps {
-  pflegegrad: number;
+  pflegegrad: number | string;
   selectedServices: Service[];
   totalBudget: number;
   remainingBudget: number;

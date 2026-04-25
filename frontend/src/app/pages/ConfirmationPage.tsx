@@ -6,16 +6,11 @@ import {Header} from "../components/Header";
 export function ConfirmationPage() {
     const location = useLocation();
     const navigate = useNavigate();
-    const gradeValue = (location.state as { grade?: number | string } | null)?.grade;
+    const grade = (location.state as { grade?: number | string } | null)?.grade;
     const selectedServices = (location.state as { selectedServices?: any[] } | null)?.selectedServices || [];
     const totalBudget = (location.state as { totalBudget?: number } | null)?.totalBudget || 0;
     const remainingBudget = (location.state as { remainingBudget?: number } | null)?.remainingBudget || 0;
-    const grade =
-        typeof gradeValue === "number"
-            ? gradeValue
-            : typeof gradeValue === "string"
-                ? parseInt(gradeValue, 10)
-                : NaN;
+    const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
 
 
     useEffect(() => {
@@ -52,6 +47,7 @@ export function ConfirmationPage() {
                 remainingBudget={remainingBudget}
                 onConfirm={handleConfirm}
                 onBack={handleBackToServices}
+                pdfFile={pdfFile}
             />
         </div>
     );

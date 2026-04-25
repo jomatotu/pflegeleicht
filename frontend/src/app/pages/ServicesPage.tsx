@@ -17,10 +17,9 @@ interface Service {
 export function ServicesPage() {
   const currentStep = 2;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const location = useLocation();
-  const grade = searchParams.get("grade");
   const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
+  const grade = (location.state as { grade?: number | string } | null)?.grade;
 
   const [totalBudget, setTotalBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
@@ -91,7 +90,7 @@ export function ServicesPage() {
   };
 
   const handleConfirm = () => {
-    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget} });
+    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget, pdfFile} });
   };
 
   if (!grade) {
