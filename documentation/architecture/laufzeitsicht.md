@@ -27,7 +27,6 @@ flowchart TB
             S_T_STEP_04[Plattform Schritt 4 (Platzhalter)]
             S_T_STEP_03 --> S_T_STEP_04
         end
-        S_T_STEP_02 --> S_T_STEP_03
     end
 ```
 
