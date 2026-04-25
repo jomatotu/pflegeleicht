@@ -72,10 +72,56 @@ npx supabase db push
 
 Spielt alle lokalen Migrations aus `supabase/migrations/` auf die Remote-Datenbank auf.
 
-### 4. Nach dem Deploy: Einstellungen im Dashboard anpassen
+### 4. Edge Functions deployen
+
+```bash
+npx supabase functions deploy process-antrag
+```
+
+### 5. Secrets im Dashboard eintragen
+
+**Project Settings → Edge Functions → Secrets:**
+
+| Secret | Beschreibung |
+|--------|--------------|
+| `RESEND_API_KEY` | API-Key von [resend.com](https://resend.com) für E-Mail-Versand |
+| `PLATFORM_EMAIL` | Empfänger-E-Mail des Plattformbetreibers |
+| `PARTNER_EMAIL` | Empfänger-E-Mail der Partneragentur |
+
+Vorlage: `supabase/functions/.env.example`
+
+### 6. Nach dem Deploy: Einstellungen im Dashboard anpassen
 
 - **Auth → URL Configuration**: `site_url` auf die Produktions-URL setzen
-- **Project Settings → Edge Functions**: Secrets wie `OPENAI_API_KEY` eintragen
+
+---
+
+## Edge Function: `process-antrag`
+
+Nimmt einen Pflegebescheid (PDF) entgegen, prüft die Budgetberechtigung, speichert die Daten und versendet 3 E-Mails.
+
+**Endpoint:** `POST https://jpuqjrfeumqschfwmlom.supabase.co/functions/v1/process-antrag`  
+**Content-Type:** `multipart/form-data`
+
+| Feld | Typ | Beschreibung |
+|------|-----|--------------|
+| `pdf` | File | Pflegebescheid als PDF |
+| `data` | String (JSON) | `firstname`, `lastname`, `pflegegrad`, `leistung_id`, `submitter_email` |
+
+**Ablauf:**
+1. Validierung der Eingabe
+2. Budgetberechtigungs-Prüfung (Leistung muss existieren und Budget > 0 haben)
+3. PDF-Upload in den privaten Storage-Bucket `bescheide`
+4. Eintrag in Tabelle `Leistungsberechtigter`
+5. E-Mail-Versand an: einreichende Person, Plattformbetreiber, Partneragentur
+
+**curl-Beispiel:**
+    
+```bash
+curl -X POST https://jpuqjrfeumqschfwmlom.supabase.co/functions/v1/process-antrag -F "pdf=@test_formular.pdf" -F 'data={"firstname":"Max","lastname":"Mustermann","pflegegrad":2,"leistung_id":1,"submitter_email":"test@example.com"}'
+```
+
+Den `SUPABASE_ANON_KEY` findest du im Dashboard unter **Project Settings → API → anon public**.
 
 ---
 
