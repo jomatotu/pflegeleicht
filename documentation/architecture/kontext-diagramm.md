@@ -1,23 +1,25 @@
 # Kontextdiagramm
 
-Dieses Diagramm zeigt den Systemkontext von **pflegeleicht** auf hoher Ebene.
+Dieses Diagramm zeigt den Systemkontext von **pflegeleicht.online** auf hoher Ebene.
 
 ```mermaid
 flowchart LR
     user["Nutzer:in"]
+    pflegeleicht["CustomerService"]
     admin["Administrator:in"]
-    system["pflegeleicht\n(Hackathon-Anwendung)"]
+    system["pflegeleicht.online"]
     mail["E-Mail-Dienst"]
     db["Datenbank"]
 
     user -->|"nutzt Funktionen"| system
-    admin -->|"verwaltet Inhalte"| system
+    pflegeleicht -->|"nutzt Funktionen"| system
+    admin -->|"administriert das"| system
     system -->|"versendet Benachrichtigungen"| mail
     system -->|"liest/schreibt Daten"| db
 ```
 
 ## Annahmen
 
-- `pflegeleicht` ist das zentrale Softwaresystem.
+- `pflegeleicht.online` ist das zentrale Softwaresystem.
 - Nutzer:innen interagieren direkt mit dem System.
 - Das System nutzt einen externen E-Mail-Dienst und eine Datenbank.
