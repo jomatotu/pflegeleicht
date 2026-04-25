@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams, useLocation } from "react-router";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { CheckCircle } from "lucide-react";
@@ -9,8 +9,10 @@ import { Footer } from "../components/Footer";
 export function ResultPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const [consentGiven, setConsentGiven] = useState(false);
   const grade = searchParams.get("grade");
+  const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
 
   useEffect(() => {
     if (!grade) {
@@ -20,7 +22,7 @@ export function ResultPage() {
 
   const handleContinue = () => {
     if (grade) {
-      navigate(`/services?grade=${grade}`);
+      navigate(`/services?grade=${grade}`, { state: { pdfFile } });
     }
   };
 

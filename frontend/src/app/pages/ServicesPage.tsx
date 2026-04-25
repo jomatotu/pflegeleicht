@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams, useLocation } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
 import { ConfirmationScreen } from "../components/ConfirmationScreen";
 import { Header } from "../components/Header";
@@ -18,7 +18,9 @@ interface Service {
 export function ServicesPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const grade = searchParams.get("grade");
+  const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
 
   const [totalBudget, setTotalBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
@@ -98,9 +100,10 @@ export function ServicesPage() {
     setShowConfirmation(false);
   };
 
-  const handleConfirm = () => {
-    console.log("Confirmed:", { grade, selectedServices });
-    setIsConfirmed(true);
+  const handleConfirm = (submitting: boolean) => {
+    if (submitting) {
+      setIsConfirmed(true);
+    }
   };
 
   if (!grade) {
@@ -139,6 +142,7 @@ export function ServicesPage() {
           onConfirm={handleConfirm}
           onBack={handleBackToServices}
           isConfirmed={isConfirmed}
+          pdfFile={pdfFile}
         />
       )}
     </div>
