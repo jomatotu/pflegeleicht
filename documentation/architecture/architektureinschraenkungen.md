@@ -1,0 +1,35 @@
+# Architektureinschränkungen
+
+Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegeleicht.online` zusammen. Sie ergeben sich aus dem MVP-Zielbild, aus getroffenen Architekturentscheidungen und aus typischen Anforderungen an ein System mit personenbezogenen und gesundheitsnahen Daten. Abweichungen bedürfen einer bewussten Entscheidung und sollten in [architekturentscheidungen.md](architekturentscheidungen.md) nachvollziehbar festgehalten werden.
+
+## Fachlicher und produktiver Rahmen (MVP)
+
+- **Leistungsfokus:** Der MVP priorisiert eine standardisierbare Leistung (Entlastungsbetrag) und einen klar gefassten Nutzungsablauf. Erweiterungen auf weitere Leistungen oder Prozesse sind nicht implizit vorgesehen, solange sie hier nicht explizit aufgenommen werden.
+
+
+## Sicherheit und Datenschutz
+
+- **Keine Secrets im Quelltext oder in öffentlicher Dokumentation:** Zugangsdaten, Schlüssel und Tokens gehören in sichere Konfiguration oder Geheimnisverwaltung der Umgebung, nicht in Repositories oder Client-Bundles.
+- **Minimierung und Zweckbindung:** Zugriff auf personenbezogene Daten ist auf Rollen, Prozesse und Datenfelder zu beschränken, die für den jeweiligen Zweck erforderlich sind (insbesondere bei internen vs. externen Oberflächen).
+- **Nachvollziehbarkeit:** Sicherheits- und datenschutzrelevante Änderungen (Autorisierung, Speicherdauer, Schnittstellen zu Dritten) sollen nachvollziehbar dokumentiert oder als Architekturentscheidung geführt werden, sobald konkrete Anforderungen feststehen.
+
+## Compliance
+
+- **Umsetzbarkeit regulatorischer Vorgaben:** Architektur, Datenflüsse und Schnittstellen müssen so gestaltet sein, dass festgelegte Rechtsgrundlagen, Zweckbindung, Betroffenenrechte und dokumentationspflichtige Prozesse (z. B. Verzeichnis von Verarbeitungstätigkeiten, Auftragsverarbeitung) technisch abbildbar bleiben. Konkrete Rechtsbewertungen und Texte liegen bei Datenschutz- und Fachverantwortlichen; die Technik liefert die dafür nötigen Schaltstellen und Nachweise nach Maßgabe dieser Vorgaben.
+- **Auftragsverarbeitung und Unterauftragsnehmer:** Jede neue oder geänderte Einbindung von Diensten mit Zugriff auf personenbezogene oder besonders schützenswerte Daten (z. B. Hosting, E-Mail, Analytik) ist nur mit vertraglicher und organisatorischer Abdeckung zulässig; die Architektur vermeidet „Schatten-Integrationen“ ohne abgestimmte Datenverarbeitung.
+- **Region und Datenübermittlung:** Speicherorte und Übermittlungen personenbezogener Daten richten sich nach den vom Unternehmen festgelegten Vorgaben (z. B. Verbleib in der EU/EG oder zulässige Übermittlungsinstrumente). Technische Konfiguration (Regionen, Verschlüsselung, Zugriffspfade) muss diese Vorgaben widerspruchsfrei unterstützen.
+- **Gesundheits- und pflegenahe Inhalte:** Wo Gesundheits- oder Pflegebezug in Daten oder Prozessen liegt, sind Vorgaben zu Sensibilität, Zugriffskontrolle und Nachweisbarkeit strikter zu behandeln als bei rein administrativen Systemen; fachliche Klassifikation von Datenarten und Aufbewahrungsfristen ist vor Implementierung mit Compliance abzustimmen.
+- **Nachweis und Prüfbarkeit:** Wo gesetzlich oder vertraglich gefordert, müssen Abläufe (Einwilligungen, Zugriffe, Löschungen, Meldewege) nachvollziehbar abbildbar sein; dafür vorgesehene Protokoll- und Exportmechanismen dürfen nicht durch Ad-hoc-Umgehung der fachlichen Schichten unterlaufen werden.
+
+## Betrieb und Qualität
+
+- **Fehlerbehandlung:** Externe Abhängigkeiten (Datenbank, E-Mail) erfordern definierte Fehler- und Wiederholungsstrategien; bis diese festgelegt sind, sind defensive Timeouts, klare Fehlerantworten und keine stillen Teilzustände zu bevorzugen.
+- **Beobachtbarkeit:** Für den produktiven Betrieb sind grundlegende Protokollierung und nachziehbare Betriebskonventionen vorgesehen; konkrete Monitoring- und Audit-Anforderungen sind noch offen und können zusätzliche Einschränkungen nach sich ziehen.
+
+## Bewusst offen
+
+Die folgenden Punkte sind in [architekturentscheidungen.md](architekturentscheidungen.md) als offen geführt und werden hier nicht vorweggenommen, können aber künftig verbindliche Einschränkungen ergänzen:
+
+- Migrations- und Deployment-Strategie für das relationale Schema.
+- Detaillierte Retry- und Circuit-Breaker-Regeln für externe Aufrufe.
+- Monitoring- und Audit-Anforderungen für administrative Abläufe.
