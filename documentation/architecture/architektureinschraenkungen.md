@@ -5,6 +5,7 @@ Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegelei
 ## Fachlicher und produktiver Rahmen (MVP)
 
 - **Leistungsfokus:** Der MVP priorisiert eine standardisierbare Leistung (Entlastungsbetrag) und einen klar gefassten Nutzungsablauf. Erweiterungen auf weitere Leistungen oder Prozesse sind nicht implizit vorgesehen, solange sie hier nicht explizit aufgenommen werden.
+- **Nicht produktiv:** Der MVP dient ausschließlich der Präsentation und der fachlichen Validierung der Funktionen, nicht dem produktiven Betrieb; er erfüllt daher nicht die Anforderungen eines produktivtauglichen, compliance-konformen Betriebs. Echte Gesundheits- oder Pflegedaten Betroffener dürfen in dieser Umgebung nicht verarbeitet werden (weder Eingabe, Übermittlung noch Speicherung). Zulässig und vorgesehen sind ausschließlich anonymisierte oder eindeutig fiktive Beispieldaten.
 
 
 ## Sicherheit und Datenschutz
@@ -15,6 +16,8 @@ Dieses Dokument fasst verbindliche Grenzen und Rahmenbedingungen für `pflegelei
 
 ## Compliance
 
+- **DSGVO und Gesundheitsdaten:** Die Verarbeitung unterliegt der Datenschutz-Grundverordnung (DSGVO). Es handelt sich um besondere Kategorien personenbezogener Daten im Sinne von Art. 9 DSGVO, insbesondere um Gesundheitsdaten; daraus folgen verschärfte Anforderungen an Rechtsgrundlagen, Zweckbindung, technische und organisatorische Maßnahmen sowie Betroffenenrechte, die Architektur und Betrieb widerspruchsfrei unterstützen müssen.
+- **SGB XI (Soziale Pflegeversicherung):** Die für den Leistungs- und Pflegekontext maßgeblichen Vorgaben des **Elften Buches Sozialgesetzbuch (SGB XI)** sind einzuhalten; davon ausgehende fachliche Regeln (z. B. zu Leistungen, Nachweisen, Melde- und Dokumentationspflichten, soweit anwendbar) sind vor Implementierung mit Fach- und Compliance abzustimmen.
 - **Umsetzbarkeit regulatorischer Vorgaben:** Architektur, Datenflüsse und Schnittstellen müssen so gestaltet sein, dass festgelegte Rechtsgrundlagen, Zweckbindung, Betroffenenrechte und dokumentationspflichtige Prozesse (z. B. Verzeichnis von Verarbeitungstätigkeiten, Auftragsverarbeitung) technisch abbildbar bleiben. Konkrete Rechtsbewertungen und Texte liegen bei Datenschutz- und Fachverantwortlichen; die Technik liefert die dafür nötigen Schaltstellen und Nachweise nach Maßgabe dieser Vorgaben.
 - **Auftragsverarbeitung und Unterauftragsnehmer:** Jede neue oder geänderte Einbindung von Diensten mit Zugriff auf personenbezogene oder besonders schützenswerte Daten (z. B. Hosting, E-Mail, Analytik) ist nur mit vertraglicher und organisatorischer Abdeckung zulässig; die Architektur vermeidet „Schatten-Integrationen“ ohne abgestimmte Datenverarbeitung.
 - **Region und Datenübermittlung:** Speicherorte und Übermittlungen personenbezogener Daten richten sich nach den vom Unternehmen festgelegten Vorgaben (z. B. Verbleib in der EU/EG oder zulässige Übermittlungsinstrumente). Technische Konfiguration (Regionen, Verschlüsselung, Zugriffspfade) muss diese Vorgaben widerspruchsfrei unterstützen.
