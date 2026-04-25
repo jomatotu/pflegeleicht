@@ -2,6 +2,12 @@
 
 Diese Regeln gelten projektweit und dienen als gemeinsame Basis fuer Cursor und JetBrains.
 
+## Sprache
+
+- Die Projektdokumentation wird auf Deutsch gepflegt.
+- Die Entwicklungssprache (Code, Bezeichner, Commit-Texte in Code-Kontexten) ist Englisch.
+- Fachliche Bezeichner im Code duerfen bei Bedarf auch Deutsch sein.
+
 ## Code Quality
 
 - Schreibe klaren, lesbaren Code mit sprechenden Bezeichnern.
