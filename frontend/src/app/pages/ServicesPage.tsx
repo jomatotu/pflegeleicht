@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
-import { ConfirmationScreen } from "../components/ConfirmationScreen";
 import { Header } from "../components/Header";
 import { ServiceData, fetchServices, fetchTotalBudget } from "../data/services";
 
@@ -16,9 +15,16 @@ interface Service {
 }
 
 export function ServicesPage() {
+  const currentStep = 2;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const grade = searchParams.get("grade");
+  const location = useLocation();
+  const gradeValue = (location.state as { grade?: number | string } | null)?.grade;
+  const grade =
+    typeof gradeValue === "number"
+      ? gradeValue
+      : typeof gradeValue === "string"
+        ? parseInt(gradeValue, 10)
+        : NaN;
 
   const [totalBudget, setTotalBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
@@ -26,11 +32,9 @@ export function ServicesPage() {
   const [isLoadingServices, setIsLoadingServices] = useState(true);
   const [servicesError, setServicesError] = useState<string | null>(null);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
 
   useEffect(() => {
-    if (!grade) {
+    if (Number.isNaN(grade)) {
       navigate("/");
     }
   }, [grade, navigate]);
@@ -42,10 +46,9 @@ export function ServicesPage() {
       setIsLoadingServices(true);
 
       try {
-        const parsedGrade = grade ? parseInt(grade, 10) : undefined;
         const [servicesData, totalBudgetData] = await Promise.all([
           fetchServices(),
-          fetchTotalBudget(parsedGrade),
+          fetchTotalBudget(grade),
         ]);
 
         if (!isMounted) {
@@ -90,20 +93,11 @@ export function ServicesPage() {
     }
   };
 
-  const handleFinish = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleBackToServices = () => {
-    setShowConfirmation(false);
-  };
-
   const handleConfirm = () => {
-    console.log("Confirmed:", { grade, selectedServices });
-    setIsConfirmed(true);
+    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget} });
   };
 
-  if (!grade) {
+  if (Number.isNaN(grade)) {
     return null;
   }
 
@@ -113,13 +107,12 @@ export function ServicesPage() {
         onHomeClick={() => navigate("/")}
         showHomeButton={true}
         showLoginButton={false}
-        currentStep={showConfirmation ? 3 : 2}
+        currentStep={currentStep}
         showStepper={true}
         onLoginClick={() => {}}
       />
 
-      {!showConfirmation ? (
-        <ServiceSelectionSimple
+      <ServiceSelectionSimple
           totalBudget={totalBudget}
           remainingBudget={remainingBudget}
           services={services}
@@ -128,19 +121,8 @@ export function ServicesPage() {
           selectedServices={selectedServices}
           onSelectService={handleServiceSelect}
           onRemoveService={handleServiceRemove}
-          onFinish={handleFinish}
-        />
-      ) : (
-        <ConfirmationScreen
-          pflegegrad={parseInt(grade)}
-          selectedServices={selectedServices}
-          totalBudget={totalBudget}
-          remainingBudget={remainingBudget}
-          onConfirm={handleConfirm}
-          onBack={handleBackToServices}
-          isConfirmed={isConfirmed}
-        />
-      )}
+          onFinish={handleConfirm}
+      />
     </div>
   );
 }

@@ -14,7 +14,8 @@ export function UploadPage() {
 
       setTimeout(() => {
         const mockGrade = 3;
-        navigate(`/result?grade=${mockGrade}`);
+        navigate(`/result`, { state: { grade: mockGrade } });
+        setUploading(false);
       }, 1500);
     }
   };
