@@ -35,10 +35,13 @@ export function ConfirmationScreen({
   onBack,
   isConfirmed = false,
 }: ConfirmationScreenProps) {
-  const [name, setName] = useState("Max Mustermann");
-  const [address, setAddress] = useState("Musterstraße 123, 12345 Berlin");
-  const [email, setEmail] = useState("max.mustermann@email.de");
-  const [phone, setPhone] = useState("+49 30 123 456 789");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [versichertennummer, setVersichertennummer] = useState("");
   const [auftragsnummer, setAuftragsnummer] = useState("");
   const [geburtsdatum, setGeburtsdatum] = useState("");
@@ -126,20 +129,57 @@ export function ConfirmationScreen({
           <h3 className="text-xl text-gray-900 border-b pb-2">Ihre persönlichen Daten</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="firstname">Vorname</Label>
               <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                id="firstname"
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
                 className="h-12"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="address">Adresse</Label>
+              <Label htmlFor="lastname">Nachname</Label>
               <Input
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                id="lastname"
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="street">Straße & Hausnummer</Label>
+              <Input
+                id="street"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="postalCode">PLZ</Label>
+              <Input
+                id="postalCode"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="city">Ort</Label>
+              <Input
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="geburtsdatum">Geburtsdatum</Label>
+              <Input
+                id="geburtsdatum"
+                type="date"
+                value={geburtsdatum}
+                onChange={(e) => setGeburtsdatum(e.target.value)}
                 className="h-12"
               />
             </div>
@@ -178,16 +218,6 @@ export function ConfirmationScreen({
                 id="auftragsnummer"
                 value={auftragsnummer}
                 onChange={(e) => setAuftragsnummer(e.target.value)}
-                className="h-12"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="geburtsdatum">Geburtsdatum</Label>
-              <Input
-                id="geburtsdatum"
-                type="date"
-                value={geburtsdatum}
-                onChange={(e) => setGeburtsdatum(e.target.value)}
                 className="h-12"
               />
             </div>
