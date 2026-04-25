@@ -1,0 +1,17 @@
+---
+description: Projektweite Coding- und Review-Standards
+alwaysApply: true
+---
+
+# Projektstandards
+
+Nutze `RULES.md` als verbindliche Quelle fuer projektweite Konventionen.
+
+## Erwartetes Verhalten
+
+- Schreibe klaren, wartbaren Code mit konsistenten Namenskonventionen.
+- Halte Aenderungen klein, fokussiert und einfach reviewbar.
+- Vermeide ungenutzten oder doppelten Code.
+- Behandle Fehler explizit und nachvollziehbar.
+- Achte auf Sicherheit: keine Secrets im Code oder in Commits.
+- Aktualisiere Tests bei Verhaltensaenderungen.
