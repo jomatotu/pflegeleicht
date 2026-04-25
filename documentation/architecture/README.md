@@ -4,6 +4,8 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 
 ## Zielbild MVP
 
+**MVP** (*Minimum Viable Product*, deutsch sinngemäß minimales tragfähiges Produkt) bezeichnet hier die abgegrenzte erste Ausbaustufe; weiterführende Einordnung im [Glossar](glossar.md).
+
 - Fokus auf einer standardisierbaren Leistung: `Entlastungsbetrag` (131 EUR pro Monat).
 - Nutzer:innen laden einmalig den Pflegegrad-Nachweis hoch, wählen eine Leistung und müssen den restlichen Prozess nicht selbst verstehen oder steuern.
 - Die Plattform übernimmt im Hintergrund Vermittlung, Abrechnung und Erstattungsprozess.
