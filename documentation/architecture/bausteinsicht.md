@@ -77,5 +77,4 @@ flowchart TB
 ## Abgrenzung
 
 - Externe Systeme (`E-Mail-Dienst`, `Datenbank`) bleiben ausserhalb der Systemgrenze.
-- Die genaue technische Implementierung der Module ist noch offen und kann in einer Laufzeitsicht vertieft werden.
 
