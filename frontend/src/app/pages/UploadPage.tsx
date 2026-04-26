@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Upload } from "lucide-react";
+import { Upload, Camera } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import {getWorker} from "../../lib/tesseractWorker";
@@ -57,22 +57,38 @@ export function UploadPage() {
               Laden Sie Ihr Pflegegutachten hoch.
             </h2>
 
-            <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
-              <Upload className="w-16 h-16 text-teal-500 mb-3" />
-              <span className="text-base text-teal-700 mb-2">
-                {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
-              </span>
-              <span className="text-sm text-gray-500">
-                Max. Dateigröße: 10MB (JPG, PNG)
-              </span>
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleFileUpload}
-                disabled={uploading}
-              />
-            </label>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
+                <Upload className="w-12 h-12 text-teal-500 mb-3" />
+                <span className="text-base text-teal-700 mb-2">
+                  {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
+                </span>
+                <span className="text-sm text-gray-500">
+                  Max. Dateigröße: 10MB (JPG, PNG)
+                </span>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                />
+              </label>
+              <label className="flex flex-col items-center justify-center w-full sm:w-48 h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all flex-shrink-0">
+                <Camera className="w-12 h-12 text-teal-500 mb-3" />
+                <span className="text-base text-teal-700 mb-2">
+                  Foto aufnehmen
+                </span>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                />
+              </label>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
