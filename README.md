@@ -121,6 +121,35 @@ Storage Bucket `bescheide` (privat): gespeicherte Pflegebescheide als PDF/Bild.
 
 ---
 
+## Tests
+
+Das Frontend verwendet [Vitest](https://vitest.dev/) mit [React Testing Library](https://testing-library.com/react).
+
+```bash
+cd frontend
+
+# Einmalig ausführen
+npm test
+
+# Watch-Modus (bei Dateiänderungen neu ausführen)
+npm run test:watch
+
+# Mit Coverage-Report
+npm run test:coverage
+```
+
+### Abgedeckte Bereiche
+
+| Datei | Was wird getestet |
+|-------|-------------------|
+| `src/app/data/services.test.ts` | `fetchServices` und `fetchTotalBudget` – Datenmapping, Fehlerbehandlung, Pflegegrad-Filter |
+| `src/app/components/ServiceSelectionSimple.test.tsx` | Budget-Anzeige, Auswahl/Abwahl von Leistungen, monatliche Preisberechnung, Ladezustände |
+| `src/app/components/ConfirmationScreen.test.tsx` | Formularvalidierung, API-Aufruf, Budget-Überschreitung, Navigation |
+
+Supabase wird in allen Tests gemockt – es ist keine laufende Backend-Verbindung nötig.
+
+---
+
 ## Entwicklungsumgebung starten
 
 ### Voraussetzungen
