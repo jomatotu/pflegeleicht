@@ -45,7 +45,7 @@ export function UploadPage() {
         onLoginClick={() => {}}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
+      <main className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-3xl w-full space-y-8">
           <div className="text-center space-y-4">
             <h1 className="text-4xl md:text-5xl text-teal-900">Willkommen bei PflegeLeicht</h1>
@@ -111,7 +111,7 @@ export function UploadPage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

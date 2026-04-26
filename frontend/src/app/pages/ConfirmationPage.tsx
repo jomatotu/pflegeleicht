@@ -41,16 +41,18 @@ export function ConfirmationPage() {
                 onLoginClick={() => {
                 }}
             />
-            <ConfirmationScreen
-                pflegegrad={grade}
-                selectedServices={selectedServices}
-                totalBudget={totalBudget}
-                remainingBudget={remainingBudget}
-                onConfirm={handleConfirm}
-                onBack={handleBackToServices}
-                pdfFile={pdfFile}
-                extractedData={extractedData}
-            />
+            <main>
+              <ConfirmationScreen
+                  pflegegrad={grade}
+                  selectedServices={selectedServices}
+                  totalBudget={totalBudget}
+                  remainingBudget={remainingBudget}
+                  onConfirm={handleConfirm}
+                  onBack={handleBackToServices}
+                  pdfFile={pdfFile}
+                  extractedData={extractedData}
+              />
+            </main>
         </div>
     );
 }

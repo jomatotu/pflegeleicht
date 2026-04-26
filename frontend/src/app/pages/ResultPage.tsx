@@ -41,7 +41,7 @@ export function ResultPage() {
         onLoginClick={() => {}}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-teal-50 to-white">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-3xl w-full">
           <div className="bg-white rounded-2xl border-2 border-teal-200 shadow-lg px-4 py-4 sm:px-8 sm:py-6">
             <div className="text-center space-y-5 sm:space-y-6">
@@ -86,7 +86,7 @@ export function ResultPage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
