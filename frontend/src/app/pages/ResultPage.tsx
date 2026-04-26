@@ -41,16 +41,16 @@ export function ResultPage() {
         onLoginClick={() => {}}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-3xl w-full">
-          <div className="bg-white rounded-2xl border-2 border-teal-200 shadow-lg px-[32px] py-[5px]">
-            <div className="text-center space-y-6 p-[0px]">
-              <p className="text-xl text-gray-700 px-[0px] py-[5px]">Pflegegrad erkannt:</p>
-              <div className="flex items-center justify-center gap-4">
-                <CheckCircle className="w-16 h-16 text-green-500" />
-                <p className="text-6xl text-green-700 font-bold">Pflegegrad {grade}</p>
+          <div className="bg-white rounded-2xl border-2 border-teal-200 shadow-lg px-4 py-4 sm:px-8 sm:py-6">
+            <div className="text-center space-y-5 sm:space-y-6">
+              <p className="text-lg sm:text-xl text-gray-700">Pflegegrad erkannt:</p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <CheckCircle className="w-14 h-14 sm:w-16 sm:h-16 text-green-500" />
+                <p className="text-3xl sm:text-4xl md:text-6xl text-green-700 font-bold">Pflegegrad {grade}</p>
               </div>
-              <p className="text-lg text-gray-600 mt-4">
+              <p className="text-base sm:text-lg text-gray-600 mt-4">
                 Willkommen zurück! Wir haben deinen Bescheid erfolgreich ausgewertet.
               </p>
 
@@ -79,7 +79,7 @@ export function ResultPage() {
                 onClick={handleContinue}
                 disabled={!consentGiven}
                 size="lg"
-                className="w-full max-w-md h-14 text-lg bg-teal-600 hover:bg-teal-700 disabled:opacity-50 mx-[0px] my-[10px]"
+                className="w-full max-w-md h-14 text-base sm:text-lg bg-teal-600 hover:bg-teal-700 disabled:opacity-50 my-2"
               >
                 Weiter zu den Leistungen
               </Button>
