@@ -63,7 +63,10 @@ export function ServiceSelectionSimple({
       {/* Budget Display */}
       <div className="bg-white border-b shadow-sm sticky top-[165px] sm:top-[150px] md:top-[90px] z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <h2 className="text-xl sm:text-2xl text-teal-900">Was brauchst du?</h2>
+          <div>
+            <h2 className="text-xl sm:text-2xl text-teal-900">Was brauchst du?</h2>
+            <p className="text-sm text-gray-600 mt-1 font-bold">Alle Preise basieren auf 1 Stunde alle zwei Wochen</p>
+          </div>
           <div className="text-left sm:text-right rounded-lg px-4 sm:px-6 py-3 border bg-teal-50 border-teal-200">
             <div className="text-xs text-gray-600 uppercase mb-1">Dein Budget pro monat</div>
             <div className="text-2xl sm:text-3xl text-teal-700">
