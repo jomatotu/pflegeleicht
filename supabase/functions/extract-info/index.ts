@@ -125,7 +125,18 @@ Deno.serve(async (req: Request) => {
   log(`Tokens — prompt: ${usage?.prompt_tokens}, completion: ${usage?.completion_tokens}, total: ${usage?.total_tokens}`);
   log(`LLM result: ${result}`);
 
-  return new Response(JSON.stringify({ result }), {
+  let finalResult = result;
+  try {
+    const parsed = JSON.parse(result);
+    if (!parsed.pflegegrad) {
+      parsed.pflegegrad = 2;
+    }
+    finalResult = JSON.stringify(parsed);
+  } catch {
+    log("Could not parse LLM result as JSON, returning raw result");
+  }
+
+  return new Response(JSON.stringify({ result: finalResult }), {
     status: 200,
     headers: { ...cors, "Content-Type": "application/json" },
   });
