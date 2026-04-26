@@ -30,6 +30,7 @@ Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipie
 ### Frontend
 
 - **Single-Page-Anwendung** (React, Vite) mit **strikter Trennung** von UI und fachlicher Logik: Geschäftsregeln gehören nicht in die Präsentationsschicht, sondern in Backend bzw. gemeinsam vereinbarte API-Verträge (siehe [RULES.md](../../RULES.md)).
+- **Produktions-Hosting** des statischen Builds über **Netlify** inklusive **CDN**, um schnelle, zuverlässige Auslieferung der Client-Anwendung zu erreichen ([Verteilungssicht](verteilungssicht.md)).
 - Barrierefreiheit und sensible Daten sind von Anfang an **planungsrelevant** (siehe Randbedingungen); konkrete Konformitätsnachweise sind Sache von UX, Compliance und Test, die Architektur soll aber keine bewussten Barrieren einführen.
 
 ## Sicherheit und Daten als Querschnitt (Kurz)
@@ -53,7 +54,7 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 | 3 Kontext | Wer mit dem System spricht; externe Dienste (E-Mail, DB, **OpenRouter** für LLM) bleiben außerhalb der fachlichen Systemgrenze bzw. sind als externe Anbindung modelliert. |
 | 5 Bausteinsicht | Umsetzung der Schichten und Module (Frontends, APIs, Leistungsverwaltung, Benachrichtigung, Persistenz). |
 | 6 Laufzeitsicht | Konkreter Beantragungsablauf im MVP. |
-| 7 Verteilungssicht | Wo SPA, Supabase und Dienste zur Laufzeit liegen. |
+| 7 Verteilungssicht | Wo SPA (Netlify/CDN), Supabase und Dienste zur Laufzeit liegen. |
 | 10 Qualität | Messbare Ziele zu Eignung, Bedienbarkeit und Sicherheit. |
 
 ## Verweise

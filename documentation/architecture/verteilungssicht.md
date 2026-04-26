@@ -1,15 +1,15 @@
 # Verteilungssicht (arc42 Abschnitt 7)
 
-Diese Verteilungssicht beschreibt, **wo** die Bausteine von `pflegeleicht.online` zur Laufzeit liegen und wie sie in den Umgebungen **lokal** (Entwicklung) und **gehostet** (Supabase-Cloud, MVP) miteinander verbunden sind. Sie ergänzt [Bausteinsicht](bausteinsicht.md) und [Kontextdiagramm](kontext-diagramm.md).
+Diese Verteilungssicht beschreibt, **wo** die Bausteine von `pflegeleicht.online` zur Laufzeit liegen und wie sie in den Umgebungen **lokal** (Entwicklung) und **gehostet** (**Netlify** mit CDN für das Frontend, **Supabase**-Cloud für Backend/APIs, MVP) miteinander verbunden sind. Sie ergänzt [Bausteinsicht](bausteinsicht.md) und [Kontextdiagramm](kontext-diagramm.md).
 
 ## Zielumgebungen
 
 | Umgebung | Zweck | Kurzbeschreibung |
 |----------|--------|------------------|
 | **Lokal** | Entwicklung und Demos auf dem Rechner | Docker-basierter Supabase-Stack (`npx supabase start`), Vite-Dev-Server für das Web-Frontend |
-| **Gehostet (MVP)** | gemeinsames Backend / APIs in der Cloud | Ein Projekt bei [Supabase](https://supabase.com): verwaltete PostgreSQL-Datenbank, REST/RPC-API, Storage, Edge Functions |
+| **Gehostet (MVP)** | Backend / APIs und Frontend in der Cloud | **Backend:** Ein Projekt bei [Supabase](https://supabase.com) — verwaltete PostgreSQL-Datenbank, REST/RPC-API, Storage, Edge Functions. **Frontend:** [Netlify](https://www.netlify.com) — Auslieferung des Vite-Produktionsbuilds (`npm run build` im Ordner `frontend/`) über ein **globales CDN** (TLS, Edge-Caching statischer Assets). |
 
-Das **Web-Frontend** wird lokal mit Vite unter `http://localhost:5173` gestartet; ein konkretes Produktions-Hosting (CDN, Domain, CI/CD) ist im Repository **nicht** festgeschrieben. Für den produktiven Betrieb wäre üblich: statische Auslieferung des Vite-Builds (`npm run build` im Ordner `frontend/`) plus Konfiguration der Supabase-Projekt-URL und des öffentlichen Anon-Keys in der Client-Umgebung.
+Das **Web-Frontend** wird lokal mit Vite unter `http://localhost:5173` gestartet. Für **Produktion** wird der statische Build auf **Netlify** deployt; dort sind u. a. die Supabase-Projekt-URL und der öffentliche `anon`-Key als Build-/Umgebungsvariablen zu setzen (ohne Secrets im Repository; siehe [README.md](../../README.md)). **Domain, CI/CD und Preview-Deploys** werden über Netlify konfiguriert.
 
 ## Verteilungsdiagramm (logisch)
 
@@ -22,8 +22,8 @@ flowchart TB
 
     browser -.->|"lädt Bibliothek,\nverarbeitet Datei lokal"| ocr
 
-    subgraph optional_host["Frontend-Auslieferung (MVP nicht festgelegt)"]
-        static["Statische Assets\n(z. B. CDN / Webhosting)"]
+    subgraph netlify["Netlify (Hosting + globales CDN)"]
+        static["Statischer Vite-Build\n(SPA-Assets)"]
     end
 
     subgraph supabase_cloud["Supabase-Projekt (Cloud)"]
@@ -43,8 +43,7 @@ flowchart TB
     browser -->|"HTTPS\nREST, Storage, Functions"| api
     browser -->|"HTTPS\nmultipart/form-data"| fn
     browser -->|"HTTPS\nJSON (text)"| fn_extract
-    browser -.->|"optional: gleiche Origin wie SPA"| static
-    static -.-> browser
+    browser -->|"HTTPS\nlädt SPA-Assets"| static
     api --> pg
     fn --> pg
     fn --> storage
@@ -53,11 +52,11 @@ flowchart TB
     auth -.->|"falls im Flow"| browser
 ```
 
-In der **lokalen** Variante entspricht der Block „Supabase-Projekt“ dem per Docker gestarteten Stack (andere Hostnamen und Ports, siehe unten); die Rolle der Komponenten bleibt gleich.
+In der **lokalen** Variante entspricht der Block „Supabase-Projekt“ dem per Docker gestarteten Stack (andere Hostnamen und Ports, siehe unten); die Rolle der Komponenten bleibt gleich. Der Block **Netlify** entfällt; die SPA liefert der **Vite-Dev-Server** (`localhost`, siehe Tabelle unten).
 
 ## Knoten und Artefakte
 
-- **Web-Frontend:** React-SPA (Vite), Bausteine `external-frontend` / `internal-frontend` aus der Bausteinsicht; spricht per HTTPS mit dem Supabase-Projekt (API, Storage, Edge Functions).
+- **Web-Frontend:** React-SPA (Vite), Bausteine `external-frontend` / `internal-frontend` aus der Bausteinsicht; **Produktion:** statischer Build auf **Netlify** (CDN); der Browser spricht per HTTPS mit Netlify (Asset-Auslieferung) und separat mit dem Supabase-Projekt (API, Storage, Edge Functions).
 - **Clientseitige OCR:** Texterkennung für Nachweisdokumente läuft als Teil des **external-frontend** im **Browser** (typischerweise JavaScript/WebAssembly); es entsteht **kein zusätzlicher Zugriffspfad** über Supabase allein für OCR — die Bibliothek wird mit der SPA ausgeliefert und arbeitet auf der Datei des Nutzers/der Nutzerin lokal, bis der reguläre Upload- bzw. Antragsweg (z. B. Edge Function) folgt (Begründung: ADR-006). Der erkannte Text kann optional an **`extract-info`** gesendet werden (**LLM** über **OpenRouter**, ADR-007).
 - **Supabase API:** öffentlich erreichbar unter `https://<project-ref>.supabase.co` (exakter Host aus Dashboard bzw. nach `npx supabase link`, siehe [README.md](../../README.md)).
 - **Edge Function `process-antrag`:** läuft in der Supabase-Functions-Laufzeit; Endpunkt `POST .../functions/v1/process-antrag`; Zugriff auf Datenbank, privaten Storage-Bucket und E-Mail-Versand.
@@ -80,13 +79,15 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 
 ## Gehostete Verteilung (MVP)
 
+- **Frontend (Netlify):** Build-Kommando z. B. `npm run build` mit Publish-Verzeichnis auf den Vite-Ausgabeordner (`frontend/dist` nach Projektsetup); Umgebungsvariablen für Supabase-URL und öffentlichen Client-Key in den Netlify-Site-Settings hinterlegen. Deploy erfolgt per Git-Anbindung an Netlify oder CLI (`netlify deploy`); **CDN** und HTTPS-Terminierung übernimmt Netlify.
 - **Datenbank und API:** `npx supabase db push` spielt Migrationen auf die Remote-Datenbank des verknüpften Projekts (Project-Ref im Dashboard bzw. `supabase link`, siehe README).
 - **Edge Functions:** `npx supabase functions deploy process-antrag` bzw. `npx supabase functions deploy extract-info` deployen die Functions in dieselbe Supabase-Region wie das Projekt.
-- **Nach dem Deploy:** u. a. Auth-`site_url` und Edge-Function-Secrets im Dashboard setzen (siehe README).
+- **Nach dem Deploy:** u. a. Auth-`site_url` (einschließlich der öffentlichen Netlify-Site-URL, falls genutzt), Edge-Function-Secrets im Supabase-Dashboard und ggf. Redirect-/Header-Regeln in Netlify setzen (siehe README).
 
 ## Netzwerk- und Zugriffspfade
 
 - **OCR im Browser:** Solange die gewählte OCR-Bibliothek **ohne** Aufruf externer Cloud-Dienste auskommt, geht für die Texterkennung **kein** zusätzlicher HTTPS-Pfad über die in diesem Dokument beschriebenen Kanäle hinaus; weicht die konkrete Bibliothek davon ab (z. B. SaaS-OCR), ist das gesondert zu betreiben und im [Architekturentscheidungslog](architekturentscheidungen.md) zu dokumentieren. **LLM-Extraktion:** Sobald `extract-info` genutzt wird, besteht zusätzlich der Pfad **Edge Function → OpenRouter** (HTTPS); bei Wechsel auf **lokales LLM** entfällt der Aufruf nach außen zugunsten intern kontrollierter Endpunkte (ADR-007).
+- **Browser → Netlify:** TLS (HTTPS); Auslieferung und Caching der SPA- und statischen Dateien über das **Netlify-CDN** (Edge-Standorte weltweit).
 - **Browser → Supabase:** TLS (HTTPS); Authentifizierung gegenüber der API typischerweise mit dem öffentlichen `anon`-Key des Projekts (nur im Client konfigurieren, was öffentlich sein darf).
 - **Edge Function → Datenbank / Storage:** innerhalb der Supabase-Plattform; keine direkte Exposition der Datenbank ans öffentliche Internet für Client-Zugriffe außerhalb des Supabase-Gateways.
 - **Edge Function → Resend:** ausgehende HTTPS-Verbindung zur Resend-API (`https://api.resend.com`); Empfänger und Absender laut Umgebungsvariablen/Secrets.
@@ -94,7 +95,7 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 
 ## Abgrenzung und Annahmen
 
-- **Infrastruktur jenseits von Supabase** (DNS, CDN, WAF, Monitoring) ist für das MVP nicht im Code beschrieben und kann bei produktivem Betrieb ergänzt werden.
+- **Infrastruktur jenseits von Supabase und Netlify** (z. B. erweiterte WAF, zentrales Monitoring über die genannten Plattformen hinaus) ist im MVP nur soweit im Code/Dokumentation beschrieben, wie es für Entwicklung und Deploy nötig ist und kann bei wachsendem Betrieb ergänzt werden. **CDN und DNS** für das statische Frontend sind über **Netlify** abgedeckt.
 - Die Zuordnung **welches Frontend** (extern/intern) auf welcher URL liegt, ist eine Deployment- und Routing-Entscheidung; technisch können es eine oder mehrere SPA-Builds sein.
 
 ## Verweise

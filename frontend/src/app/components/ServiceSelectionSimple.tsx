@@ -112,12 +112,6 @@ export function ServiceSelectionSimple({
                   <div className="flex-1">
                     <p className="text-lg sm:text-xl md:text-2xl text-gray-900 mb-2">{serviceData.title}</p>
                     <p className="text-sm text-gray-600 mb-3">{serviceData.description}</p>
-
-                    <div className="bg-teal-50 rounded-lg px-4 py-2 inline-block">
-                      <p className="text-sm text-teal-800">
-                        1 Stunde alle zwei Wochen · {serviceData.pricePerHour} € / Stunde
-                      </p>
-                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-start md:items-end gap-4 w-full md:w-auto">

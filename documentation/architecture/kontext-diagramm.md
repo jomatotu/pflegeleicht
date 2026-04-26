@@ -28,6 +28,7 @@ flowchart LR
 
 ## Annahmen
 
+- Die für Endnutzer:innen sichtbare **Web-Oberfläche** (SPA) wird im produktiven Setup über **Netlify** inklusive **CDN** ausgeliefert; fachliche APIs, Speicher und serverseitige Logik laufen im **Supabase**-Projekt ([Verteilungssicht](verteilungssicht.md)).
 - `pflegeleicht.online` ist das zentrale Softwaresystem.
 - Nutzer:innen interagieren direkt mit dem System.
 - Das System nutzt einen externen E-Mail-Dienst, eine Datenbank und im MVP die **OpenRouter**-Schnittstelle für **LLM-gestützte Textextraktion** (siehe [Verteilungssicht](verteilungssicht.md), ADR-007 in [Architekturentscheidungen](architekturentscheidungen.md)).
