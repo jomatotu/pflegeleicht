@@ -19,7 +19,7 @@ Eine Plattform, die den gesamten Prozess vom Anspruch bis zur Nutzung automatisi
 ### MVP-Fokus
 
 Der aktuelle MVP konzentriert sich auf den **Entlastungsbetrag** (§ 45b SGB XI):
-- 131 €/Monat für Versicherte mit Pflegegrad 2–5
+- 131 €/Monat für Versicherte mit Pflegegrad 1–5
 - Stark untergenutzt und hochstandardisierbar
 - Der Nutzer aktiviert diesen Betrag durch das Hochladen seines Pflegebescheids und die Auswahl passender Leistungen
 
