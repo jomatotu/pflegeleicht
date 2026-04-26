@@ -27,7 +27,7 @@ export function Header({
   ];
 
   return (
-    <header className="bg-white border-b shadow-sm sticky top-0 z-50">
+    <header className="bg-white border-b shadow-sm sticky top-10 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
           {/* Logo */}

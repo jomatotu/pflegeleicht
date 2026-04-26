@@ -1,4 +1,5 @@
-import { createClient } from "jsr:@supabase/supabase-js@2";
+// TODO: Re-enable when DB writes are restored
+// import { createClient } from "jsr:@supabase/supabase-js@2";
 import { buildPartnerEmail, buildPlatformEmail, buildSubmitterEmail } from "./email-templates.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
@@ -139,85 +140,71 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-  );
+  // TODO: Re-enable Supabase client, storage upload and DB writes when real functionality is restored
+  // const supabase = createClient(
+  //   Deno.env.get("SUPABASE_URL") ?? "",
+  //   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+  // );
 
-  // 1. Datei in Storage speichern (Dateityp beibehalten)
-  const fileBytes = await uploadedFile.arrayBuffer();
-  const mimeType = uploadedFile.type || "application/octet-stream";
-  const originalName = uploadedFile.name ?? "";
-  const ext = originalName.includes(".") ? originalName.split(".").pop() : mimeType.split("/")[1];
-  const fileName = `${Date.now()}_${lastname}_${firstname}.${ext}`;
+  // TODO: Re-enable file upload to storage bucket when real functionality is restored
+  // const fileBytes = await uploadedFile.arrayBuffer();
+  // const mimeType = uploadedFile.type || "application/octet-stream";
+  // const originalName = uploadedFile.name ?? "";
+  // const ext = originalName.includes(".") ? originalName.split(".").pop() : mimeType.split("/")[1];
+  // const fileName = `${Date.now()}_${lastname}_${firstname}.${ext}`;
+  // const { error: uploadError } = await supabase.storage
+  //   .from(STORAGE_BUCKET)
+  //   .upload(fileName, fileBytes, { contentType: mimeType, upsert: false });
+  // if (uploadError) {
+  //   log(`Datei-Upload fehlgeschlagen: ${uploadError.message}`);
+  //   return new Response(
+  //     JSON.stringify({ error: `Datei-Upload fehlgeschlagen: ${uploadError.message}` }),
+  //     { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
+  //   );
+  // }
+  // log(`Datei gespeichert: ${fileName}`);
 
-  const { error: uploadError } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .upload(fileName, fileBytes, {
-      contentType: mimeType,
-      upsert: false,
-    });
+  // TODO: Re-enable DB insert (Leistungsberechtigter) when real functionality is restored
+  // const { data: inserted, error: insertError } = await supabase
+  //   .from("Leistungsberechtigter")
+  //   .insert({
+  //     firstname, lastname, street, city, postal_code: postalCode,
+  //     date_of_birth, pflegegrad, contact_person_phone, contact_person_email,
+  //     insurance_number, order_number_md,
+  //   })
+  //   .select("id")
+  //   .single();
+  // if (insertError || !inserted) {
+  //   log(`DB-Insert fehlgeschlagen: ${insertError?.message} — starte Rollback`);
+  //   await supabase.storage.from(STORAGE_BUCKET).remove([fileName]);
+  //   return new Response(
+  //     JSON.stringify({ error: `Datenbankfehler: ${insertError?.message}` }),
+  //     { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
+  //   );
+  // }
+  // log(`Leistungsberechtigter angelegt: id=${inserted.id}`);
 
-  if (uploadError) {
-    log(`Datei-Upload fehlgeschlagen: ${uploadError.message}`);
-    return new Response(
-      JSON.stringify({ error: `Datei-Upload fehlgeschlagen: ${uploadError.message}` }),
-      { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
-    );
-  }
+  // TODO: Re-enable service linking (Leistungselemente) when real functionality is restored
+  // if (services && services.length > 0) {
+  //   const serviceRows = services.map((leistungselement_id) => ({
+  //     leistungsberechtigter_id: inserted.id,
+  //     leistungselement_id,
+  //   }));
+  //   const { error: servicesError } = await supabase
+  //     .from("Leistungsberechtiger_Leistungselemente")
+  //     .insert(serviceRows);
+  //   if (servicesError) {
+  //     log(`Leistungselemente-Insert fehlgeschlagen: ${servicesError.message}`);
+  //   } else {
+  //     log(`${services.length} Leistungselement(e) verknüpft`);
+  //   }
+  // }
 
-  log(`Datei gespeichert: ${fileName}`);
+  // Demo mode: use a placeholder ID for email templates
+  const demoId = 0;
+  log(`Demo mode: DB writes and storage upload skipped`);
 
-  // 2. Leistungsberechtigter in Datenbank speichern
-  const { data: inserted, error: insertError } = await supabase
-    .from("Leistungsberechtigter")
-    .insert({
-      firstname,
-      lastname,
-      street,
-      city,
-      postal_code: postalCode,
-      date_of_birth,
-      pflegegrad,
-      contact_person_phone,
-      contact_person_email,
-      insurance_number,
-      order_number_md,
-    })
-    .select("id")
-    .single();
-
-  if (insertError || !inserted) {
-    log(`DB-Insert fehlgeschlagen: ${insertError?.message} — starte Rollback`);
-    await supabase.storage.from(STORAGE_BUCKET).remove([fileName]);
-
-    return new Response(
-      JSON.stringify({ error: `Datenbankfehler: ${insertError?.message}` }),
-      { status: 500, headers: { ...cors, "Content-Type": "application/json" } },
-    );
-  }
-
-  log(`Leistungsberechtigter angelegt: id=${inserted.id}`);
-
-  // 3. Leistungselemente verknüpfen
-  if (services && services.length > 0) {
-    const serviceRows = services.map((leistungselement_id) => ({
-      leistungsberechtigter_id: inserted.id,
-      leistungselement_id,
-    }));
-
-    const { error: servicesError } = await supabase
-      .from("Leistungsberechtiger_Leistungselemente")
-      .insert(serviceRows);
-
-    if (servicesError) {
-      log(`Leistungselemente-Insert fehlgeschlagen: ${servicesError.message}`);
-    } else {
-      log(`${services.length} Leistungselement(e) verknüpft`);
-    }
-  }
-
-  // 4. 3 E-Mails versenden
+  // E-Mails werden weiterhin versendet
   const emailResults = await Promise.allSettled([
     sendEmail({
       to: contact_person_email,
@@ -237,7 +224,7 @@ Deno.serve(async (req: Request) => {
         date_of_birth,
         contact_person_phone,
         contact_person_email,
-        inserted.id,
+        demoId,
         services,
       ),
     }),
@@ -245,7 +232,7 @@ Deno.serve(async (req: Request) => {
       to: PARTNER_EMAIL,
       subject: `Neuer Leistungsberechtigter: ${firstname} ${lastname}`,
       html: buildPartnerEmail(
-        inserted.id,
+        demoId,
         firstname,
         lastname,
         date_of_birth,
@@ -272,13 +259,11 @@ Deno.serve(async (req: Request) => {
     log("3/3 E-Mails erfolgreich versendet");
   }
 
-  log(`Antrag abgeschlossen: leistungsberechtigter_id=${inserted.id}`);
+  log(`Antrag abgeschlossen (Demo-Modus)`);
 
   return new Response(
     JSON.stringify({
       success: true,
-      leistungsberechtigter_id: inserted.id,
-      file: fileName,
       email_errors: emailErrors.length > 0 ? emailErrors : undefined,
     }),
     { status: 201, headers: { ...cors, "Content-Type": "application/json" } },

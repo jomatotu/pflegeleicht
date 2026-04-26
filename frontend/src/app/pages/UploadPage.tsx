@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 import { Upload, Camera } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import {getWorker} from "../../lib/tesseractWorker";
-import { supabase } from "../../lib/supabaseClient";
+// TODO: Re-enable OCR when real functionality is restored
+// import {getWorker} from "../../lib/tesseractWorker";
+// TODO: Re-enable extract-info backend call when real functionality is restored
+// import { supabase } from "../../lib/supabaseClient";
 
 export function UploadPage() {
   const navigate = useNavigate();
@@ -12,24 +14,27 @@ export function UploadPage() {
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
+      // Uploaded file is intentionally ignored in demo mode
       setUploading(true);
 
-      const worker = await getWorker();
-      const { data } = await worker.recognize(file);
+      // TODO: Re-enable OCR when real functionality is restored
+      // const worker = await getWorker();
+      // const { data } = await worker.recognize(file);
 
-      const { data: fnData, error } = await supabase.functions.invoke("extract-info", {
-        body: { text: data.text },
-      });
+      // TODO: Re-enable first backend call (extract-info) when real functionality is restored
+      // const { data: fnData, error } = await supabase.functions.invoke("extract-info", {
+      //   body: { text: data.text },
+      // });
+      // if (error) {
+      //   console.error("extract-info error:", error);
+      // }
+      // const extracted = fnData?.result ? JSON.parse(fnData.result) : {};
+      // const grade = extracted.pflegegrad || 0;
 
-      if (error) {
-        console.error("extract-info error:", error);
-      }
+      const grade = 2;
+      const extracted = {};
 
-      const extracted = fnData?.result ? JSON.parse(fnData.result) : {};
-      const grade = extracted.pflegegrad || 0;
-
-      navigate(`/result`, { state: { grade, pdfFile: file, extractedData: extracted } });
+      navigate(`/result`, { state: { grade, pdfFile: null, extractedData: extracted } });
       setUploading(false);
     }
   };

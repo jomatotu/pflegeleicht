@@ -59,6 +59,9 @@ export function buildPartnerEmail(
 </head>
 <body>
   <div class="container">
+    <div style="background-color:#cc0000; color:#ffffff; padding:12px 20px; text-align:center; font-size:16px; font-weight:bold; letter-spacing:0.5px;">
+      ⚠️ DEMO-SYSTEM – Diese E-Mail wurde von einem Demosystem generiert. Bitte keine echten Daten verwenden. ⚠️
+    </div>
     <div class="header">
       Neuer Leistungsberechtigter
     </div>
@@ -196,6 +199,9 @@ export function buildSubmitterEmail(
 </head>
 <body>
   <div class="container">
+    <div style="background-color:#cc0000; color:#ffffff; padding:12px 20px; text-align:center; font-size:16px; font-weight:bold; letter-spacing:0.5px;">
+      ⚠️ DEMO-SYSTEM – Diese E-Mail wurde von einem Demosystem generiert. Bitte keine echten Daten verwenden. ⚠️
+    </div>
     <div class="header">
       Ihr Antrag wurde erfolgreich eingereicht
     </div>
@@ -288,6 +294,9 @@ export function buildPlatformEmail(
 </head>
 <body>
   <div class="container">
+    <div style="background-color:#cc0000; color:#ffffff; padding:12px 20px; text-align:center; font-size:16px; font-weight:bold; letter-spacing:0.5px;">
+      ⚠️ DEMO-SYSTEM – Diese E-Mail wurde von einem Demosystem generiert. Bitte keine echten Daten verwenden. ⚠️
+    </div>
     <div class="header">Neuer Antrag eingegangen</div>
     <div class="content">
       <p>Ein neuer Leistungsberechtigter wurde angelegt:</p>

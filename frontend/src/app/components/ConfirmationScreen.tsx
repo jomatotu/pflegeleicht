@@ -40,17 +40,17 @@ export function ConfirmationScreen({
   pdfFile,
   extractedData,
 }: ConfirmationScreenProps) {
-  const s = (key: string) => String(extractedData?.[key] ?? "");
-  const [firstname, setFirstname] = useState(s("firstname"));
-  const [lastname, setLastname] = useState(s("lastname"));
-  const [street, setStreet] = useState(s("street"));
-  const [city, setCity] = useState(s("city"));
-  const [postalCode, setPostalCode] = useState(s("postalCode"));
-  const [email, setEmail] = useState(s("contact_person_email"));
-  const [phone, setPhone] = useState(s("contact_person_phone"));
-  const [versichertennummer, setVersichertennummer] = useState(s("insurance_number"));
-  const [auftragsnummer, setAuftragsnummer] = useState(s("order_number_md"));
-  const [geburtsdatum, setGeburtsdatum] = useState(s("date_of_birth"));
+  // Demo mode: ignore extractedData and pre-fill with dummy data instead
+  const [firstname, setFirstname] = useState("Max");
+  const [lastname, setLastname] = useState("Mustermann");
+  const [street, setStreet] = useState("Musterstraße 1");
+  const [city, setCity] = useState("Berlin");
+  const [postalCode, setPostalCode] = useState("10115");
+  const [email, setEmail] = useState("max.mustermann@example.com");
+  const [phone, setPhone] = useState("030 123456789");
+  const [versichertennummer, setVersichertennummer] = useState("A123456789");
+  const [auftragsnummer, setAuftragsnummer] = useState("");
+  const [geburtsdatum, setGeburtsdatum] = useState("1950-01-01");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
