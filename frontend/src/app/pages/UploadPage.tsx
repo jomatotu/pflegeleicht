@@ -3,15 +3,22 @@ import { useNavigate } from "react-router";
 import { Upload } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import {getWorker} from "../../lib/tesseractWorker";
 
 export function UploadPage() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setUploading(true);
+
+      const worker = await getWorker();
+      const { data } = await worker.recognize(file);
+
+      //TODO: call edge function here
+      console.log(data.text)
 
       setTimeout(() => {
         const mockGrade = 3;
