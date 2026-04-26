@@ -1,4 +1,5 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { buildPartnerEmail, buildPlatformEmail, buildSubmitterEmail } from "./email-templates.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const PLATFORM_EMAIL = Deno.env.get("PLATFORM_EMAIL") ?? "platform@pflegeleicht.online";
@@ -221,7 +222,7 @@ Deno.serve(async (req: Request) => {
     sendEmail({
       to: contact_person_email,
       subject: "Ihr Antrag wurde erfolgreich eingereicht",
-      html: buildSubmitterEmail(firstname, lastname, pflegegrad, street, city, postalCode),
+      html: buildSubmitterEmail(firstname, lastname, pflegegrad, services),
     }),
     sendEmail({
       to: PLATFORM_EMAIL,
@@ -244,15 +245,18 @@ Deno.serve(async (req: Request) => {
       to: PARTNER_EMAIL,
       subject: `Neuer Leistungsberechtigter: ${firstname} ${lastname}`,
       html: buildPartnerEmail(
+        inserted.id,
         firstname,
         lastname,
-        pflegegrad,
-        street,
-        city,
-        postalCode,
         date_of_birth,
+        street,
+        postalCode,
+        city,
+        pflegegrad,
         contact_person_phone,
-        inserted.id,
+        contact_person_email,
+        insurance_number ?? "",
+        order_number_md ?? "",
         services,
       ),
     }),
@@ -310,80 +314,3 @@ async function sendEmail({
   }
 }
 
-function buildSubmitterEmail(
-  firstname: string,
-  lastname: string,
-  pflegegrad: number,
-  street: string,
-  city: string,
-  postalCode: string,
-): string {
-  return `
-    <h2>Ihr Antrag wurde erfolgreich eingereicht</h2>
-    <p>Sehr geehrte/r ${firstname} ${lastname},</p>
-    <p>Ihr Antrag wurde erfolgreich bei pflegeleicht.online eingereicht und wird nun bearbeitet.</p>
-    <ul>
-      <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
-    </ul>
-    <p>Wir melden uns in Kürze bei Ihnen.</p>
-    <p>Mit freundlichen Grüßen,<br>Ihr pflegeleicht-Team</p>
-  `;
-}
-
-function buildPlatformEmail(
-  firstname: string,
-  lastname: string,
-  pflegegrad: number,
-  street: string,
-  city: string,
-  postalCode: string,
-  date_of_birth: string,
-  contact_person_phone: string,
-  contact_person_email: string,
-  id: number,
-  services: number[],
-): string {
-  return `
-    <h2>Neuer Antrag eingegangen</h2>
-    <p>Ein neuer Leistungsberechtigter wurde angelegt:</p>
-    <ul>
-      <li><strong>ID:</strong> ${id}</li>
-      <li><strong>Name:</strong> ${firstname} ${lastname}</li>
-      <li><strong>Geburtsdatum:</strong> ${date_of_birth}</li>
-      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
-      <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Telefon:</strong> ${contact_person_phone}</li>
-      <li><strong>E-Mail:</strong> ${contact_person_email}</li>
-      <li><strong>Leistungselemente:</strong> ${services?.length > 0 ? services.join(", ") : "keine"}</li>
-    </ul>
-  `;
-}
-
-function buildPartnerEmail(
-  firstname: string,
-  lastname: string,
-  pflegegrad: number,
-  street: string,
-  city: string,
-  postalCode: string,
-  date_of_birth: string,
-  contact_person_phone: string,
-  id: number,
-  services: number[],
-): string {
-  return `
-    <h2>Neuer Leistungsberechtigter</h2>
-    <p>Es gibt einen neuen Leistungsberechtigten, der Ihre Unterstützung benötigt:</p>
-    <ul>
-      <li><strong>Interne ID:</strong> ${id}</li>
-      <li><strong>Name:</strong> ${firstname} ${lastname}</li>
-      <li><strong>Geburtsdatum:</strong> ${date_of_birth}</li>
-      <li><strong>Adresse:</strong> ${street}, ${postalCode} ${city}</li>
-      <li><strong>Pflegegrad:</strong> ${pflegegrad}</li>
-      <li><strong>Telefon:</strong> ${contact_person_phone}</li>
-      <li><strong>Leistungselemente:</strong> ${services?.length > 0 ? services.join(", ") : "keine"}</li>
-    </ul>
-    <p>Bitte nehmen Sie Kontakt auf.</p>
-  `;
-}

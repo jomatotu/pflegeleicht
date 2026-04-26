@@ -48,7 +48,7 @@ export function Header({
                         step.completed
                           ? "bg-green-500 border-green-500"
                           : step.active
-                          ? "bg-teal-600 border-teal-600"
+                          ? "bg-teal-800 border-teal-800"
                           : "bg-white border-gray-300"
                       }`}
                     >
