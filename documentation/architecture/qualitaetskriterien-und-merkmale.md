@@ -25,6 +25,7 @@ Qualitätsziele konkretisieren die Merkmale in **prüfbare** Anforderungen.
 | Benutzbarkeit | Kernfluss lässt sich mit klar benannten Schritten und Hilfetexten ohne Fachjargon zum Entlastungsbetrag absolvieren. | UX-Review / Nutzertests; Abbruchquoten beobachten. |
 | Sicherheit | Zugriff auf interne Funktionen nur über `internal-API` und passende Rollen; keine sensitiven Daten in externen Endpunkten ohne Not. | Autorisierungstests; Threat Modeling für Upload und Speicherung. |
 | Sicherheit | Gesundheits- und identitätsnahe Daten werden transport- und speicherseitig nach Projektstandard geschützt. | Checkliste Verschlüsselung, Zugriffskontrolle, Datenminimierung. |
+| Sicherheit / Benutzbarkeit | **LLM-Extraktion** liefert nur **Vorschläge**; keine stillschweigende Übernahme ohne Nutzerprüfung; **OpenRouter**-Pfad für produktiv sensible Daten nur nach Compliance-Freigabe oder nach Umstellung auf **lokales LLM** ([ADR-007](architekturentscheidungen.md), [Laufzeitsicht](laufzeitsicht.md)). | UX-Kennzeichnung „Vorschlag“; E2E-Tests Happy Path / leerer Text / API-Fehler; Roadmap lokales LLM. |
 
 ## Stakeholder und Schwerpunkte
 

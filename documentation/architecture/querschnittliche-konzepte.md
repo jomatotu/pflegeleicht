@@ -8,3 +8,4 @@
 
 - Querschnittliche Regeln und ihre Verankerung im Code bzw. in Betrieb/Dokumentation
 - Verweis auf Detailaussagen in Randbedingungen und Architekturentscheidungen, wo bereits vorhanden
+- **KI / LLM:** Trennung Hilfsfunktion (`extract-info`) und fachlicher Persistenz (`process-antrag`); Anbindung **OpenRouter** vs. **lokales LLM** (ADR-007); Logging ohne unnötige Speicherung von Roh-Prompts in produktiven Umgebungen — bei Ausarbeitung dieses Kapitels mit Datenschutz und Betrieb abstimmen
