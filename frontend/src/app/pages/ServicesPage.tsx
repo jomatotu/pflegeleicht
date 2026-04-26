@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
 import { Header } from "../components/Header";
 import { ServiceData, fetchServices, fetchTotalBudget } from "../data/services";
@@ -19,14 +19,17 @@ export function ServicesPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
-  const grade = (location.state as { grade?: number | string } | null)?.grade;
+  const grade = (location.state as { grade?: number } | null)?.grade;
+  const totalBudgetParam = (location.state as { totalBudget?: number } | null)?.totalBudget;
+  const remainingBudgetParam = (location.state as { remainingBudget?: number } | null)?.remainingBudget;
+  const selectedServicesParam = (location.state as { selectedServices?: Service[] } | null)?.selectedServices;
 
-  const [totalBudget, setTotalBudget] = useState(0);
-  const [remainingBudget, setRemainingBudget] = useState(0);
+  const [totalBudget, setTotalBudget] = useState(totalBudgetParam || 0);
+  const [remainingBudget, setRemainingBudget] = useState(remainingBudgetParam || 0);
   const [services, setServices] = useState<ServiceData[]>([]);
   const [isLoadingServices, setIsLoadingServices] = useState(true);
   const [servicesError, setServicesError] = useState<string | null>(null);
-  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
+  const [selectedServices, setSelectedServices] = useState<Service[]>(selectedServicesParam || []);
 
   useEffect(() => {
     if (!grade) {
@@ -41,10 +44,9 @@ export function ServicesPage() {
       setIsLoadingServices(true);
 
       try {
-        const parsedGrade = grade ? parseInt(grade, 10) : undefined;
         const [servicesData, totalBudgetData] = await Promise.all([
           fetchServices(),
-          fetchTotalBudget(parsedGrade),
+          fetchTotalBudget(grade),
         ]);
 
         if (!isMounted) {
@@ -53,7 +55,7 @@ export function ServicesPage() {
 
         setServices(servicesData);
         setTotalBudget(totalBudgetData);
-        setRemainingBudget(totalBudgetData);
+        setRemainingBudget(remainingBudget || totalBudgetData);
         setServicesError(null);
       } catch (error) {
         if (!isMounted) {
