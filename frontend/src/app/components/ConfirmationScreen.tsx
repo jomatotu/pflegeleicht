@@ -48,8 +48,8 @@ export function ConfirmationScreen({
   const [postalCode, setPostalCode] = useState(s("postalCode"));
   const [email, setEmail] = useState(s("contact_person_email"));
   const [phone, setPhone] = useState(s("contact_person_phone"));
-  const [versichertennummer, setVersichertennummer] = useState("");
-  const [auftragsnummer, setAuftragsnummer] = useState("");
+  const [versichertennummer, setVersichertennummer] = useState(s("insurance_number"));
+  const [auftragsnummer, setAuftragsnummer] = useState(s("order_number_md"));
   const [geburtsdatum, setGeburtsdatum] = useState(s("date_of_birth"));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -89,6 +89,8 @@ export function ConfirmationScreen({
         pflegegrad,
         contact_person_phone: phone,
         contact_person_email: email,
+        insurance_number: versichertennummer,
+        order_number_md: auftragsnummer,
         services: selectedServices.map((s) => parseInt(s.id)),
       };
 

@@ -16,7 +16,7 @@ function corsHeaders(origin: string | null): Record<string, string> {
   };
 }
 
-const SYSTEM_PROMPT =  "Du bist ein Textextraktor: Wir müssen aus dem übermittelten Text Werte extrahieren. \n\nEs sind nur sichere Werte einzutragen, bei unsicheren Werten soll für Strings \"\" geliefert werden und für Zahlen die 0.\n\nDas JSON ist das Beispiel: {\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\"}\n\n"
+const SYSTEM_PROMPT =  "Du bist ein Textextraktor: Wir müssen aus dem übermittelten Text Werte extrahieren. \n\nEs sind nur sichere Werte einzutragen, bei unsicheren Werten soll für Strings \"\" geliefert werden und für Zahlen die 0.\n\nDas JSON ist das Beispiel: {\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\",\"insurance_number\":\"787123456789\",\"order_number_md\":\"X234234234\"}\n\n"
 
 Deno.serve(async (req: Request) => {
   const requestId = crypto.randomUUID().slice(0, 8);
