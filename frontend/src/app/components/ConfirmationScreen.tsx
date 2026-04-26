@@ -5,6 +5,7 @@ import { Label } from "./ui/label";
 import { CheckCircle, Phone, Mail } from "lucide-react";
 import logo from "../../imports/image.png";
 import { Footer } from "./Footer";
+import {supabase} from "../../lib/supabaseClient";
 
 interface Service {
   id: string;
@@ -98,15 +99,10 @@ export function ConfirmationScreen({
         formData.append("file", emptyFile);
       }
 
-      const functionUrl = import.meta.env.VITE_SUPABASE_URL + "/functions/v1/process-antrag";
-      const res = await fetch(functionUrl, {
-        method: "POST",
-        body: formData,
-      });
+      const res = await supabase.functions.invoke("process-antrag", { body: formData });
 
-      if (!res.ok) {
-        const errorBody = await res.json().catch(() => ({ error: res.statusText }));
-        throw new Error(errorBody.error ?? `HTTP ${res.status}`);
+      if (res.error != null) {
+        throw new Error(res.error);
       }
 
       onConfirm(true);
