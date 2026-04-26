@@ -54,7 +54,7 @@ export function UploadPage() {
 
           <div className="bg-white rounded-2xl border-2 border-teal-200 p-6 shadow-lg space-y-4">
             <h2 className="text-xl text-center text-teal-900">
-              Laden Sie Ihren Pflegegutachten hoch.
+              Laden Sie Ihr Pflegegutachten hoch.
             </h2>
 
             <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
