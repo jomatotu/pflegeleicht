@@ -32,24 +32,24 @@ export function UploadPage() {
         onLoginClick={() => {}}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="max-w-3xl w-full space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl text-teal-900">Willkommen bei PflegeLeicht</h1>
-            <p className="text-xl text-gray-600">Jetzt zählt nur: Ihre Angehörigen sind versorgt. Alles andere regeln wir gemeinsam.</p>
+            <h1 className="text-4xl md:text-5xl text-teal-900 dark:text-teal-300">Willkommen bei PflegeLeicht</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400">Jetzt zählt nur: Ihre Angehörigen sind versorgt. Alles andere regeln wir gemeinsam.</p>
           </div>
 
-          <div className="bg-white rounded-2xl border-2 border-teal-200 p-6 shadow-lg space-y-4">
-            <h2 className="text-xl text-center text-teal-900">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-teal-200 dark:border-teal-800 p-6 shadow-lg space-y-4">
+            <h2 className="text-xl text-center text-teal-900 dark:text-teal-300">
               Laden Sie Ihren Pflegegutachten hoch.
             </h2>
 
-            <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 transition-all">
+            <label className="flex flex-col items-center justify-center w-full h-48 border-4 border-dashed border-teal-300 dark:border-teal-700 rounded-xl cursor-pointer hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-all">
               <Upload className="w-16 h-16 text-teal-500 mb-3" />
-              <span className="text-base text-teal-700 mb-2">
+              <span className="text-base text-teal-700 dark:text-teal-400 mb-2">
                 {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 Max. Dateigröße: 10MB (PDF, JPG, PNG)
               </span>
               <input
@@ -63,35 +63,35 @@ export function UploadPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-teal-50 rounded-lg p-4 flex items-start gap-3">
-              <div className="w-6 h-6 text-teal-600 flex-shrink-0 mt-1">✓</div>
+            <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 flex items-start gap-3">
+              <div className="w-6 h-6 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-1">✓</div>
               <div>
-                <h3 className="text-sm font-medium text-teal-900 mb-1">
+                <h3 className="text-sm font-medium text-teal-900 dark:text-teal-300 mb-1">
                   Datenschutz garantiert
                 </h3>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Ihre Daten werden verschlüsselt und nur zur Leistungserbringung verwendet.
                 </p>
               </div>
             </div>
-            <div className="bg-teal-50 rounded-lg p-4 flex items-start gap-3">
-              <div className="w-6 h-6 text-teal-600 flex-shrink-0 mt-1">✓</div>
+            <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 flex items-start gap-3">
+              <div className="w-6 h-6 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-1">✓</div>
               <div>
-                <h3 className="text-sm font-medium text-teal-900 mb-1">
+                <h3 className="text-sm font-medium text-teal-900 dark:text-teal-300 mb-1">
                   Fragen?
                 </h3>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Kein Problem – rufen Sie uns einfach an.
                 </p>
               </div>
             </div>
-            <div className="bg-teal-50 rounded-lg p-4 flex items-start gap-3">
-              <div className="w-6 h-6 text-teal-600 flex-shrink-0 mt-1">✓</div>
+            <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 flex items-start gap-3">
+              <div className="w-6 h-6 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-1">✓</div>
               <div>
-                <h3 className="text-sm font-medium text-teal-900 mb-1">
+                <h3 className="text-sm font-medium text-teal-900 dark:text-teal-300 mb-1">
                   Keine Möglichkeit fürs Hochladen?
                 </h3>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Schicken Sie das Gutachten bequem per Post an uns.
                 </p>
               </div>
