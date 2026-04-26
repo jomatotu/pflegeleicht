@@ -111,17 +111,19 @@ export function ServicesPage() {
         onLoginClick={() => {}}
       />
 
-      <ServiceSelectionSimple
-          totalBudget={totalBudget}
-          remainingBudget={remainingBudget}
-          services={services}
-          isLoadingServices={isLoadingServices}
-          servicesError={servicesError}
-          selectedServices={selectedServices}
-          onSelectService={handleServiceSelect}
-          onRemoveService={handleServiceRemove}
-          onFinish={handleConfirm}
-      />
+      <main>
+        <ServiceSelectionSimple
+            totalBudget={totalBudget}
+            remainingBudget={remainingBudget}
+            services={services}
+            isLoadingServices={isLoadingServices}
+            servicesError={servicesError}
+            selectedServices={selectedServices}
+            onSelectService={handleServiceSelect}
+            onRemoveService={handleServiceRemove}
+            onFinish={handleConfirm}
+        />
+      </main>
     </div>
   );
 }
