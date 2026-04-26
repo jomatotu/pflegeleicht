@@ -26,6 +26,7 @@ interface ConfirmationScreenProps {
   onBack: () => void;
   isConfirmed?: boolean;
   pdfFile?: File;
+  extractedData?: Record<string, string | number>;
 }
 
 export function ConfirmationScreen({
@@ -37,17 +38,19 @@ export function ConfirmationScreen({
   onBack,
   isConfirmed = false,
   pdfFile,
+  extractedData,
 }: ConfirmationScreenProps) {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const s = (key: string) => String(extractedData?.[key] ?? "");
+  const [firstname, setFirstname] = useState(s("firstname"));
+  const [lastname, setLastname] = useState(s("lastname"));
+  const [street, setStreet] = useState(s("street"));
+  const [city, setCity] = useState(s("city"));
+  const [postalCode, setPostalCode] = useState(s("postalCode"));
+  const [email, setEmail] = useState(s("contact_person_email"));
+  const [phone, setPhone] = useState(s("contact_person_phone"));
   const [versichertennummer, setVersichertennummer] = useState("");
   const [auftragsnummer, setAuftragsnummer] = useState("");
-  const [geburtsdatum, setGeburtsdatum] = useState("");
+  const [geburtsdatum, setGeburtsdatum] = useState(s("date_of_birth"));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 

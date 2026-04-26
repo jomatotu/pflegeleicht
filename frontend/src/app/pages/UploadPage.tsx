@@ -4,6 +4,7 @@ import { Upload } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import {getWorker} from "../../lib/tesseractWorker";
+import { supabase } from "../../lib/supabaseClient";
 
 export function UploadPage() {
   const navigate = useNavigate();
@@ -17,14 +18,19 @@ export function UploadPage() {
       const worker = await getWorker();
       const { data } = await worker.recognize(file);
 
-      //TODO: call edge function here
-      console.log(data.text)
+      const { data: fnData, error } = await supabase.functions.invoke("extract-info", {
+        body: { text: data.text },
+      });
 
-      setTimeout(() => {
-        const mockGrade = 3;
-        navigate(`/result`, { state: { grade: mockGrade, pdfFile: file } });
-        setUploading(false);
-      }, 1500);
+      if (error) {
+        console.error("extract-info error:", error);
+      }
+
+      const extracted = fnData?.result ? JSON.parse(fnData.result) : {};
+      const grade = extracted.pflegegrad || 0;
+
+      navigate(`/result`, { state: { grade, pdfFile: file, extractedData: extracted } });
+      setUploading(false);
     }
   };
 
