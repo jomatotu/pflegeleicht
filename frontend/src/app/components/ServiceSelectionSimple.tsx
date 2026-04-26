@@ -64,8 +64,11 @@ export function ServiceSelectionSimple({
       <div className="bg-white border-b shadow-sm sticky top-[80px] z-10">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl text-teal-900">Was brauchst du?</h2>
+          <p className="text-sm text-gray-600 mt-1 font-bold">
+            Alle Preise basieren auf 1 Stunde, alle zwei Wochen
+          </p>
           <div className="text-right rounded-lg px-6 py-3 border bg-teal-50 border-teal-200">
-            <div className="text-xs text-gray-600 uppercase mb-1">Dein Budget pro monat</div>
+            <div className="text-xs text-gray-900 uppercase mb-1">Dein Budget pro monat</div>
             <div className="text-3xl text-teal-700">
               {remainingBudget.toFixed(2)} €
             </div>
@@ -112,12 +115,6 @@ export function ServiceSelectionSimple({
                   <div className="flex-1">
                     <p className="text-xl md:text-2xl text-gray-900 mb-2">{serviceData.title}</p>
                     <p className="text-sm text-gray-600 mb-3">{serviceData.description}</p>
-
-                    <div className="bg-teal-50 rounded-lg px-4 py-2 inline-block">
-                      <p className="text-sm text-teal-800">
-                        1 Stunde alle zwei Wochen · {serviceData.pricePerHour} € / Stunde
-                      </p>
-                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-4">
@@ -137,7 +134,7 @@ export function ServiceSelectionSimple({
                   ) : (
                     <Button
                       onClick={() => handleSelectService(serviceData)}
-                      className="bg-teal-600 hover:bg-teal-700"
+                      className="bg-teal-800 hover:bg-teal-700"
                     >
                       Auswählen
                     </Button>
@@ -175,7 +172,7 @@ export function ServiceSelectionSimple({
                   Wir organisieren das für dich. Rückmeldung in 48h.
                 </p>
               </div>
-              <Button onClick={onFinish} size="lg" className="bg-teal-600 hover:bg-teal-700 gap-2">
+              <Button onClick={onFinish} size="lg" className="bg-teal-800 hover:bg-teal-700 gap-2">
                 Fertig - Alles regeln lassen
                 <ChevronRight className="w-5 h-5" />
               </Button>
