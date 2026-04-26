@@ -28,23 +28,23 @@ export function Header({
 
   return (
     <header className="bg-white border-b shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
           {/* Logo */}
-          <div className="flex items-center gap-4 flex-shrink-0">
-            <img src={logo} alt="PflegeLeicht Logo" className="w-12 h-12" />
-            <span className="text-xl text-teal-900 font-medium">PflegeLeicht</span>
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            <img src={logo} alt="PflegeLeicht Logo" className="w-10 h-10 sm:w-12 sm:h-12" />
+            <span className="text-lg sm:text-xl text-teal-900 font-medium">PflegeLeicht</span>
           </div>
 
           {/* Stepper */}
           {showStepper && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 justify-center md:justify-start overflow-x-auto">
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-center">
                   <div className="flex flex-col items-center">
                     {/* Circle */}
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all ${
                         step.completed
                           ? "bg-green-500 border-green-500"
                           : step.active
@@ -53,10 +53,10 @@ export function Header({
                       }`}
                     >
                       {step.completed ? (
-                        <Check className="w-4 h-4 text-white" />
+                        <Check className="w-5 h-5 text-white" />
                       ) : (
                         <span
-                          className={`text-xs font-medium ${
+                          className={`text-sm font-medium ${
                             step.active ? "text-white" : "text-gray-500"
                           }`}
                         >
@@ -66,7 +66,7 @@ export function Header({
                     </div>
                     {/* Label */}
                     <p
-                      className={`text-xs mt-1 text-center whitespace-nowrap ${
+                      className={`hidden sm:block text-sm mt-1 text-center whitespace-nowrap ${
                         step.active ? "text-teal-900 font-medium" : "text-gray-600"
                       }`}
                     >
@@ -76,7 +76,7 @@ export function Header({
 
                   {/* Connector Line */}
                   {index < steps.length - 1 && (
-                    <div className="w-8 h-0.5 mx-1">
+                    <div className="w-6 sm:w-10 h-0.5 mx-1">
                       <div
                         className={`h-full transition-all ${
                           step.completed ? "bg-green-500" : "bg-gray-300"
@@ -90,12 +90,12 @@ export function Header({
           )}
 
           {/* Buttons */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 flex-shrink-0 w-full md:w-auto">
             {showHomeButton && onHomeClick && (
               <Button
                 onClick={onHomeClick}
                 variant="outline"
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Home className="w-4 h-4" />
                 Startseite
@@ -104,7 +104,7 @@ export function Header({
             {showLoginButton && onLoginClick && (
               <Button
                 onClick={onLoginClick}
-                className="gap-2 bg-teal-800 hover:bg-teal-900"
+                className="gap-2 bg-teal-600 hover:bg-teal-700 w-full sm:w-auto"
               >Wieder da? - Hier zu deinem Login<LogIn className="w-4 h-4" /></Button>
             )}
           </div>

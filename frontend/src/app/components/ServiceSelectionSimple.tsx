@@ -61,15 +61,12 @@ export function ServiceSelectionSimple({
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Budget Display */}
-      <div className="bg-white border-b shadow-sm sticky top-[80px] z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl text-teal-900">Was brauchst du?</h2>
-          <p className="text-sm text-gray-600 mt-1 font-bold">
-            Alle Preise basieren auf 1 Stunde, alle zwei Wochen
-          </p>
-          <div className="text-right rounded-lg px-6 py-3 border bg-teal-50 border-teal-200">
-            <div className="text-xs text-gray-900 uppercase mb-1">Dein Budget pro monat</div>
-            <div className="text-3xl text-teal-700">
+      <div className="bg-white border-b shadow-sm sticky top-[165px] sm:top-[150px] md:top-[90px] z-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <h2 className="text-xl sm:text-2xl text-teal-900">Was brauchst du?</h2>
+          <div className="text-left sm:text-right rounded-lg px-4 sm:px-6 py-3 border bg-teal-50 border-teal-200">
+            <div className="text-xs text-gray-600 uppercase mb-1">Dein Budget pro monat</div>
+            <div className="text-2xl sm:text-3xl text-teal-700">
               {remainingBudget.toFixed(2)} €
             </div>
             <div className="text-xs text-gray-500">von {totalBudget.toFixed(2)} €</div>
@@ -78,7 +75,7 @@ export function ServiceSelectionSimple({
       </div>
 
       {/* Services List */}
-      <div className="flex-1 max-w-4xl mx-auto px-6 py-8 space-y-4">
+      <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
         {isLoadingServices && (
           <div className="bg-white rounded-lg border border-gray-200 p-6 text-gray-600">
             Lade Leistungen...
@@ -99,13 +96,13 @@ export function ServiceSelectionSimple({
           return (
             <div
               key={serviceData.id}
-              className={`bg-white rounded-lg border-2 p-6 transition-all ${
+              className={`bg-white rounded-lg border-2 p-4 sm:p-6 transition-all ${
                 selected
                   ? "border-green-500 shadow-lg"
                   : "border-gray-200 hover:border-blue-300"
               }`}
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                 <div className="flex items-start gap-4 flex-1">
                   <div className={`p-3 rounded-lg flex-shrink-0 ${
                     selected ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
@@ -113,13 +110,13 @@ export function ServiceSelectionSimple({
                     <Icon className="w-8 h-8" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xl md:text-2xl text-gray-900 mb-2">{serviceData.title}</p>
+                    <p className="text-lg sm:text-xl md:text-2xl text-gray-900 mb-2">{serviceData.title}</p>
                     <p className="text-sm text-gray-600 mb-3">{serviceData.description}</p>
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-4">
-                  <div className="text-right">
-                    <div className="text-2xl text-teal-700">{monthlyPrice.toFixed(2)} €</div>
+                <div className="flex flex-col items-start md:items-end gap-4 w-full md:w-auto">
+                  <div className="text-left md:text-right">
+                    <div className="text-xl sm:text-2xl text-teal-700">{monthlyPrice.toFixed(2)} €</div>
                     <div className="text-xs text-gray-500">/ Monat</div>
                   </div>
                   {selected ? (
@@ -134,7 +131,7 @@ export function ServiceSelectionSimple({
                   ) : (
                     <Button
                       onClick={() => handleSelectService(serviceData)}
-                      className="bg-teal-800 hover:bg-teal-700"
+                      className="bg-teal-600 hover:bg-teal-700 w-full md:w-auto"
                     >
                       Auswählen
                     </Button>
@@ -162,7 +159,7 @@ export function ServiceSelectionSimple({
                 </p>
               </div>
             )}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h3 className="text-xl text-gray-900 mb-1">
                   {selectedServices.length} Leistung{selectedServices.length > 1 ? "en" : ""}{" "}
@@ -172,7 +169,7 @@ export function ServiceSelectionSimple({
                   Wir organisieren das für dich. Rückmeldung in 48h.
                 </p>
               </div>
-              <Button onClick={onFinish} size="lg" className="bg-teal-800 hover:bg-teal-700 gap-2">
+              <Button onClick={onFinish} size="lg" className="bg-teal-600 hover:bg-teal-700 gap-2 w-full md:w-auto">
                 Fertig - Alles regeln lassen
                 <ChevronRight className="w-5 h-5" />
               </Button>

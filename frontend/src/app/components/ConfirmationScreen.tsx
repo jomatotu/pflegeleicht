@@ -183,19 +183,19 @@ export function ConfirmationScreen({
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <div className="flex-1 p-6">
-        <div className="max-w-4xl mx-auto space-y-8 py-8">
+      <div className="flex-1 p-4 sm:p-6">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 py-6 sm:py-8">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl md:text-4xl text-teal-900">Zusammenfassung</h2>
-          <p className="text-lg text-gray-600">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl text-teal-900">Zusammenfassung</h2>
+          <p className="text-base sm:text-lg text-gray-600">
             Bitte überprüfen Sie Ihre Daten und bestätigen Sie Ihre Auswahl
           </p>
         </div>
 
         {/* Persönliche Daten */}
-        <div className="bg-white rounded-xl border-2 border-teal-200 p-6 space-y-6">
+        <div className="bg-white rounded-xl border-2 border-teal-200 p-4 sm:p-6 space-y-6">
           <h3 className="text-xl text-gray-900 border-b pb-2">Ihre persönlichen Daten</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-2">
               <Label htmlFor="firstname">Vorname</Label>
               <Input
@@ -298,35 +298,35 @@ export function ConfirmationScreen({
         </div>
 
         {/* Gewählte Leistungen */}
-        <div className="bg-white rounded-xl border-2 border-teal-200 p-6 space-y-6">
+        <div className="bg-white rounded-xl border-2 border-teal-200 p-4 sm:p-6 space-y-6">
           <h3 className="text-xl text-gray-900 border-b pb-2">Ihre gewählten Leistungen</h3>
           <div className="space-y-4">
             {selectedServices.map((service) => (
               <div
                 key={service.id}
-                className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 bg-green-50 rounded-lg border border-green-200"
               >
                 <div className="flex-1">
-                  <p className="text-lg text-gray-900">{service.title}</p>
+                  <p className="text-base sm:text-lg text-gray-900">{service.title}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-xl text-green-700">{service.monthlyPrice.toFixed(2)} € / Monat</p>
+                <div className="text-left sm:text-right">
+                  <p className="text-lg sm:text-xl text-green-700">{service.monthlyPrice.toFixed(2)} € / Monat</p>
                 </div>
               </div>
             ))}
           </div>
           <div className="border-t pt-4 space-y-4">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                   <p className="text-sm text-gray-600">Gesamtkosten pro Monat:</p>
-                  <p className="text-2xl text-gray-900">{usedBudget.toFixed(2)} €</p>
+                  <p className="text-xl sm:text-2xl text-gray-900">{usedBudget.toFixed(2)} €</p>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <p className="text-sm text-gray-600">
                     {isOverBudget ? "Überschreitung:" : "Verbleibendes Budget:"}
                   </p>
-                  <p className={`text-2xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
+                  <p className={`text-xl sm:text-2xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
                     {Math.abs(remainingBudget).toFixed(2)} €
                   </p>
                 </div>
@@ -355,14 +355,20 @@ export function ConfirmationScreen({
             <p className="text-sm text-red-800"><span className="font-medium">Fehler:</span> {submitError}</p>
           </div>
         )}
-        <div className="flex gap-4">
-          <Button onClick={onBack} variant="outline" size="lg" className="flex-1 h-14" disabled={isSubmitting}>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <Button
+            onClick={onBack}
+            variant="outline"
+            size="lg"
+            className="w-full sm:flex-1 h-16 sm:h-14 text-base sm:text-lg"
+            disabled={isSubmitting}
+          >
             Zurück zur Auswahl
           </Button>
           <Button
             onClick={handleSubmit}
             size="lg"
-            className="flex-1 h-14 bg-teal-600 hover:bg-teal-700 text-lg"
+            className="w-full sm:flex-1 h-16 sm:h-14 bg-teal-600 hover:bg-teal-700 text-base sm:text-lg"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Wird gesendet..." : "Jetzt verbindlich bestätigen"}

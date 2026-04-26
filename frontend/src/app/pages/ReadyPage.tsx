@@ -30,7 +30,7 @@ export function ReadyPage() {
                 }}
             />
 
-            <div className="flex flex-col min-h-screen bg-gradient-to-b from-teal-50 to-white">
+            <main className="flex flex-col min-h-screen bg-gradient-to-b from-teal-50 to-white">
                 <div className="flex-1 flex flex-col items-center justify-center p-6">
                     <div className="max-w-2xl w-full text-center space-y-8">
                         <div className="flex justify-center mb-6">
@@ -88,7 +88,7 @@ export function ReadyPage() {
                     </div>
                 </div>
                 <Footer/>
-            </div>
+            </main>
         </div>
     )
 }
