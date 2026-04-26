@@ -51,9 +51,9 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-medium mb-2">Kontakt</h3>
             <ul className="space-y-1 text-sm text-teal-100">
-              <li className="inline-flex min-h-5">Telefon: 030 123 456 789</li>
-              <li className="inline-flex min-h-5">E-Mail: hilfe@pflegeleicht.online</li>
-              <li className="inline-flex min-h-5">Mo-Fr: 8:00 - 18:00 Uhr</li>
+              <li className="flex min-h-5">Telefon: 030 123 456 789</li>
+              <li className="flex min-h-5">E-Mail: hilfe@pflegeleicht.online</li>
+              <li className="flex min-h-5">Mo-Fr: 8:00 - 18:00 Uhr</li>
             </ul>
           </div>
         </div>
