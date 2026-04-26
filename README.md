@@ -30,6 +30,20 @@ Der Nutzer zahlt nichts. Die Plattform verdient an der Marge zwischen der Kassen
 - **Anbieter**: kostenlose Kundenakquise
 - **Plattform**: Automatisierungsmarge
 
+### Barrierefreiheit & Zugang
+
+pflegeleicht richtet sich an Menschen, die oft älter, wenig technikaffin oder in belastenden Lebenssituationen sind. Barrierefreier Zugang ist deshalb kein Nice-to-have, sondern eine Grundvoraussetzung.
+
+Die Anwendung strebet einen **100 % Score im Bereich Accessibility** in Google PageSpeed Insights an (aktuell 97%).
+
+![Accessibility 100% – Google PageSpeed Insights](pagespeed-accessibility.png)
+
+Technisch umgesetzt durch:
+- Semantisches HTML mit korrekten ARIA-Attributen
+- Ausreichende Farbkontraste (WCAG AA)
+- Vollständige Tastaturbedienbarkeit
+- Klare, einfache Sprache in der Benutzeroberfläche
+
 ### Nutzer-Flow (5 Schritte)
 
 | Schritt | Seite | Beschreibung |
