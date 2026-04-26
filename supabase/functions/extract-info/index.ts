@@ -35,7 +35,7 @@ const SYSTEM_PROMPT =  "I will act as a text extractor with the following rules:
     "\n" +
     "Sample: \n" +
     "======\n" +
-    "{\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\"}\n" +
+    "{\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\",\"insurance_number\":\"787123456789\",\"order_number_md\":\"X234234234\"}\n" +
     "======"
 
 Deno.serve(async (req: Request) => {

@@ -30,6 +30,8 @@ interface AntragPayload {
   pflegegrad: number;
   contact_person_phone: string;
   contact_person_email: string;
+  insurance_number?: string;
+  order_number_md?: string;
   services: number[];
 }
 
@@ -100,6 +102,8 @@ Deno.serve(async (req: Request) => {
     pflegegrad,
     contact_person_phone,
     contact_person_email,
+    insurance_number,
+    order_number_md,
     services,
   } = payload;
 
@@ -176,6 +180,8 @@ Deno.serve(async (req: Request) => {
       pflegegrad,
       contact_person_phone,
       contact_person_email,
+      insurance_number,
+      order_number_md,
     })
     .select("id")
     .single();
