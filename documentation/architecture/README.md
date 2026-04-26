@@ -1,13 +1,17 @@
 # Architektur
 
-Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mit dem System interagiert, aus welchen Bausteinen es besteht, wie Anfragen zur Laufzeit ablaufen, welche Entscheidungen dabei getroffen wurden und welche verbindlichen Einschränkungen gelten. Der Inhalt dieser Datei entspricht **arc42 Abschnitt 1 — Einleitung und Ziele** (Auflistung in dieser Datei). Die Struktur folgt **arc42**; die nachfolgende Liste verweist auf alle zwölf Abschnitte (eigene Datei oder Inhalt in dieser Datei).
+Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mit dem System interagiert, aus welchen Bausteinen es besteht, wie Anfragen zur Laufzeit ablaufen, welche Entscheidungen dabei getroffen wurden und welche verbindlichen Einschränkungen gelten.
+
+Zur **Entlastung bei der Datenerfassung** wird Freitext (typischerweise aus **OCR** im Browser) serverseitig per **LLM** in strukturierte Felder überführt; im MVP erfolgt der Modellzugriff über die externe API **OpenRouter** ([Verteilungssicht](verteilungssicht.md)). Geplant ist später ein **lokales LLM**, um DSGVO-Themen (Auftragsverarbeitung, Datenübermittlung, Kontrolle über die Verarbeitung) besser adressieren zu können — siehe [Architekturentscheidungen](architekturentscheidungen.md) (ADR-006, ADR-007).
+
+Der Inhalt dieser Datei entspricht **arc42 Abschnitt 1 — Einleitung und Ziele** (Auflistung in dieser Datei). Die Struktur folgt **arc42**; die nachfolgende Liste verweist auf alle zwölf Abschnitte (eigene Datei oder Inhalt in dieser Datei).
 
 ## Zielbild MVP
 
 **MVP** (*Minimum Viable Product*, deutsch sinngemäß minimales tragfähiges Produkt) bezeichnet hier die abgegrenzte erste Ausbaustufe; weiterführende Einordnung im [Glossar](glossar.md).
 
 - Fokus auf einer standardisierbaren Leistung: `Entlastungsbetrag` (131 EUR pro Monat).
-- Nutzer:innen laden einmalig den Pflegegrad-Nachweis hoch, wählen eine Leistung und müssen den restlichen Prozess nicht selbst verstehen oder steuern.
+- Nutzer:innen laden einmalig den Pflegegrad-Nachweis hoch, wählen eine Leistung und müssen den restlichen Prozess nicht selbst verstehen oder steuern; unterstützt **OCR plus LLM-Extraktion** (Edge Function `extract-info`, OpenRouter) die Übernahme von Stammdaten aus dem erkannten Text — mit verbindlicher Prüfung durch die Nutzer:in vor Absenden.
 - Die Plattform übernimmt im Hintergrund Vermittlung, Abrechnung und Erstattungsprozess.
 
 ## Dokumente (Reihenfolge nach arc42)

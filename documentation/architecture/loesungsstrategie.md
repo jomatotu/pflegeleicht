@@ -7,6 +7,7 @@ Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipie
 - **Komplexität nach außen abbauen:** Nutzer:innen sollen den Entlastungsbetrag und zugehörige Schritte ohne tiefes Verständnis von Kasse, Dienstleistungsagentur oder Abrechnungslogik beantragen können. Der Leitgedanke entspricht den fachlichen Leitplanken in [Laufzeitsicht](laufzeitsicht.md): wenige, verständliche Interaktionen, klare Rollen des Systems (Antrag anlegen, Dienstleistungsagentur informieren, Prozess abschließen).
 - **Ein klarer MVP-Umfang:** Zuerst eine **standardisierbare Leistung** (Entlastungsbetrag) end-to-end abbilden. Erweiterungen (weitere Leistungen, zusätzliche Prozesse) sollen die bestehende Architektur nicht verkomplizieren, sondern später über denselben fachlichen Kern und getrennte Schnittstellen angebunden werden.
 - **Verlässliche Nachvollziehbarkeit:** Fachliche Abläufe sollen für interne Rollen und Audits nachvollziehbar bleiben (Status, Speicherung von Nachweisen, Benachrichtigungen). Das schließt an die Qualitätsziele in [Qualitätskriterien und Merkmale](qualitaetskriterien-und-merkmale.md) an.
+- **Unterstützte Datenerfassung:** Aus dem erkannten Text eines Nachweises (z. B. nach **OCR** im Browser) sollen strukturierte Antragsfelder gewonnen werden, ohne dass Nutzer:innen alles abtippen müssen. Die **LLM-Extraktion** läuft serverseitig in der Edge Function `extract-info` und nutzt im MVP die **OpenRouter**-API; fachliche und rechtliche Verantwortung bleibt bei **Prüfung und Freigabe** durch die Nutzer:in sowie bei serverseitigen Validierungen. Für eine stärkere **DSGVO**-Position (keine Übermittlung sensibler Texte an externe Modellanbieter über OpenRouter) ist ein **Wechsel auf ein lokales LLM** vorgesehen (ADR-007).
 
 ## Technische Kernprinzipien
 
@@ -19,6 +20,7 @@ Dieses Kapitel fasst die **übergeordnete Strategie** zusammen: welche Prinzipie
 
 - **Supabase** bündelt relationale Datenhaltung (PostgreSQL), API-Zugang, Speicher für Dateien und serverseitige Logik (Edge Functions) in einer zusammenhängenden Betriebsumgebung (ADR-004). Dadurch entsteht **Liefergeschwindigkeit** für den MVP, allerdings mit **Anbieterkopplung** — eine spätere Migration wäre möglich, aber mit Aufwand; sie ist kein MVP-Ziel.
 - Schwergewichtige Schritte (Validierung, Budgetprüfung, PDF in privatem Storage, persistenter Datensatz, **mehrstufiger E-Mail-Versand**) werden als **kohärente serverseitige Einheit** umgesetzt — im Projekt als Edge Function `process-antrag` — statt die gleiche Orchestrierung verteilt im Client zu duplizieren. Das unterstützt Integrität, Geheimnisse serverseitig und konsistente Fehlerbehandlung.
+- Die **LLM-gestützte Extraktion** aus Freitext ist als **eigene Edge Function** `extract-info` gekapselt (API-Key für OpenRouter nur serverseitig); sie ist bewusst von `process-antrag` getrennt, damit Aufrufhäufigkeit, Fehlerbild und ggf. späterer Anbieterwechsel (lokales LLM) isoliert bleiben.
 
 ### Schnittstellen und Entkopplung
 
@@ -39,6 +41,7 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 | Thema | Strategische Entscheidung |
 |--------|---------------------------|
 | Produktivität | Der MVP ist **nicht** als vollständig compliance- und betriebsreifer Produktionsbetrieb ausgelegt; es dürfen **keine** echten Gesundheitsdaten verarbeitet werden (Randbedingungen). |
+| LLM / OpenRouter | **Externe LLM-Verarbeitung** über OpenRouter erleichtert die Entwicklung, birgt aber **Drittland-/Auftragsverarbeitungs**- und **Transparenz**-Themen gegenüber einem lokalen Modell; die Strategie ist **MVP mit OpenRouter**, **Perspektive lokales LLM** vor produktiver Ausrichtung (ADR-007, [Architektureinschraenkungen](architektureinschraenkungen.md)). |
 | Plattform | **Starke Nutzung von Supabase-Features** beschleunigt die Entwicklung; Portabilität ist zweitrangig. |
 | APIs | **Zwei API-Pfade** erhöhen Wartung und Dokumentationspflicht; der Nutzen (Sicherheit, klare Verträge) wird höher bewertet. |
 | Betrieb | Themen wie **Migration/Rollback**, **Retry/Circuit-Breaker** für externe Aufrufe und **Monitoring/Audit** sind bewusst **noch offen** und in [Architekturentscheidungen](architekturentscheidungen.md) dokumentiert — die Strategie ist „erst klare fachliche Endpunkte, dann harte Betriebsregeln“, ohne den MVP unnötig zu blockieren. |
@@ -47,7 +50,7 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 
 | Abschnitt | Bezug zur Lösungsstrategie |
 |-----------|----------------------------|
-| 3 Kontext | Wer mit dem System spricht; externe Dienste (E-Mail, DB) bleiben außerhalb der Systemgrenze. |
+| 3 Kontext | Wer mit dem System spricht; externe Dienste (E-Mail, DB, **OpenRouter** für LLM) bleiben außerhalb der fachlichen Systemgrenze bzw. sind als externe Anbindung modelliert. |
 | 5 Bausteinsicht | Umsetzung der Schichten und Module (Frontends, APIs, Leistungsverwaltung, Benachrichtigung, Persistenz). |
 | 6 Laufzeitsicht | Konkreter Beantragungsablauf im MVP. |
 | 7 Verteilungssicht | Wo SPA, Supabase und Dienste zur Laufzeit liegen. |
@@ -55,7 +58,7 @@ Strategisch gilt: **Minimierung**, **Zweckbindung** und **Trennung extern/intern
 
 ## Verweise
 
-- [Architekturentscheidungen](architekturentscheidungen.md) — ADR-001 bis ADR-005
+- [Architekturentscheidungen](architekturentscheidungen.md) — ADR-001 bis ADR-007
 - [Architektureinschränkungen](architektureinschraenkungen.md)
 - [Bausteinsicht](bausteinsicht.md)
 - [Verteilungssicht](verteilungssicht.md)

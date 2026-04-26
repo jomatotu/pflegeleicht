@@ -16,6 +16,7 @@ Dieses Kapitel bündelt **bekannte Risiken**, **offene technische Punkte** und *
 | R-06 | Benachrichtigungen (E-Mail) fehlgeschlagen oder verspätet | mittel | mittel | Nutzer:innen oder Dienstleistungsagenturen erhalten falsches Prozessbild; fachlicher Zustand und Kommunikation laufen auseinander ([ADR-003](architekturentscheidungen.md)). | Idempotenz und Nachvollziehbarkeit der Auslösung; Wiederholungs-/Dead-Letter-Strategie festlegen; Monitoring auf Versandfehler. |
 | R-07 | Offene Betriebsthemen (Migrationen, Monitoring, Audit) | hoch | mittel | Noch nicht festgelegte Migrations-, Retry- und Audit-Anforderungen ([Architekturentscheidungen](architekturentscheidungen.md)) können bei wachsender Last oder Prüfungen zu Überraschungen führen. | ADRs schließen, bevor produktiver Betrieb anvisiert wird; Mindeststandards für Logs und Alarme definieren. |
 | R-08 | Drift zwischen OpenAPI-Spezifikation und Implementierung | mittel | mittel | Vertrag und Code weichen auseinander; Clients und Tests prüfen das Falsche ([ADR-005](architekturentscheidungen.md)). | Spezifikation im CI gegen Implementierung prüfen; Änderungen API-first oder mit angepasster Spec mergen. |
+| R-09 | LLM-Extraktion (OpenRouter): Qualität, Verfügbarkeit und Datenschutz | mittel | hoch | Falsche oder halluzinierte Felder können Nutzer:innen übersehen; Ausfall OpenRouter blockiert nur die Hilfsfunktion, nicht zwingend den manuellen Antrag. **DSGVO:** Text kann bei externen Modellen **Auftragsverarbeitung/Drittland** auslösen ([ADR-007](architekturentscheidungen.md), [Architektureinschraenkungen](architektureinschraenkungen.md)). | Im UI klar als **Vorschlag** kennzeichnen; Validierung und Pflichtfelder serverseitig; Monitoring auf Fehler/Timeouts; Migration auf **lokales LLM** für produktive, datenschutzsensible Nutzung planen und dokumentieren. |
 
 ## Technische Schulden
 
@@ -29,6 +30,7 @@ Technische Schulden sind hier **bewusst dokumentierte** Abweichungen vom „Idea
 | TD-04 | Monitoring und Audit für administrative Prozesse | Anforderungen noch nicht fixiert. | Mindestkatalog (wer darf was, welche Ereignisse protokollieren); Anbindung an Betriebs-Tools. |
 | TD-05 | Doppelte API-Oberflächen (`external` / `internal`) | Akzeptierter Kompromiss für Sicherheit und Verträge ([Lösungsstrategie](loesungsstrategie.md)). | Gemeinsame Validierungs-/Mapping-Schichten oder generierte Anteile prüfen, Duplikat reduzieren ohne Trennung aufzuweichen. |
 | TD-06 | Anbieterkopplung Supabase | Bewusste Wahl für Geschwindigkeit ([ADR-004](architekturentscheidungen.md)). | Abstraktion nur dort, wo Wechsel realistisch ist; Datenexport und dokumentierte Abhängigkeiten pflegen. |
+| TD-07 | Abhängigkeit von OpenRouter für LLM-Extraktion | Schnelle MVP-Integration; DSGVO- und Betriebsrisiken gegenüber kontrollierter lokaler Inference ([ADR-007](architekturentscheidungen.md)). | Schnittstelle in `extract-info` so halten, dass **lokales LLM** (HTTP intern, Batch, Sidecar) die gleiche Rolle übernehmen kann; Keys/Endpoints umgebungsabhängig; Nutzerhinweise und Verarbeitungsverzeichnis nachziehen. |
 
 ## Pflege dieses Kapitels
 

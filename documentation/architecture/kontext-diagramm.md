@@ -13,6 +13,7 @@ flowchart LR
     system["pflegeleicht.online"]
     mail["E-Mail-Dienst"]
     db["Datenbank"]
+    openrouter["OpenRouter\n(LLM-API)"]
     
     user -->|"bestellt Leistungen"| system
     pflegeleicht -->|"kümmert sich um Nutzendenanfragen"| system
@@ -20,6 +21,7 @@ flowchart LR
     admin -->|"administriert"| system
     system -->|"versendet Benachrichtigungen"| mail
     system -->|"liest/schreibt Daten"| db
+    system -->|"LLM: strukturierte Extraktion\naus Freitext (MVP)"| openrouter
 ```
 
 
@@ -28,7 +30,7 @@ flowchart LR
 
 - `pflegeleicht.online` ist das zentrale Softwaresystem.
 - Nutzer:innen interagieren direkt mit dem System.
-- Das System nutzt einen externen E-Mail-Dienst und eine Datenbank.
+- Das System nutzt einen externen E-Mail-Dienst, eine Datenbank und im MVP die **OpenRouter**-Schnittstelle für **LLM-gestützte Textextraktion** (siehe [Verteilungssicht](verteilungssicht.md), ADR-007 in [Architekturentscheidungen](architekturentscheidungen.md)).
 - Der `CustomerService` bearbeitet Nutzendenanfragen über `pflegeleicht.online`.
 - Dienstleistungsagenturen erhalten bei relevanten Ereignissen eine Benachrichtigung durch `pflegeleicht.online`.
 
