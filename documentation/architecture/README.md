@@ -4,6 +4,8 @@ Dieser Ordner fasst die Architektur von **pflegeleicht.online** zusammen: wer mi
 
 Zur **Entlastung bei der Datenerfassung** wird Freitext (typischerweise aus **OCR** im Browser) serverseitig per **LLM** in strukturierte Felder überführt; im MVP erfolgt der Modellzugriff über die externe API **OpenRouter** ([Verteilungssicht](verteilungssicht.md)). Geplant ist später ein **lokales LLM**, um DSGVO-Themen (Auftragsverarbeitung, Datenübermittlung, Kontrolle über die Verarbeitung) besser adressieren zu können — siehe [Architekturentscheidungen](architekturentscheidungen.md) (ADR-006, ADR-007).
 
+Das **Web-Frontend** (React/Vite-Build) wird im produktiven Betrieb über **[Netlify](https://www.netlify.com)** ausgeliefert — Hosting der statischen Assets inklusive **globalem CDN** für kurze Ladezeiten; Details in der [Verteilungssicht](verteilungssicht.md).
+
 Der Inhalt dieser Datei entspricht **arc42 Abschnitt 1 — Einleitung und Ziele** (Auflistung in dieser Datei). Die Struktur folgt **arc42**; die nachfolgende Liste verweist auf alle zwölf Abschnitte (eigene Datei oder Inhalt in dieser Datei).
 
 ## Zielbild MVP
