@@ -3,19 +3,34 @@ import { useNavigate } from "react-router";
 import { Upload } from "lucide-react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import {getWorker} from "../../lib/tesseractWorker";
+import { supabase } from "../../lib/supabaseClient";
 
 export function UploadPage() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
       setUploading(true);
 
-      setTimeout(() => {
-        const mockGrade = 3;
-        navigate(`/result?grade=${mockGrade}`);
-      }, 1500);
+      const worker = await getWorker();
+      const { data } = await worker.recognize(file);
+
+      const { data: fnData, error } = await supabase.functions.invoke("extract-info", {
+        body: { text: data.text },
+      });
+
+      if (error) {
+        console.error("extract-info error:", error);
+      }
+
+      const extracted = fnData?.result ? JSON.parse(fnData.result) : {};
+      const grade = extracted.pflegegrad || 0;
+
+      navigate(`/result`, { state: { grade, pdfFile: file, extractedData: extracted } });
+      setUploading(false);
     }
   };
 
@@ -48,12 +63,12 @@ export function UploadPage() {
                 {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
               </span>
               <span className="text-sm text-gray-500">
-                Max. Dateigröße: 10MB (PDF, JPG, PNG)
+                Max. Dateigröße: 10MB (JPG, PNG)
               </span>
               <input
                 type="file"
                 className="hidden"
-                accept="image/*,.pdf"
+                accept="image/*"
                 onChange={handleFileUpload}
                 disabled={uploading}
               />

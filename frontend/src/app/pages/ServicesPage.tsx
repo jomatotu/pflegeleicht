@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ServiceSelectionSimple } from "../components/ServiceSelectionSimple";
-import { ConfirmationScreen } from "../components/ConfirmationScreen";
 import { Header } from "../components/Header";
+import { ServiceData, fetchServices, fetchTotalBudget } from "../data/services";
 
 interface Service {
   id: string;
@@ -15,15 +15,22 @@ interface Service {
 }
 
 export function ServicesPage() {
+  const currentStep = 2;
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const grade = searchParams.get("grade");
+  const location = useLocation();
+  const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
+  const grade = (location.state as { grade?: number } | null)?.grade;
+  const extractedData = (location.state as { extractedData?: Record<string, unknown> } | null)?.extractedData;
+  const totalBudgetParam = (location.state as { totalBudget?: number } | null)?.totalBudget;
+  const remainingBudgetParam = (location.state as { remainingBudget?: number } | null)?.remainingBudget;
+  const selectedServicesParam = (location.state as { selectedServices?: Service[] } | null)?.selectedServices;
 
-  const [totalBudget] = useState(131);
-  const [remainingBudget, setRemainingBudget] = useState(131);
-  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [totalBudget, setTotalBudget] = useState(totalBudgetParam || 0);
+  const [remainingBudget, setRemainingBudget] = useState(remainingBudgetParam || 0);
+  const [services, setServices] = useState<ServiceData[]>([]);
+  const [isLoadingServices, setIsLoadingServices] = useState(true);
+  const [servicesError, setServicesError] = useState<string | null>(null);
+  const [selectedServices, setSelectedServices] = useState<Service[]>(selectedServicesParam || []);
 
   useEffect(() => {
     if (!grade) {
@@ -31,30 +38,62 @@ export function ServicesPage() {
     }
   }, [grade, navigate]);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadServices = async () => {
+      setIsLoadingServices(true);
+
+      try {
+        const [servicesData, totalBudgetData] = await Promise.all([
+          fetchServices(),
+          fetchTotalBudget(grade),
+        ]);
+
+        if (!isMounted) {
+          return;
+        }
+
+        setServices(servicesData);
+        setTotalBudget(totalBudgetData);
+        setRemainingBudget(remainingBudget || totalBudgetData);
+        setServicesError(null);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        console.error("Error loading services:", error);
+        setServicesError("Leistungen konnten nicht geladen werden. Bitte versuche es erneut.");
+      } finally {
+        if (isMounted) {
+          setIsLoadingServices(false);
+        }
+      }
+    };
+
+    loadServices();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [grade]);
+
   const handleServiceSelect = (service: Service) => {
-    setSelectedServices([...selectedServices, service]);
-    setRemainingBudget(remainingBudget - service.cost);
+    setSelectedServices((prev) => [...prev, service]);
+    setRemainingBudget((prev) => prev - service.cost);
   };
 
   const handleServiceRemove = (serviceId: string) => {
     const service = selectedServices.find((s) => s.id === serviceId);
     if (service) {
-      setSelectedServices(selectedServices.filter((s) => s.id !== serviceId));
-      setRemainingBudget(remainingBudget + service.cost);
+      setSelectedServices((prev) => prev.filter((s) => s.id !== serviceId));
+      setRemainingBudget((prev) => prev + service.cost);
     }
   };
 
-  const handleFinish = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleBackToServices = () => {
-    setShowConfirmation(false);
-  };
-
   const handleConfirm = () => {
-    console.log("Confirmed:", { grade, selectedServices });
-    setIsConfirmed(true);
+    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget, pdfFile, extractedData } });
   };
 
   if (!grade) {
@@ -67,31 +106,22 @@ export function ServicesPage() {
         onHomeClick={() => navigate("/")}
         showHomeButton={true}
         showLoginButton={false}
-        currentStep={showConfirmation ? 3 : 2}
+        currentStep={currentStep}
         showStepper={true}
         onLoginClick={() => {}}
       />
 
-      {!showConfirmation ? (
-        <ServiceSelectionSimple
+      <ServiceSelectionSimple
           totalBudget={totalBudget}
           remainingBudget={remainingBudget}
+          services={services}
+          isLoadingServices={isLoadingServices}
+          servicesError={servicesError}
           selectedServices={selectedServices}
           onSelectService={handleServiceSelect}
           onRemoveService={handleServiceRemove}
-          onFinish={handleFinish}
-        />
-      ) : (
-        <ConfirmationScreen
-          pflegegrad={parseInt(grade)}
-          selectedServices={selectedServices}
-          totalBudget={totalBudget}
-          remainingBudget={remainingBudget}
-          onConfirm={handleConfirm}
-          onBack={handleBackToServices}
-          isConfirmed={isConfirmed}
-        />
-      )}
+          onFinish={handleConfirm}
+      />
     </div>
   );
 }
