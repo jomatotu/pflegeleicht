@@ -12,11 +12,31 @@ function corsHeaders(origin: string | null): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": allowed,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-client-info, apikey",
   };
 }
 
-const SYSTEM_PROMPT =  "Du bist ein Textextraktor: Wir müssen aus dem übermittelten Text Werte extrahieren. \n\nEs sind nur sichere Werte einzutragen, bei unsicheren Werten soll für Strings \"\" geliefert werden und für Zahlen die 0.\n\nDas JSON ist das Beispiel: {\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\",\"insurance_number\":\"787123456789\",\"order_number_md\":\"X234234234\"}\n\n"
+const SYSTEM_PROMPT =  "I will act as a text extractor with the following rules:\n\n" +
+    "I extract only values that are explicitly and unambiguously present in the provided text.\n" +
+    "If a value is uncertain, implied, or ambiguous:\n" +
+    "\n" +
+    "For strings → return \"\"\n" +
+    "For numbers → return 0\n" +
+    "\n" +
+    "\n" +
+    "I will not infer or guess missing information.\n" +
+    "Output will be strictly based on the input text.\n" +
+    "\n" +
+    "\n" +
+    "Please provide:\n" +
+    "\n" +
+    "The JSON example / target schema (the structure and field names to be filled)\n" +
+    "The source text from which the values should be extracted\n" +
+    "\n" +
+    "Sample: \n" +
+    "======\n" +
+    "{\"firstname\":\"Max\",\"lastname\":\"Mustermann\",\"street\":\"Musterstraße 1\",\"city\":\"Kassel\",\"postalCode\":\"34117\",\"date_of_birth\":\"1950-03-15\",\"pflegegrad\":2,\"contact_person_phone\":\"+49 123 456789\",\"contact_person_email\":\"max.mustermann@example.com\",\"insurance_number\":\"787123456789\",\"order_number_md\":\"X234234234\"}\n" +
+    "======"
 
 Deno.serve(async (req: Request) => {
   const requestId = crypto.randomUUID().slice(0, 8);
@@ -105,7 +125,18 @@ Deno.serve(async (req: Request) => {
   log(`Tokens — prompt: ${usage?.prompt_tokens}, completion: ${usage?.completion_tokens}, total: ${usage?.total_tokens}`);
   log(`LLM result: ${result}`);
 
-  return new Response(JSON.stringify({ result }), {
+  let finalResult = result;
+  try {
+    const parsed = JSON.parse(result);
+    if (!parsed.pflegegrad) {
+      parsed.pflegegrad = 2;
+    }
+    finalResult = JSON.stringify(parsed);
+  } catch {
+    log("Could not parse LLM result as JSON, returning raw result");
+  }
+
+  return new Response(JSON.stringify({ result: finalResult }), {
     status: 200,
     headers: { ...cors, "Content-Type": "application/json" },
   });

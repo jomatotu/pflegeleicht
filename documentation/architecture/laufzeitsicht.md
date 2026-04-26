@@ -29,6 +29,11 @@ flowchart TB
     end
 ```
 
+## Nachweis-Upload und Texterkennung (externes Frontend)
+
+Im Schritt „Upload Pflegegutachten und Abtretung erklären“ kann das **external-frontend** im **Browser** eine **OCR-Bibliothek** ausführen (Texterkennung aus PDF oder Bild), um Eingaben vorzuschlagen, Pflegegrad oder Stammdaten plausibel zu machen oder die Nutzer:innen sonst zu entlasten. Diese Verarbeitung läuft **clientseitig**, bevor der formale Antrag an die Plattform übergeben wird.
+
+Die **serverseitige** Abfolge (Antrag ablegen, Datei in Storage, Persistenz, Benachrichtigung) bleibt unverändert der zentralen Laufzeit in Supabase vorbehalten — siehe [Verteilungssicht](verteilungssicht.md) und [Architekturentscheidungen](architekturentscheidungen.md) (ADR-006).
 
 ## Fachliche Leitplanken
 
