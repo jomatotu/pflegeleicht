@@ -57,12 +57,12 @@ export function UploadPage() {
                 {uploading ? "Wird hochgeladen..." : "Datei auswählen"}
               </span>
               <span className="text-sm text-gray-500">
-                Max. Dateigröße: 10MB (PDF, JPG, PNG)
+                Max. Dateigröße: 10MB (JPG, PNG)
               </span>
               <input
                 type="file"
                 className="hidden"
-                accept="image/*,.pdf"
+                accept="image/*"
                 onChange={handleFileUpload}
                 disabled={uploading}
               />
