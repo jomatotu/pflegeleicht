@@ -12,6 +12,7 @@ export function ResultPage() {
   const [consentGiven, setConsentGiven] = useState(false);
   const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
   const grade = (location.state as { grade?: number | string } | null)?.grade;
+  const extractedData = (location.state as { extractedData?: Record<string, unknown> } | null)?.extractedData;
 
   useEffect(() => {
     if (!grade) {
@@ -21,7 +22,7 @@ export function ResultPage() {
 
   const handleContinue = () => {
     if (grade) {
-      navigate(`/services`, { state: { pdfFile, grade } });
+      navigate(`/services`, { state: { pdfFile, grade, extractedData } });
     }
   };
 

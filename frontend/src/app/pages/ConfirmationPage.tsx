@@ -11,6 +11,7 @@ export function ConfirmationPage() {
     const totalBudget = (location.state as { totalBudget?: number } | null)?.totalBudget || 0;
     const remainingBudget = (location.state as { remainingBudget?: number } | null)?.remainingBudget || 0;
     const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
+    const extractedData = (location.state as { extractedData?: Record<string, string | number> } | null)?.extractedData;
 
 
     useEffect(() => {
@@ -48,6 +49,7 @@ export function ConfirmationPage() {
                 onConfirm={handleConfirm}
                 onBack={handleBackToServices}
                 pdfFile={pdfFile}
+                extractedData={extractedData}
             />
         </div>
     );

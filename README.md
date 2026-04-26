@@ -134,8 +134,77 @@ Nimmt einen Pflegebescheid (PDF) entgegen, speichert die Daten und versendet 3 E
     
 ```bash
 curl -X POST https://jpuqjrfeumqschfwmlom.supabase.co/functions/v1/process-antrag \
-  -F "pdf=@test_formular.pdf" \
+  -F "file=@test_formular.pdf" \
   -F 'data={"firstname":"Max","lastname":"Mustermann","street":"Musterstraße 1","city":"Kassel","postalCode":"34117","date_of_birth":"1950-03-15","pflegegrad":2,"contact_person_phone":"+49 123 456789","contact_person_email":"max.mustermann@example.com","services":[1,2]}'
+```
+
+---
+
+## Edge Function: `extract-info`
+
+Nimmt einen Text entgegen und extrahiert daraus strukturierte Patientendaten via LLM (OpenRouter).
+
+**Endpoint:** `POST https://jpuqjrfeumqschfwmlom.supabase.co/functions/v1/extract-info`  
+**Content-Type:** `application/json`
+
+| Feld | Typ | Beschreibung |
+|------|-----|--------------|
+| `text` | string | Freitext, aus dem Informationen extrahiert werden sollen |
+
+**Antwort:**
+
+| Feld | Typ | Beschreibung |
+|------|-----|--------------|
+| `result` | string | Vom LLM extrahierte Informationen als JSON-String |
+
+**Extrahierte Felder** (gleiche Struktur wie `process-antrag`):
+
+| Feld | Typ | Fallback bei Unsicherheit |
+|------|-----|---------------------------|
+| `firstname` | string | `""` |
+| `lastname` | string | `""` |
+| `street` | string | `""` |
+| `city` | string | `""` |
+| `postalCode` | string | `""` |
+| `date_of_birth` | string | `""` |
+| `pflegegrad` | number | `0` |
+| `contact_person_phone` | string | `""` |
+| `contact_person_email` | string | `""` |
+
+**Ablauf:**
+1. Validierung: `text` darf nicht leer sein
+2. Aufruf von OpenRouter (`openai/gpt-4o-mini`) mit dem System-Prompt
+3. Rückgabe des extrahierten JSON-Strings
+
+**curl-Beispiel (lokal):**
+
+```bash
+curl -X POST http://127.0.0.1:54321/functions/v1/extract-info \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRFA0NiK7ACcPmalfeSiDG3YsPTIBLMXa7GXA7nBHLc" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Max Mustermann, geboren am 15.03.1950, wohnhaft Musterstraße 1, 34117 Kassel. Pflegegrad 2. Erreichbar unter +49 123 456789 bzw. max.mustermann@example.com."}'
+``` 
+
+**curl-Beispiel (Produktion):**
+
+```bash
+curl -X POST https://jpuqjrfeumqschfwmlom.supabase.co/functions/v1/extract-info \
+  -H "Content-Type: application/json" \
+  -H "apikey: <VITE_SUPABASE_ANON_KEY>" \
+  -H "Authorization: Bearer <VITE_SUPABASE_ANON_KEY>" \
+  -d '{"text": "Max Mustermann, geboren am 15.03.1950, wohnhaft Musterstraße 1, 34117 Kassel. Pflegegrad 2. Erreichbar unter +49 123 456789 bzw. max.mustermann@example.com."}'
+```
+
+**Secret:**
+
+| Secret | Beschreibung |
+|--------|--------------|
+| `OPENROUTER_API_KEY` | API-Key von [openrouter.ai](https://openrouter.ai) |
+| `OPENROUTER_MODEL` | Modell-ID (Standard: `openai/gpt-4o-mini`) |
+
+Deploy:
+```bash
+npx supabase functions deploy extract-info
 ```
 
 ---

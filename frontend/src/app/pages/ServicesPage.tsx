@@ -20,6 +20,7 @@ export function ServicesPage() {
   const location = useLocation();
   const pdfFile = (location.state as { pdfFile?: File } | null)?.pdfFile;
   const grade = (location.state as { grade?: number } | null)?.grade;
+  const extractedData = (location.state as { extractedData?: Record<string, unknown> } | null)?.extractedData;
   const totalBudgetParam = (location.state as { totalBudget?: number } | null)?.totalBudget;
   const remainingBudgetParam = (location.state as { remainingBudget?: number } | null)?.remainingBudget;
   const selectedServicesParam = (location.state as { selectedServices?: Service[] } | null)?.selectedServices;
@@ -92,7 +93,7 @@ export function ServicesPage() {
   };
 
   const handleConfirm = () => {
-    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget, pdfFile} });
+    navigate("/confirmation", { state: { grade, selectedServices, totalBudget, remainingBudget, pdfFile, extractedData } });
   };
 
   if (!grade) {
