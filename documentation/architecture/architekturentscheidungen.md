@@ -51,6 +51,14 @@ Dieses Dokument hält wichtige Architekturentscheidungen für `pflegeleicht.onli
 - **Entscheidung:** APIs werden auf Basis von `OpenAPI` spezifiziert und als `REST`-Schnittstellen mit `JSON` als Austauschformat umgesetzt.
 - **Folgen:** Einheitliche API-Verträge und bessere Tool-Unterstützung (Dokumentation, Validierung, Client-Generierung); zusätzliche Pflege der OpenAPI-Spezifikation erforderlich.
 
+### ADR-006: Clientseitige OCR im external-frontend
+
+- **Status:** akzeptiert
+- **Datum:** 2026-04-26
+- **Kontext:** Nutzer:innen laden **Pflegegrad-Nachweise** (PDF, teils gescannt) hoch. Manuelle Übertragung in Formularfelder ist fehleranfällig; gleichzeitig sind sensible Gesundheitsdaten besonders schützenswert. Eine serverseitige OCR in der `external-API` würde jede Seite an die Plattform senden, bevor Nutzer:innen sie freiwillig einreichen — das widerspricht dem Ziel, Vorverarbeitung möglichst **nah am Endgerät** zu halten.
+- **Entscheidung:** Texterkennung (**OCR**) wird im **external-frontend** im **Browser** eingebunden (clientseitige Bibliothek). Die `external-API` und übrige Backend-Bausteine übernehmen **keine** Pflicht-OCR für dasselbe Szenario im MVP; serverseitig bleiben Speicherung, Validierung und Orchestrierung des Antrags (z. B. Edge Function) maßgeblich.
+- **Folgen:** Größeres **Frontend-Bundle** und **Laufzeitlast** auf dem Endgerät (inkl. schwächerer Hardware); Erkennungsqualität ist abhängig von Dokument und Bibliothek — **fachliche und rechtliche Korrektheit** bleiben durch Nutzerprüfung und serverseitige Regeln abgesichert, nicht durch OCR allein. Ein späterer Wechsel zu **Cloud-OCR** oder hybrider Verarbeitung erfordert ein **neues oder ergänzendes ADR** sowie Anpassungen in Verteilungssicht und Datenschutz-Folgenabschätzung.
+
 ## Offene Entscheidungen
 
 - Konkrete Migrationsstrategie innerhalb des relationalen Modells (Versionierung, Rollback, Deployment-Ablauf).

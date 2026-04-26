@@ -49,7 +49,7 @@ flowchart TB
 
 ## Bausteine
 
-- `External-Frontend`: Einstiegspunkt für externe Nutzer:innen und Übergabe von Anfragen an die `external-API`.
+- `External-Frontend`: Einstiegspunkt für externe Nutzer:innen und Übergabe von Anfragen an die `external-API`; kann **clientseitig** eine **OCR-Bibliothek** (Texterkennung) nutzen, um aus hochgeladenen Nachweisdokumenten (z. B. PDF) lesbaren Text zu gewinnen und Erfassung oder nachgelagerte Schritte im Browser zu unterstützen, bevor Daten gezielt an die API übergeben werden.
 - `Internal-Frontend`: Arbeitsoberfläche für interne Rollen und Übergabe von Anfragen an die `internal-API`.
 - `external-API`: Schnittstelle für externe Frontend-Anfragen und Weiterleitung an die `Leistungsverwaltung`.
 - `internal-API`: Schnittstelle für interne Frontend-Anfragen und Orchestrierung in `Leistungsverwaltung`, `Admin-Modul` und `CustomerCare-Modul`.
@@ -61,7 +61,7 @@ flowchart TB
 
 ## Schichten
 
-- Oberste Schicht (`internal-frontend`, `external-frontend`): UI für interne und externe Nutzergruppen.
+- Oberste Schicht (`internal-frontend`, `external-frontend`): UI für interne und externe Nutzergruppen; beim **external-frontend** können ressourcenintensive Hilfen (z. B. OCR) bewusst im Browser laufen, statt die API-Schicht zu belasten.
 - API-Schicht (`external-API`, `internal-API`): Entkopplung der Frontends von der Fachlogik.
 - Fachmodul-Schicht (`Leistungsverwaltung`, `Admin-Modul`, `CustomerCare-Modul`): Fachliche Verarbeitung und interne Orchestrierung.
 - External-Service-Anbindungs-Schicht (`Benachrichtigungsmodul`, `Persistenzschicht`): Anbindung externer Dienste und technische Kapselung von Infrastrukturzugriffen (E-Mail, Datenbank).

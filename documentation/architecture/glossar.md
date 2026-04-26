@@ -17,7 +17,7 @@ Zentrale **Fach-** und **Systembegriffe** von `pflegeleicht.online`. Kurzdefinit
 | **Handlungsauftrag** | Synonym oder nahe Verwandtes zur **Abtretung** im Sinne der Leitplanken: rechtliche/organisatorische Einwilligung zur Vertretung im Prozess ([Laufzeitsicht](laufzeitsicht.md)). |
 | **Leistung / Leistungselement** | Konkret wählbare oder abrechenbare Einheit im Rahmen des Entlastungsbetrags; die **Leistungsverwaltung** bildet die fachlichen Regeln und Zustände dazu softwareseitig ab ([Bausteinsicht](bausteinsicht.md)). |
 | **Nutzer:in** | Pflegebedürftige Person oder deren Angehörige im Sinne des externen Endkunden-Flows; interagiert mit dem **external-Frontend** ([Kontextdiagramm](kontext-diagramm.md)). |
-| **Pflegegrad-Nachweis** | Nachweis über den anerkannten Pflegegrad (z. B. Bescheid, Gutachten); im UI-Text auch „Pflegegutachten“; wird im MVP hochgeladen und sicher verwaltet ([README](README.md#zielbild-mvp), [Verteilungssicht](verteilungssicht.md)). |
+| **Pflegegrad-Nachweis** | Nachweis über den anerkannten Pflegegrad (z. B. Bescheid, Gutachten); im UI-Text auch „Pflegegutachten“; wird im MVP hochgeladen und sicher verwaltet; kann im Browser per **OCR** vorverarbeitet werden ([README](README.md#zielbild-mvp), [Verteilungssicht](verteilungssicht.md), [Bausteinsicht](bausteinsicht.md)). |
 
 ---
 
@@ -33,10 +33,11 @@ Zentrale **Fach-** und **Systembegriffe** von `pflegeleicht.online`. Kurzdefinit
 | **CustomerCare-Modul** | Fachlicher Baustein für **CustomerService**-Prozesse; spricht über die internal-API mit der Leistungsverwaltung ([Bausteinsicht](bausteinsicht.md)). |
 | **Edge Function** | Serverseitige Funktion in der **Supabase**-Laufzeit; im Projekt u. a. **`process-antrag`** für Orchestrierung (Validierung, Speicher, E-Mail) ([Verteilungssicht](verteilungssicht.md), [Lösungsstrategie](loesungsstrategie.md)). |
 | **external-API** / **internal-API** | Zwei getrennte HTTP-Schnittstellen: erste für externe Nutzer:innen-Frontends, zweite für interne Rollen; unterschiedliche Verträge und Berechtigungen ([Architekturentscheidungen](architekturentscheidungen.md)). |
-| **external-Frontend** / **internal-Frontend** | Zwei Web-Oberflächen (React-SPA): Einstieg für **Nutzer:innen** bzw. für **interne Rollen** ([Bausteinsicht](bausteinsicht.md)). |
+| **external-Frontend** / **internal-Frontend** | Zwei Web-Oberflächen (React-SPA): Einstieg für **Nutzer:innen** bzw. für **interne Rollen**; das **external-Frontend** kann **OCR** clientseitig für Nachweisdokumente nutzen ([Bausteinsicht](bausteinsicht.md), [Architekturentscheidungen](architekturentscheidungen.md)). |
 | **JSON** | Austauschformat der REST-APIs ([Architekturentscheidungen](architekturentscheidungen.md)). |
 | **Leistungsverwaltung** | Zentraler fachlicher Kern: Regeln, Status und Anbindung von Benachrichtigung und Persistenz ([Bausteinsicht](bausteinsicht.md), [Architekturentscheidungen](architekturentscheidungen.md)). |
 | **MVP** | *Minimum Viable Product* — abgegrenzte erste Ausbaustufe; in den Randbedingungen **nicht** als vollständig produktions- und compliance-reifer Betrieb ausgelegt ([Architektureinschränkungen](architektureinschraenkungen.md)). |
+| **OCR** (*optical character recognition*, deutsch sinngemäß Texterkennung) | Im **external-frontend** eingesetzte Bibliothek zur Erkennung von Text in Bildern oder PDF-Seiten; dient z. B. Vorbefüllung oder Plausibilisierung bei **Pflegegrad-Nachweisen**, typischerweise vollständig im Browser vor dem gezielten Upload ([Bausteinsicht](bausteinsicht.md), ADR-006 in [Architekturentscheidungen](architekturentscheidungen.md)). |
 | **OpenAPI** | Maschinenlesbare API-Beschreibung; Vertrag zwischen Frontend und Backend ([Architekturentscheidungen](architekturentscheidungen.md)). |
 | **Persistenzschicht** | Kapselung der Zugriffe auf die **Datenbank** (Lesen/Schreiben) ([Bausteinsicht](bausteinsicht.md)). |
 | **PostgREST** | Von Supabase genutztes API-Gateway über relationale Tabellen (REST/RPC) ([Verteilungssicht](verteilungssicht.md)). |

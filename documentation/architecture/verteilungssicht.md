@@ -17,7 +17,10 @@ Das **Web-Frontend** wird lokal mit Vite unter `http://localhost:5173` gestartet
 flowchart TB
     subgraph clients["Clients"]
         browser["Browser\n(Web-Frontend)"]
+        ocr["OCR (optional)\nim Browser\n(nur external-Frontend)"]
     end
+
+    browser -.->|"lädt Bibliothek,\nverarbeitet Datei lokal"| ocr
 
     subgraph optional_host["Frontend-Auslieferung (MVP nicht festgelegt)"]
         static["Statische Assets\n(z. B. CDN / Webhosting)"]
@@ -51,6 +54,7 @@ In der **lokalen** Variante entspricht der Block „Supabase-Projekt“ dem per 
 ## Knoten und Artefakte
 
 - **Web-Frontend:** React-SPA (Vite), Bausteine `external-frontend` / `internal-frontend` aus der Bausteinsicht; spricht per HTTPS mit dem Supabase-Projekt (API, Storage, Edge Functions).
+- **Clientseitige OCR:** Texterkennung für Nachweisdokumente läuft als Teil des **external-frontend** im **Browser** (typischerweise JavaScript/WebAssembly); es entsteht **kein zusätzlicher Zugriffspfad** über Supabase allein für OCR — die Bibliothek wird mit der SPA ausgeliefert und arbeitet auf der Datei des Nutzers/der Nutzerin lokal, bis der reguläre Upload- bzw. Antragsweg (z. B. Edge Function) folgt (Begründung: ADR-006).
 - **Supabase API:** öffentlich erreichbar unter `https://<project-ref>.supabase.co` (exakter Host aus Dashboard bzw. nach `npx supabase link`, siehe [README.md](../../README.md)).
 - **Edge Function `process-antrag`:** läuft in der Supabase-Functions-Laufzeit; Endpunkt `POST .../functions/v1/process-antrag`; Zugriff auf Datenbank, privaten Storage-Bucket und E-Mail-Versand.
 - **PostgreSQL:** verwaltete Instanz im Supabase-Projekt; Schema über Migrationen unter `supabase/migrations/`.
@@ -76,6 +80,7 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 
 ## Netzwerk- und Zugriffspfade
 
+- **OCR im Browser:** Solange die gewählte OCR-Bibliothek **ohne** Aufruf externer Cloud-Dienste auskommt, geht für die Texterkennung **kein** zusätzlicher HTTPS-Pfad über die in diesem Dokument beschriebenen Kanäle hinaus; weicht die konkrete Bibliothek davon ab (z. B. SaaS-OCR), ist das gesondert zu betreiben und im [Architekturentscheidungslog](architekturentscheidungen.md) zu dokumentieren.
 - **Browser → Supabase:** TLS (HTTPS); Authentifizierung gegenüber der API typischerweise mit dem öffentlichen `anon`-Key des Projekts (nur im Client konfigurieren, was öffentlich sein darf).
 - **Edge Function → Datenbank / Storage:** innerhalb der Supabase-Plattform; keine direkte Exposition der Datenbank ans öffentliche Internet für Client-Zugriffe außerhalb des Supabase-Gateways.
 - **Edge Function → Resend:** ausgehende HTTPS-Verbindung zur Resend-API (`https://api.resend.com`); Empfänger und Absender laut Umgebungsvariablen/Secrets.
@@ -89,4 +94,5 @@ Geheimnisse und umgebungsspezifische Werte liegen **nicht** im Repository; sie w
 
 - Entwicklung und Deploy-Schritte: [README.md](../../README.md)
 - Bausteine und Schichten: [Bausteinsicht](bausteinsicht.md)
+- Clientseitige OCR: [Architekturentscheidungen](architekturentscheidungen.md) (ADR-006), [Laufzeitsicht](laufzeitsicht.md)
 - Randbedingungen (u. a. Datenregion, MVP): [Architektureinschränkungen](architektureinschraenkungen.md)
