@@ -119,7 +119,7 @@ export function ConfirmationScreen({
 
   if (isConfirmed) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-teal-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="max-w-2xl w-full text-center space-y-8">
           <div className="flex justify-center mb-6">
@@ -128,45 +128,45 @@ export function ConfirmationScreen({
           <CheckCircle className="w-24 h-24 text-green-500 mx-auto" />
 
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl text-teal-700">Fertig!</h2>
-            <p className="text-2xl text-gray-700">
+            <h2 className="text-4xl md:text-5xl text-teal-700 dark:text-teal-400">Fertig!</h2>
+            <p className="text-2xl text-gray-700 dark:text-gray-300">
               Wir melden uns innerhalb von 48 Stunden bei Ihnen.
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl border-2 border-teal-200 p-8 space-y-6 text-left">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-teal-200 dark:border-teal-800 p-8 space-y-6 text-left">
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-600">Ihre gewählten Leistungen:</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Ihre gewählten Leistungen:</p>
                 {selectedServices.map((service) => (
-                  <div key={service.id} className="mt-2 border-b pb-2">
-                    <p className="text-lg text-gray-900">{service.title}</p>
-                    <p className="text-sm text-gray-600">
+                  <div key={service.id} className="mt-2 border-b dark:border-gray-700 pb-2">
+                    <p className="text-lg text-gray-900 dark:text-gray-100">{service.title}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       {service.hours} Stunden × {service.pricePerHour} € = {service.monthlyPrice.toFixed(2)} € / Monat
                     </p>
                   </div>
                 ))}
               </div>
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">Ihr verbleibendes Budget:</p>
-                <p className="text-3xl text-teal-700">{remainingBudget.toFixed(2)} €</p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Ihr verbleibendes Budget:</p>
+                <p className="text-3xl text-teal-700 dark:text-teal-400">{remainingBudget.toFixed(2)} €</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-teal-50 rounded-xl p-6 space-y-4">
-            <p className="text-xl text-gray-700">Fragen?</p>
+          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-6 space-y-4">
+            <p className="text-xl text-gray-700 dark:text-gray-300">Fragen?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="tel:+4930123456789"
-                className="flex items-center gap-2 text-lg text-teal-600 hover:text-teal-700"
+                className="flex items-center gap-2 text-lg text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300"
               >
                 <Phone className="w-5 h-5" />
                 030 123 456 789
               </a>
               <a
                 href="mailto:hilfe@pflegeleicht.online"
-                className="flex items-center gap-2 text-lg text-teal-600 hover:text-teal-700"
+                className="flex items-center gap-2 text-lg text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300"
               >
                 <Mail className="w-5 h-5" />
                 hilfe@pflegeleicht.online
@@ -181,19 +181,19 @@ export function ConfirmationScreen({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       <div className="flex-1 p-6">
         <div className="max-w-4xl mx-auto space-y-8 py-8">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl md:text-4xl text-teal-900">Zusammenfassung</h2>
-          <p className="text-lg text-gray-600">
+          <h2 className="text-3xl md:text-4xl text-teal-900 dark:text-teal-300">Zusammenfassung</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             Bitte überprüfen Sie Ihre Daten und bestätigen Sie Ihre Auswahl
           </p>
         </div>
 
         {/* Persönliche Daten */}
-        <div className="bg-white rounded-xl border-2 border-teal-200 p-6 space-y-6">
-          <h3 className="text-xl text-gray-900 border-b pb-2">Ihre persönlichen Daten</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-teal-200 dark:border-teal-800 p-6 space-y-6">
+          <h3 className="text-xl text-gray-900 dark:text-gray-100 border-b dark:border-gray-700 pb-2">Ihre persönlichen Daten</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="firstname">Vorname</Label>
@@ -289,58 +289,58 @@ export function ConfirmationScreen({
               />
             </div>
           </div>
-          <div className="bg-teal-50 rounded-lg p-4">
-            <p className="text-sm text-gray-700">
+          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               <span className="font-medium">Pflegegrad:</span> Stufe {pflegegrad}
             </p>
           </div>
         </div>
 
         {/* Gewählte Leistungen */}
-        <div className="bg-white rounded-xl border-2 border-teal-200 p-6 space-y-6">
-          <h3 className="text-xl text-gray-900 border-b pb-2">Ihre gewählten Leistungen</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-teal-200 dark:border-teal-800 p-6 space-y-6">
+          <h3 className="text-xl text-gray-900 dark:text-gray-100 border-b dark:border-gray-700 pb-2">Ihre gewählten Leistungen</h3>
           <div className="space-y-4">
             {selectedServices.map((service) => (
               <div
                 key={service.id}
-                className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200"
+                className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
               >
                 <div className="flex-1">
-                  <p className="text-lg text-gray-900">{service.title}</p>
+                  <p className="text-lg text-gray-900 dark:text-gray-100">{service.title}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl text-green-700">{service.monthlyPrice.toFixed(2)} € / Monat</p>
+                  <p className="text-xl text-green-700 dark:text-green-400">{service.monthlyPrice.toFixed(2)} € / Monat</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="border-t pt-4 space-y-4">
+          <div className="border-t dark:border-gray-700 pt-4 space-y-4">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Gesamtkosten pro Monat:</p>
-                  <p className="text-2xl text-gray-900">{usedBudget.toFixed(2)} €</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Gesamtkosten pro Monat:</p>
+                  <p className="text-2xl text-gray-900 dark:text-gray-100">{usedBudget.toFixed(2)} €</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     {isOverBudget ? "Überschreitung:" : "Verbleibendes Budget:"}
                   </p>
-                  <p className={`text-2xl ${isOverBudget ? "text-orange-700" : "text-teal-700"}`}>
+                  <p className={`text-2xl ${isOverBudget ? "text-orange-700 dark:text-orange-400" : "text-teal-700 dark:text-teal-400"}`}>
                     {Math.abs(remainingBudget).toFixed(2)} €
                   </p>
                 </div>
               </div>
             </div>
             {isOverBudget && (
-              <div className="p-4 bg-orange-100 rounded-lg border border-orange-300">
-                <p className="text-sm text-orange-900 font-medium mb-1">
+              <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-lg border border-orange-300 dark:border-orange-700">
+                <p className="text-sm text-orange-900 dark:text-orange-300 font-medium mb-1">
                   ⚠️ Budget überschritten
                 </p>
-                <p className="text-sm text-orange-800">
+                <p className="text-sm text-orange-800 dark:text-orange-400">
                   Sie haben Leistungen im Wert von <span className="font-bold">{usedBudget.toFixed(2)} €</span> ausgewählt.
                   Ihr Pflegebudget beträgt <span className="font-bold">{totalBudget.toFixed(2)} €</span> pro Monat.
                 </p>
-                <p className="text-sm text-orange-900 font-bold mt-2">
+                <p className="text-sm text-orange-900 dark:text-orange-300 font-bold mt-2">
                   Sie müssen monatlich <span className="text-lg">{selfPayAmount.toFixed(2)} €</span> selbst bezahlen.
                 </p>
               </div>
@@ -350,8 +350,8 @@ export function ConfirmationScreen({
 
         {/* Action Buttons */}
         {submitError && (
-          <div className="p-4 bg-red-50 rounded-lg border border-red-300">
-            <p className="text-sm text-red-800"><span className="font-medium">Fehler:</span> {submitError}</p>
+          <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700">
+            <p className="text-sm text-red-800 dark:text-red-300"><span className="font-medium">Fehler:</span> {submitError}</p>
           </div>
         )}
         <div className="flex gap-4">

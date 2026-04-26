@@ -5,9 +5,11 @@ import { ServicesPage } from "./pages/ServicesPage";
 import { ScrollToTop } from "./components/ScrollToTop";
 import {ConfirmationPage} from "./pages/ConfirmationPage";
 import {ReadyPage} from "./pages/ReadyPage";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 export default function App() {
   return (
+    <DarkModeProvider>
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
@@ -19,5 +21,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+    </DarkModeProvider>
   );
 }

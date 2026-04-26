@@ -40,22 +40,22 @@ export function ResultPage() {
         onLoginClick={() => {}}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-teal-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="max-w-3xl w-full">
-          <div className="bg-white rounded-2xl border-2 border-teal-200 shadow-lg px-[32px] py-[5px]">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-teal-200 dark:border-teal-800 shadow-lg px-[32px] py-[5px]">
             <div className="text-center space-y-6 p-[0px]">
-              <p className="text-xl text-gray-700 px-[0px] py-[5px]">Pflegegrad erkannt:</p>
+              <p className="text-xl text-gray-700 dark:text-gray-300 px-[0px] py-[5px]">Pflegegrad erkannt:</p>
               <div className="flex items-center justify-center gap-4">
                 <CheckCircle className="w-16 h-16 text-green-500" />
-                <p className="text-6xl text-green-700 font-bold">Pflegegrad {grade}</p>
+                <p className="text-6xl text-green-700 dark:text-green-400 font-bold">Pflegegrad {grade}</p>
               </div>
-              <p className="text-lg text-gray-600 mt-4">
+              <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
                 Willkommen zurück! Wir haben deinen Bescheid erfolgreich ausgewertet.
               </p>
 
-              <div className="bg-teal-50 border-2 border-teal-200 rounded-lg p-6 text-left space-y-4 max-w-2xl mx-auto mt-6">
-                <h3 className="text-lg text-teal-900 font-medium">Abtretungserklärung</h3>
-                <p className="text-sm text-gray-700 leading-relaxed">Damit wir in deinem Namen mit deiner Pflegekasse abrechnen können, benötigen wir deine Zustimmung.                </p>
+              <div className="bg-teal-50 dark:bg-teal-900/20 border-2 border-teal-200 dark:border-teal-800 rounded-lg p-6 text-left space-y-4 max-w-2xl mx-auto mt-6">
+                <h3 className="text-lg text-teal-900 dark:text-teal-300 font-medium">Abtretungserklärung</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Damit wir in deinem Namen mit deiner Pflegekasse abrechnen können, benötigen wir deine Zustimmung.                </p>
                 <div className="flex items-start gap-3 pt-2">
                   <Checkbox
                     id="consent"
@@ -65,7 +65,7 @@ export function ResultPage() {
                   />
                   <label
                     htmlFor="consent"
-                    className="text-sm text-gray-900 leading-relaxed cursor-pointer"
+                    className="text-sm text-gray-900 dark:text-gray-200 leading-relaxed cursor-pointer"
                   >
                     Ich erteile die Abtretungserklärung und erlaube PflegeLeicht, in meinem Namen
                     mit meiner Pflegekasse abzurechnen. Ich kann diese Erklärung jederzeit
