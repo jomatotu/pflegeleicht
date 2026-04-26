@@ -104,7 +104,7 @@ export function Header({
             {showLoginButton && onLoginClick && (
               <Button
                 onClick={onLoginClick}
-                className="gap-2 bg-teal-600 hover:bg-teal-700 w-full sm:w-auto"
+                className="gap-2 bg-teal-600 hover:bg-teal-700 bold w-full sm:w-auto"
               >Wieder da? - Hier zu deinem Login<LogIn className="w-4 h-4" /></Button>
             )}
           </div>
